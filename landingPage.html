@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrailBlazer - Gear Up for Your Next Adventure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ecf0f1;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #e67e22;
+        }
+
+        /* Search and Account Section */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ecf0f1;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            width: 200px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: rgba(236, 240, 241, 0.7);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #e67e22;
+            width: 250px;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            background: none;
+            border: none;
+            color: #ecf0f1;
+            cursor: pointer;
+            padding: 0.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .search-btn:hover {
+            color: #e67e22;
+        }
+
+        .account-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .account-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ecf0f1;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .account-btn:hover {
+            background: rgba(230, 126, 34, 0.2);
+            border-color: #e67e22;
+            color: #e67e22;
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #ecf0f1;
+            transition: color 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            color: #e67e22;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e67e22;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(44, 62, 80, 0.4), rgba(39, 174, 96, 0.3)),
+                        url('https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #ecf0f1;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #e67e22;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 5rem 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+
+        /* Explore Gear Section */
+        .gear-section {
+            background: #ecf0f1;
+            position: relative;
+        }
+        
+        .gear-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .gear-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .gear-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .gear-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gear-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .gear-item:nth-child(1)::before {
+            background-image: url('https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+        }
+
+        .gear-item:nth-child(2)::before {
+            background-image: url('https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+        }
+
+        .gear-item:nth-child(3)::before {
+            background-image: url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+        }
+
+        .gear-item:nth-child(4)::before {
+            background-image: url('https://images.unsplash.com/photo-1586016632501-4ed24f14ccc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+        }
+
+        .gear-item > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .gear-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .gear-icon {
+            width: 80px;
+            height: 80px;
+            background: #27ae60;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        /* Trails Carousel */
+        .trails-section {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(39, 174, 96, 0.8)),
+                        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            background: rgba(255,255,255,0.1);
+            padding: 3rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin: 0 10px;
+        }
+
+        .trail-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: #e67e22;
+        }
+
+        /* Club Section */
+        .club-section {
+            background: linear-gradient(rgba(39, 174, 96, 0.9), rgba(39, 174, 96, 0.9)),
+                        url('https://images.unsplash.com/photo-1578592391689-0e3d1a1b52b9?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+        
+        .club-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .club-image {
+            width: 100%;
+            height: 300px;
+            background: url('https://images.unsplash.com/photo-1578592391689-0e3d1a1b52b9?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Features Section */
+        .features-section {
+            background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)),
+                        url('https://images.unsplash.com/photo-1464822759844-d150baec0494?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: #e67e22;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: #b9f5d8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #e67e22;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .club-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .nav-actions {
+                gap: 0.5rem;
+            }
+            
+            .search-input {
+                width: 150px;
+            }
+            
+            .search-input:focus {
+                width: 180px;
+            }
+            
+            .account-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">🏔️ TrailBlazer</div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#gear">Gear</a></li>
+                    <li><a href="#trails">Trails</a></li>
+                    <li><a href="#community">Community</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search gear, trails...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="account-section">
+                    <a href="#" class="account-btn">👤 Sign In</a>
+                    <div class="cart-icon">
+                        🛒
+                        <span class="cart-count">2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Gear Up for Your Next Adventure</h1>
+            <p>Discover the best hiking equipment and connect with fellow adventurers in your area</p>
+            <a href="#gear" class="cta-button">Start Exploring</a>
+        </div>
+    </section>
+
+    <!-- Explore Gear Section -->
+    <section class="section gear-section" id="gear">
+        <div class="container">
+            <h2 class="section-title">Explore Our Gear</h2>
+            <div class="gear-grid">
+                <div class="gear-item">
+                    <div class="gear-icon">🎒</div>
+                    <h3>Backpacks</h3>
+                    <p>Premium hiking backpacks for every adventure, from day hikes to multi-week expeditions.</p>
+                </div>
+                <div class="gear-item">
+                    <div class="gear-icon">🥾</div>
+                    <h3>Hiking Boots</h3>
+                    <p>Durable, comfortable boots designed to tackle any terrain with confidence and style.</p>
+                </div>
+                <div class="gear-item">
+                    <div class="gear-icon">⛺</div>
+                    <h3>Tents & Shelters</h3>
+                    <p>Lightweight, weather-resistant shelters for a good night's sleep under the stars.</p>
+                </div>
+                <div class="gear-item">
+                    <div class="gear-icon">🧭</div>
+                    <h3>Navigation</h3>
+                    <p>GPS devices, compasses, and maps to keep you on the right trail every time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Trails Section -->
+    <section class="section trails-section" id="trails">
+        <div class="container">
+            <h2 class="section-title">Top Trails Near You</h2>
+            <div class="carousel-container">
+                <div class="carousel" id="trailsCarousel">
+                    <div class="carousel-item">
+                        <div class="trail-image" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                        <h3>🏔️ Mountain Ridge Trail</h3>
+                        <p>A challenging 8-mile trail with breathtaking views of the surrounding peaks. Perfect for experienced hikers looking for their next adventure.</p>
+                        <p><strong>Difficulty:</strong> Hard | <strong>Distance:</strong> 8 miles</p>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="trail-image" style="background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                        <h3>🌲 Forest Loop Path</h3>
+                        <p>A family-friendly 3-mile loop through ancient forests. Great for beginners and families with children.</p>
+                        <p><strong>Difficulty:</strong> Easy | <strong>Distance:</strong> 3 miles</p>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="trail-image" style="background-image: url('https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                        <h3>🏞️ Lakeside Adventure</h3>
+                        <p>A moderate 5-mile trail leading to a pristine alpine lake. Perfect for photography and peaceful reflection.</p>
+                        <p><strong>Difficulty:</strong> Moderate | <strong>Distance:</strong> 5 miles</p>
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <div class="carousel-dot active" onclick="showSlide(0)"></div>
+                    <div class="carousel-dot" onclick="showSlide(1)"></div>
+                    <div class="carousel-dot" onclick="showSlide(2)"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join a Club Section -->
+    <section class="section club-section" id="community">
+        <div class="container">
+            <h2 class="section-title">Join a Hiking Club</h2>
+            <div class="club-content">
+                <div>
+                    <h3>Connect with Fellow Adventurers</h3>
+                    <p>Join local hiking groups and make lasting friendships while exploring the great outdoors. Our community connects hikers of all skill levels.</p>
+                    <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                        <li>Weekly group hikes</li>
+                        <li>Skill-building workshops</li>
+                        <li>Safety training sessions</li>
+                        <li>Seasonal adventure challenges</li>
+                    </ul>
+                    <a href="#" class="cta-button">Find Local Groups</a>
+                </div>
+                <div class="club-image">
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Hike With Us Section -->
+    <section class="section features-section">
+        <div class="container">
+            <h2 class="section-title">Why Hike With Us</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">✅</div>
+                    <h3>Quality Guaranteed</h3>
+                    <p>All our gear is tested by professional hikers and comes with a satisfaction guarantee.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Local Expertise</h3>
+                    <p>Our team knows the local trails and can provide insider tips for your next adventure.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Community Focused</h3>
+                    <p>We're more than a store - we're a community of adventurers supporting each other.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#gear">Shop Gear</a></li>
+                        <li><a href="#trails">Find Trails</a></li>
+                        <li><a href="#community">Join Community</a></li>
+                        <li><a href="#">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Newsletter</a></li>
+                        <li><a href="#">Social Media</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p>&copy; 2025 TrailBlazer. All rights reserved. Adventure awaits! 🏔️</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+
+            // Navbar background opacity
+            const navbar = document.getElementById('navbar');
+            if (scrolled > 100) {
+                navbar.style.background = 'rgba(44, 62, 80, 0.95)';
+            } else {
+                navbar.style.background = 'rgba(44, 62, 80, 0.8)';
+            }
+        });
+
+        // Carousel functionality
+        let currentSlide = 0;
+        const totalSlides = 3;
+
+        function showSlide(index) {
+            const carousel = document.getElementById('trailsCarousel');
+            const dots = document.querySelectorAll('.carousel-dot');
+            
+            currentSlide = index;
+            carousel.style.transform = `translateX(-${index * 100}%)`;
+            
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        // Auto-advance carousel
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }, 5000);
+
+        // Gear items hover animation
+        document.querySelectorAll('.gear-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add scroll-triggered counter animation for features
+        function animateCounters() {
+            const counters = document.querySelectorAll('.feature-item');
+            counters.forEach((counter, index) => {
+                setTimeout(() => {
+                    counter.style.animation = `fadeInUp 0.6s ease ${index * 0.2}s both`;
+                }, 100);
+            });
+        }
+
+        // Trigger counter animation when features section is visible
+        const featuresSection = document.querySelector('.features-section');
+        const featuresObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    featuresObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        if (featuresSection) {
+            featuresObserver.observe(featuresSection);
+        }
+    </script>
+</body>
+</html>
