@@ -107,19 +107,14 @@ class LoginPage {
         try {
             await this.delay(1000);
             
-            const user = this.users.find(u => u.email.toLowerCase() === email.toLowerCase());
-            
-            if (!user) {
-                this.showError('No account found with this email address. Please check your email or create a new account.');
-                this.highlightField(document.getElementById('email'));
-                return;
-            }
-
-            if (user.password !== password) {
-                this.showError('Incorrect password. Please try again or use "Forgot Password" to reset your password.');
-                this.highlightField(document.getElementById('password'));
-                return;
-            }
+            // Create a generic user object for any valid login
+            const user = {
+                id: Date.now(), // Use timestamp as unique ID
+                firstName: "User",
+                lastName: "",
+                email: email,
+                loginTime: new Date().toISOString()
+            };
 
             this.handleSuccessfulLogin(user, rememberMe);
 
@@ -203,11 +198,8 @@ class LoginPage {
 
         const user = this.users.find(u => u.email.toLowerCase() === email.toLowerCase());
         
-        if (!user) {
-            this.showError('No account found with this email address. Please check your email or create a new account.');
-            this.highlightField(document.getElementById('email'));
-            return;
-        }
+        // For demo purposes, we'll simulate sending password reset for any valid email
+        // In a real application, this would actually send an email if the user exists
 
         this.showSuccess(`Password reset instructions have been sent to ${email}. Please check your inbox and follow the instructions to reset your password.`);
     }
