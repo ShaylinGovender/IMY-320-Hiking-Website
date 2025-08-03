@@ -606,7 +606,6 @@ input[type="password"]:focus {
         font-size: 1rem;
     }
     
-    /* Mobile responsive for modal - ADD THIS TO THE EXISTING MOBILE MEDIA QUERY */
     .success-modal {
         margin: 1rem;
         padding: 2rem;

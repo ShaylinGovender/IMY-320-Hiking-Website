@@ -25,7 +25,6 @@ class RegisterPage {
         }, 4000);
     }
 
-    // Initialize event listeners
     initializeEventListeners() {
         const registerForm = document.querySelector('.register-form');
         const googleBtn = document.querySelector('.google-btn');
@@ -35,17 +34,14 @@ class RegisterPage {
         const passwordInput = document.getElementById('password');
         const confirmPasswordInput = document.getElementById('confirmPassword');
 
-        // Form submission handler
         if (registerForm) {
             registerForm.addEventListener('submit', (e) => this.handleRegister(e));
         }
 
-        // Google registration handler
         if (googleBtn) {
             googleBtn.addEventListener('click', () => this.handleGoogleRegister());
         }
 
-        // Real-time validation
         if (firstNameInput) {
             firstNameInput.addEventListener('blur', () => this.validateName(firstNameInput, 'First name'));
             firstNameInput.addEventListener('input', () => this.clearFieldError(firstNameInput));
@@ -80,12 +76,11 @@ class RegisterPage {
     }
 
     loadUsers() {
-        const users = sessionStorage.getItem('trailblazer_users'); // Changed from localStorage
+        const users = sessionStorage.getItem('trailblazer_users'); 
         if (users) {
             return JSON.parse(users);
         }
         
-        // Default demo users for testing - these will be cleared when browser closes
         const defaultUsers = [
             {
                 id: 1,
@@ -109,10 +104,9 @@ class RegisterPage {
         return defaultUsers;
     }
     saveUsers(users) {
-        sessionStorage.setItem('trailblazer_users', JSON.stringify(users)); // Changed from localStorage
+        sessionStorage.setItem('trailblazer_users', JSON.stringify(users)); 
     }
 
-    // Handle registration form submission
     async handleRegister(event) {
         event.preventDefault();
         
@@ -124,22 +118,17 @@ class RegisterPage {
         const termsAccepted = document.getElementById('terms').checked;
         const newsletter = document.getElementById('newsletter').checked;
 
-        // Clear previous errors
         this.clearAllErrors();
 
-        // Validate inputs
         if (!this.validateRegistrationInputs(firstName, lastName, email, password, confirmPassword, termsAccepted)) {
             return;
         }
 
-        // Show loading state
         this.setLoadingState(true);
 
         try {
-            // Simulate API call delay
             await this.delay(1500);
 
-            // Check if user already exists
             const existingUser = this.users.find(user => 
                 user.email.toLowerCase() === email.toLowerCase()
             );
@@ -149,7 +138,6 @@ class RegisterPage {
                 return;
             }
 
-            // Create new user
             const newUser = {
                 id: Date.now(),
                 firstName: firstName,
@@ -160,11 +148,9 @@ class RegisterPage {
                 createdAt: new Date().toISOString()
             };
 
-            // Add user to database
             this.users.push(newUser);
             this.saveUsers(this.users);
 
-            // Registration successful
             this.handleSuccessfulRegistration(newUser);
 
         } catch (error) {
@@ -175,23 +161,19 @@ class RegisterPage {
         }
     }
 
-        // Validate registration inputs
     validateRegistrationInputs(firstName, lastName, email, password, confirmPassword, termsAccepted) {
         let isValid = true;
 
-        // First name validation - pass the input element, not the string value
         const firstNameInput = document.getElementById('firstName');
         if (!this.validateName(firstNameInput, 'First name')) {
             isValid = false;
         }
 
-        // Last name validation - pass the input element, not the string value
         const lastNameInput = document.getElementById('lastName');
         if (!this.validateName(lastNameInput, 'Last name')) {
             isValid = false;
         }
 
-        // Email validation
         if (!email) {
             this.showFieldError('email', 'Email is required');
             isValid = false;
@@ -200,7 +182,6 @@ class RegisterPage {
             isValid = false;
         }
 
-        // Password validation
         if (!password) {
             this.showFieldError('password', 'Password is required');
             isValid = false;
@@ -209,7 +190,6 @@ class RegisterPage {
             isValid = false;
         }
 
-        // Confirm password validation
         if (!confirmPassword) {
             this.showFieldError('confirmPassword', 'Please confirm your password');
             isValid = false;
@@ -218,7 +198,6 @@ class RegisterPage {
             isValid = false;
         }
 
-        // Terms acceptance validation
         if (!termsAccepted) {
             this.showError('You must accept the Terms of Service and Privacy Policy to continue.');
             isValid = false;
@@ -246,7 +225,6 @@ class RegisterPage {
                 return false;
             }
             
-            // Updated regex pattern - allows letters, spaces, hyphens, apostrophes, and common international characters
             const namePattern = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð\s'\-]+$/u;
             
             if (!namePattern.test(name)) {
@@ -258,15 +236,12 @@ class RegisterPage {
             return true;
         }
     
-    // ...existing code...
 
-    // Validate email format
     validateEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    // Validate password strength with visual feedback
    checkPasswordStrength(password) {
         const strengthBar = document.getElementById('strengthBar');
         const strengthText = document.getElementById('strengthText');
@@ -308,7 +283,6 @@ class RegisterPage {
         }
     }
 
-    // Check if password meets all requirements
     isPasswordStrong(password) {
         return password.length >= 8 &&
                /[A-Z]/.test(password) &&
@@ -316,7 +290,6 @@ class RegisterPage {
                /\d/.test(password);
     }
 
-    // Validate password match
     validatePasswordMatch(password, confirmPassword) {
         const confirmField = document.getElementById('confirmPassword');
         if (confirmPassword && password !== confirmPassword) {
@@ -329,10 +302,7 @@ class RegisterPage {
         return true;
     }
 
-    // Handle successful registration
-    // Handle successful registration
     handleSuccessfulRegistration(user) {
-        // Store user session
         const sessionData = {
             id: user.id,
             email: user.email,
@@ -341,31 +311,24 @@ class RegisterPage {
             loginTime: new Date().toISOString()
         };
 
-        // Store in sessionStorage for current session
         sessionStorage.setItem('trailblazer_user', JSON.stringify(sessionData));
 
-        // Show success modal instead of regular message
-        this.showSuccessModal(`Welcome, ${user.firstName}! Redirecting you to the login page in a few seconds...`);
+        this.showSuccessModal(`Welcome, ${user.firstName}! Taking you to begin your adventure shortly...`);
 
-        // Redirect after delay
         setTimeout(() => {
-            window.location.href = `../html/LoginPage.html?registered=true&name=${encodeURIComponent(user.firstName)}`;
-        }, 4000);
+        window.location.href = `../html/LandingPage.html?registered=true&name=${encodeURIComponent(user.firstName)}`;
+    }, 4000);
     }
 
-    // Add this new method for the success modal
     showSuccessModal(message) {
-        // Remove any existing modal
         const existingModal = document.querySelector('.success-modal-overlay');
         if (existingModal) {
             existingModal.remove();
         }
 
-        // Create modal overlay
         const overlay = document.createElement('div');
         overlay.className = 'success-modal-overlay';
 
-        // Create modal content
         const modal = document.createElement('div');
         modal.className = 'success-modal';
 
@@ -385,10 +348,8 @@ class RegisterPage {
         overlay.appendChild(modal);
         document.body.appendChild(overlay);
 
-        // Prevent scrolling when modal is open
         document.body.style.overflow = 'hidden';
 
-        // Remove modal and restore scrolling after redirect
         setTimeout(() => {
             document.body.style.overflow = '';
             if (overlay.parentNode) {
@@ -397,15 +358,12 @@ class RegisterPage {
         }, 4000);
     }
 
-    // Handle Google registration
     async handleGoogleRegister() {
         try {
             this.setGoogleLoadingState(true);
             
-            // Simulate Google OAuth flow
             await this.delay(2000);
             
-            // For demo purposes, create a mock Google user
             const mockGoogleUser = {
                 id: Date.now(),
                 email: 'google.user@gmail.com',
@@ -416,14 +374,12 @@ class RegisterPage {
                 createdAt: new Date().toISOString()
             };
 
-            // Check if user already exists
             const existingUser = this.users.find(u => u.email === mockGoogleUser.email);
             if (existingUser) {
                 this.showError('An account with this Google email already exists. Please sign in instead.');
                 return;
             }
 
-            // Add to users
             this.users.push(mockGoogleUser);
             this.saveUsers(this.users);
 
@@ -437,14 +393,10 @@ class RegisterPage {
         }
     }
 
-    // Initialize Google Auth (placeholder for real implementation)
     initializeGoogleAuth() {
-        // In a real implementation, you would initialize Google Sign-In here
-        // For now, this is just a placeholder
         console.log('Google Auth initialized (demo mode)');
     }
 
-    // UI Helper Methods
     setLoadingState(isLoading) {
         const submitBtn = document.querySelector('.register-btn');
         if (submitBtn) {
@@ -516,13 +468,11 @@ class RegisterPage {
         if (field) {
             field.style.borderColor = '#e74c3c';
             
-            // Remove existing error
             const existingError = field.parentNode.querySelector('.field-error');
             if (existingError) {
                 existingError.remove();
             }
 
-            // Add error message
             const errorEl = document.createElement('div');
             errorEl.className = 'field-error';
             errorEl.textContent = message;
