@@ -508,10 +508,12 @@ footer {
 .footer-section h3 {
     margin-bottom: 1rem;
     color: white;
+    text-align: center;
 }
 
 .footer-links {
     list-style: none;
+    text-align: left;
 }
 
 .footer-links a {
