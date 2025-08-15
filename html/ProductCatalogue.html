@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrailBlazer - Product Catalogue</title>
+    <link rel="stylesheet" href="../css/ProductCatalogue.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">🏔️ TrailBlazer</div>
+                <ul class="nav-links">
+                    <li><a href="landingPage.html">Home</a></li>
+                    <li><a href="ProductCatalogue.html" class="active">Gear</a></li>
+                    <li><a href="#trails">Trails</a></li>
+                    <li><a href="#community">Community</a></li>
+                    <li><a href="AboutUsPage.html">About Us</a></li>
+                </ul>
+            </div>
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search gear, trails...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="account-section">
+                    <a href="LoginPage.html" class="account-btn">👤 Sign In</a>
+                    <div class="cart-icon">
+                        🛒
+                        <span class="cart-count">2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Product Catalogue</h1>
+            </div>
+
+            <!-- Search and Filter Section -->
+            <div class="search-filter-section">
+                <div class="search-controls">
+                    <div class="search-box">
+                        <input type="text" id="productSearch" placeholder="Search products by name, brand, category, or features...">
+                        <button class="search-button" onclick="searchProducts()">
+                            <span class="search-icon">🔍</span>
+                        </button>
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <select id="categoryFilter">
+                            <option value="all">All Categories</option>
+                            <option value="footwear">Footwear</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="gear">Gear & Equipment</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="safety">Safety & Navigation</option>
+                        </select>
+
+                        <select id="brandFilter">
+                            <option value="all">All Brands</option>
+                            <!-- Brand options will be populated dynamically -->
+                        </select>
+
+                        <select id="priceFilter">
+                            <option value="all">All Prices</option>
+                            <option value="0-500">R0 - R500</option>
+                            <option value="500-1000">R500 - R1,000</option>
+                            <option value="1000-2000">R1,000 - R2,000</option>
+                            <option value="2000+">R2,000+</option>
+                        </select>
+
+                        <select id="sortBy" onchange="sortProducts()">
+                            <option value="name">Sort by Name</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="newest">Newest First</option>
+                        </select>
+
+                        <button class="apply-filters-btn" onclick="applyFilters()">Apply Filters</button>
+                    </div>
+                </div>
+
+                <div class="view-options">
+                    <span class="results-count" id="resultsCount">Showing all products</span>
+                    <button class="clear-filters" onclick="clearAllFilters()">Clear Filters</button>
+                </div>
+            </div>
+
+            <!-- Product List Container -->
+            <div class="product-list-container">
+                <div class="list-header">
+                    <div class="header-item product-col">Product</div>
+                    <div class="header-item brand-col">Brand</div>
+                    <div class="header-item price-col">Price</div>
+                    <div class="header-item rating-col">Rating</div>
+                    <div class="header-item action-col">Action</div>
+                </div>
+
+                <div id="productList" class="product-list">
+                    <!-- Products will be dynamically generated here -->
+                </div>
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <div class="no-results-content">
+                    <h3>No products found</h3>
+                    <p>Try adjusting your search criteria or filters</p>
+                    <button onclick="clearAllFilters()" class="clear-btn">Clear All Filters</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- Product details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/ProductCatalogue.js"></script>
+</body>
+</html>
