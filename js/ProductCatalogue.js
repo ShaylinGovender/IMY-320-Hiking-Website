@@ -441,7 +441,8 @@ function displayProducts(productsToDisplay) {
             <div class="product-item ${stockClass}" data-id="${product.id}">
                 <div class="product-info">
                     <img src="${product.image}" alt="${product.name}" class="product-image" 
-                         onerror="this.src='../images/Women-Hiking-Boots.jpg'">
+                         onerror="this.src='../images/Women-Hiking-Boots.jpg'"
+                         onclick="viewProduct(${product.id})" style="cursor: pointer;">
                     <div class="product-details">
                         ${categoryBadge}
                         <h3>${product.name}${stockStatus}</h3>
@@ -638,71 +639,13 @@ function clearAllFilters() {
     updateResultsCount(products.length);
 }
 
-// View product details in modal
+// Navigate to product details page
 function viewProduct(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) return;
     
-    const modal = document.getElementById('productModal');
-    const modalBody = document.getElementById('modalBody');
-    
-    const stars = generateStars(product.rating);
-    const stockStatus = product.inStock ? 'In Stock' : 'Out of Stock';
-    const stockClass = product.inStock ? 'in-stock' : 'out-of-stock';
-    
-    modalBody.innerHTML = `
-        <div class="modal-product-header">
-            <img src="${product.image}" alt="${product.name}" class="modal-product-image"
-                 onerror="this.src='../images/Women-Hiking-Boots.jpg'">
-            <div class="modal-product-info">
-                <h2>${product.name}</h2>
-                <div class="modal-product-brand">${product.brand}</div>
-                <div class="modal-product-price">
-                    R${formatPrice(product.price)}
-                    ${product.originalPrice ? `<span class="price-original">R${formatPrice(product.originalPrice)}</span>` : ''}
-                </div>
-                <div class="modal-product-rating">
-                    <div class="stars">${stars}</div>
-                    <span>${product.rating}/5 stars</span>
-                </div>
-                <div class="stock-status ${stockClass}">
-                    <strong>${stockStatus}</strong>
-                </div>
-            </div>
-        </div>
-        
-        <div class="modal-product-description">
-            <h3>Description</h3>
-            <p>${product.description}</p>
-        </div>
-        
-        <div class="product-features">
-            <h3>Key Features</h3>
-            <ul>
-                ${product.features.map(feature => `<li>${feature}</li>`).join('')}
-            </ul>
-        </div>
-        
-        <div class="modal-actions">
-            <button class="btn btn-primary" onclick="addToCart(${product.id}); closeModal();" 
-                    ${!product.inStock ? 'disabled' : ''}>
-                ${product.inStock ? 'Add to Cart' : 'Out of Stock'}
-            </button>
-            <button class="btn btn-secondary" onclick="closeModal()">
-                Close
-            </button>
-        </div>
-    `;
-    
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
-
-// Close modal
-function closeModal() {
-    const modal = document.getElementById('productModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
+    // Navigate to the product page with the product ID as a parameter
+    window.location.href = `ProductPage.html?id=${productId}`;
 }
 
 // Add to cart functionality (placeholder)
@@ -720,21 +663,6 @@ function addToCart(productId) {
         cartCount.textContent = currentCount + 1;
     }
 }
-
-// Close modal when clicking outside
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('productModal');
-    if (event.target === modal) {
-        closeModal();
-    }
-});
-
-// Close modal with Escape key
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        closeModal();
-    }
-});
 
 // Keyboard navigation for accessibility
 document.addEventListener('keydown', function(event) {
