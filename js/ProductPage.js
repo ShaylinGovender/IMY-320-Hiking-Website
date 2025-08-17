@@ -1,586 +1,352 @@
-// Product Page JavaScript
-// Handles product display, interactions, and functionality
+// ===================== SHARED GUARDED DATA (only defines once) =====================
+if (!window.ProductData) {
+  (function () {
+    // Same data + overrides as in ProductCatalogue.js
+    // (kept here so ProductPage works standalone when opened directly)
+    const PRODUCTS = [
+      { id: 1, name: "Women's Hiking Boots", brand: "TrailMaster", category: "footwear", price: 2699.82, originalPrice: 3239.82, rating: 4.5, description: "Durable waterproof hiking boots with superior ankle support and grip. Perfect for challenging terrain and long-distance hikes.", image: "../images/Women-Hiking-Boots.jpg", features: ["Waterproof","Ankle Support","Vibram Sole","Breathable"], inStock: true, dateAdded: "2024-01-15" },
+      { id: 2, name: "Hiking Gloves", brand: "GripTech", category: "accessories", price: 539.82, originalPrice: null, rating: 4.2, description: "Lightweight, breathable hiking gloves with enhanced grip and touchscreen compatibility. Ideal for trail navigation and protection.", image: "../images/Hiking-Gloves.jpg", features: ["Touchscreen Compatible","Breathable","Enhanced Grip","Lightweight"], inStock: true, dateAdded: "2024-02-01" },
+      { id: 3, name: "Backpacking Gear Essentials", brand: "AdventurePro", category: "gear", price: 5399.82, originalPrice: 6299.82, rating: 4.8, description: "Complete backpacking gear set including sleeping bag, camping mat, portable stove, and essential survival tools.", image: "../images/Backpacking-Gear-Essentials.jpg", features: ["Complete Set","Lightweight","Compact","Weather Resistant"], inStock: true, dateAdded: "2024-01-20" },
+      { id: 4, name: "Merino Wool Base Layer", brand: "NatureFit", category: "clothing", price: 1439.82, originalPrice: 1799.82, rating: 4.6, description: "Premium merino wool base layer for temperature regulation and moisture wicking. Naturally odor-resistant and comfortable.", image: "../images/Women-Hiking-Boots.jpg", features: ["Merino Wool","Moisture Wicking","Odor Resistant","Temperature Control"], inStock: true, dateAdded: "2024-02-10" },
+      { id: 5, name: "GPS Navigation Device", brand: "TrailTech", category: "safety", price: 4499.82, originalPrice: null, rating: 4.4, description: "Advanced GPS device with topographic maps, weather alerts, and emergency SOS functionality. Essential for backcountry adventures.", image: "../images/gps.jpg", features: ["GPS Navigation","Topographic Maps","Weather Alerts","SOS Function"], inStock: false, dateAdded: "2024-01-30" },
+      { id: 6, name: "Ultralight Hiking Jacket", brand: "WindShield", category: "clothing", price: 3419.82, originalPrice: 4139.82, rating: 4.3, description: "Packable ultralight jacket with wind and water resistance. Perfect for unpredictable mountain weather conditions.", image: "../images/Backpacking-Gear-Essentials.jpg", features: ["Ultralight","Packable","Water Resistant","Wind Proof"], inStock: true, dateAdded: "2024-02-05" },
+      { id: 7, name: "Trekking Poles Set", brand: "StableStep", category: "gear", price: 1619.82, originalPrice: null, rating: 4.7, description: "Adjustable carbon fiber trekking poles with ergonomic grips and shock absorption. Reduces strain on knees and improves stability.", image: "../images/trekkingpoles.jpg", features: ["Carbon Fiber","Adjustable","Shock Absorption","Ergonomic"], inStock: true, dateAdded: "2024-01-25" },
+      { id: 8, name: "Trail Running Shoes", brand: "SpeedTrail", category: "footwear", price: 2339.82, originalPrice: 2879.82, rating: 4.4, description: "Lightweight trail running shoes with aggressive tread pattern and rock protection. Built for speed on technical terrain.", image: "../images/Hiking-Gloves.jpg", features: ["Lightweight","Rock Protection","Aggressive Tread","Quick Dry"], inStock: true, dateAdded: "2024-02-12" },
+      { id: 9, name: "Hydration Backpack", brand: "HydroFlow", category: "gear", price: 2159.82, originalPrice: null, rating: 4.5, description: "25L hydration pack with 3L reservoir, multiple compartments, and breathable back panel. Perfect for day hikes and trail running.", image: "../images/hydrationbackpack.jpg", features: ["3L Reservoir","25L Capacity","Breathable","Multiple Pockets"], inStock: true, dateAdded: "2024-01-18" },
+      { id: 10, name: "Camping Headlamp", brand: "BrightBeam", category: "accessories", price: 899.82, originalPrice: 1169.82, rating: 4.6, description: "High-powered LED headlamp with multiple brightness settings, red light mode, and waterproof design. Essential for night hiking.", image: "../images/Women-Hiking-Boots.jpg", features: ["LED Light","Multiple Modes","Waterproof","Long Battery"], inStock: true, dateAdded: "2024-02-08" },
+      { id: 11, name: "Mountaineering Boots", brand: "AlpinePro", category: "footwear", price: 4199.82, originalPrice: 4799.82, rating: 4.7, description: "Heavy-duty mountaineering boots with crampon compatibility and insulation for extreme cold conditions.", image: "../images/Women-Hiking-Boots.jpg", features: ["Crampon Compatible","Insulated","Waterproof","Steel Shank"], inStock: true, dateAdded: "2024-01-10" },
+      { id: 12, name: "Lightweight Hiking Sandals", brand: "ComfortWalk", category: "footwear", price: 1299.82, originalPrice: null, rating: 4.2, description: "Breathable hiking sandals with excellent grip and quick-dry materials. Perfect for water crossings and hot weather.", image: "../images/Hiking-Gloves.jpg", features: ["Quick Dry","Water Friendly","Lightweight","Adjustable Straps"], inStock: true, dateAdded: "2024-02-15" },
+      { id: 13, name: "Winter Hiking Boots", brand: "WinterTrek", category: "footwear", price: 3599.82, originalPrice: 4319.82, rating: 4.5, description: "Insulated winter hiking boots with thermal lining and snow-gripping outsole for cold weather adventures.", image: "../images/Backpacking-Gear-Essentials.jpg", features: ["Thermal Insulation","Snow Grip","Waterproof","Warm Lining"], inStock: false, dateAdded: "2024-01-05" },
+      { id: 14, name: "Multi-Tool Kit", brand: "ToolMaster", category: "accessories", price: 719.82, originalPrice: 899.82, rating: 4.4, description: "Compact multi-tool with knife, pliers, screwdrivers, and essential outdoor tools. Perfect for trail repairs.", image: "../images/Women-Hiking-Boots.jpg", features: ["15 Tools","Compact","Stainless Steel","Belt Clip"], inStock: true, dateAdded: "2024-02-03" },
+      { id: 15, name: "Hiking Hat", brand: "SunGuard", category: "accessories", price: 479.82, originalPrice: null, rating: 4.3, description: "UV protection hiking hat with moisture-wicking band and adjustable chin strap. Keeps you cool and protected.", image: "../images/Hiking-Gloves.jpg", features: ["UV Protection","Moisture Wicking","Adjustable","Lightweight"], inStock: true, dateAdded: "2024-01-28" },
+      { id: 16, name: "Portable Camping Stove", brand: "FlameMax", category: "gear", price: 1799.82, originalPrice: 2159.82, rating: 4.6, description: "Lightweight portable stove with wind shield and efficient fuel consumption. Perfect for backcountry cooking.", image: "../images/stove.jpg", features: ["Lightweight","Wind Resistant","Fuel Efficient","Compact"], inStock: true, dateAdded: "2024-01-12" },
+      { id: 17, name: "Sleeping Bag", brand: "NightRest", category: "gear", price: 2879.82, originalPrice: 3599.82, rating: 4.5, description: "3-season sleeping bag with down insulation and compression sack. Rated for temperatures down to -5°C.", image: "../images/sleepingbag.jpg", features: ["Down Insulation","3-Season","Compression Sack","Lightweight"], inStock: true, dateAdded: "2024-02-20" },
+      { id: 18, name: "Hiking Pants", brand: "TrailFlex", category: "clothing", price: 1799.82, originalPrice: null, rating: 4.4, description: "Durable hiking pants with stretch fabric and multiple pockets. Water-resistant and quick-drying.", image: "../images/Hiking-Gloves.jpg", features: ["Stretch Fabric","Water Resistant","Quick Dry","Multiple Pockets"], inStock: true, dateAdded: "2024-01-22" },
+      { id: 19, name: "Thermal Underwear Set", brand: "WarmLayer", category: "clothing", price: 1079.82, originalPrice: 1439.82, rating: 4.3, description: "Thermal underwear set with moisture-wicking properties and odor control. Essential for cold weather hiking.", image: "../images/Backpacking-Gear-Essentials.jpg", features: ["Thermal","Moisture Wicking","Odor Control","Comfortable Fit"], inStock: true, dateAdded: "2024-02-01" },
+      { id: 20, name: "Rain Poncho", brand: "StormShield", category: "clothing", price: 899.82, originalPrice: 1169.82, rating: 4.1, description: "Lightweight rain poncho with hood and snap closures. Packs small and provides excellent rain protection.", image: "../images/Women-Hiking-Boots.jpg", features: ["Waterproof","Lightweight","Packable","Hood"], inStock: false, dateAdded: "2024-01-08" },
+      { id: 21, name: "Emergency Whistle", brand: "SafeSound", category: "safety", price: 179.82, originalPrice: null, rating: 4.5, description: "High-decibel emergency whistle with lanyard. Essential safety item for solo hikers and emergency situations.", image: "../images/whistle.png", features: ["High Decibel","Lightweight","Lanyard Included","Weather Resistant"], inStock: true, dateAdded: "2024-02-12" },
+      { id: 22, name: "First Aid Kit", brand: "MedTrail", category: "safety", price: 719.82, originalPrice: 899.82, rating: 4.7, description: "Comprehensive first aid kit with bandages, antiseptic, and emergency medications. Compact and trail-ready.", image: "../images/firstaidkit.png", features: ["Comprehensive","Compact","Trail Ready","Emergency Meds"], inStock: true, dateAdded: "2024-01-15" },
+      { id: 23, name: "Emergency Beacon", brand: "RescueLink", category: "safety", price: 5399.82, originalPrice: null, rating: 4.8, description: "Satellite emergency beacon with GPS tracking and SOS messaging. Critical safety device for remote adventures.", image: "../images/beacon.jpg", features: ["Satellite","GPS Tracking","SOS Messaging","Long Battery"], inStock: true, dateAdded: "2024-01-30" },
+      { id: 24, name: "Reflective Safety Vest", brand: "VisibleTrek", category: "safety", price: 359.82, originalPrice: 479.82, rating: 4.2, description: "High-visibility reflective vest for early morning or late evening hikes. Lightweight and adjustable.", image: "../images/vest.png", features: ["High Visibility","Reflective","Lightweight","Adjustable"], inStock: true, dateAdded: "2024-02-05" },
+      { id: 25, name: "Water Purification Tablets", brand: "PureH2O", category: "safety", price: 299.82, originalPrice: null, rating: 4.4, description: "Emergency water purification tablets for treating questionable water sources. Essential for backcountry safety.", image: "../images/waterPure.jpg", features: ["Water Purification","Emergency Use","Lightweight","Long Shelf Life"], inStock: true, dateAdded: "2024-01-18" }
+    ];
 
-// Import products from catalogue (will be shared)
-const products = [
-    {
-        id: 1,
-        name: "Women's Hiking Boots",
-        brand: "TrailMaster",
-        category: "footwear",
-        price: 2699.82,
-        originalPrice: 3239.82,
-        rating: 4.5,
-        description: "Durable waterproof hiking boots with superior ankle support and grip. Perfect for challenging terrain and long-distance hikes.",
-        image: "../images/Women-Hiking-Boots.jpg",
-        features: ["Waterproof", "Ankle Support", "Vibram Sole", "Breathable"],
-        inStock: true,
-        dateAdded: "2024-01-15"
-    },
-    {
-        id: 2,
-        name: "Hiking Gloves",
-        brand: "GripTech",
-        category: "accessories",
-        price: 539.82,
-        originalPrice: null,
-        rating: 4.2,
-        description: "Lightweight, breathable hiking gloves with enhanced grip and touchscreen compatibility. Ideal for trail navigation and protection.",
-        image: "../images/Hiking-Gloves.jpg",
-        features: ["Touchscreen Compatible", "Breathable", "Enhanced Grip", "Lightweight"],
-        inStock: true,
-        dateAdded: "2024-02-01"
-    },
-    {
-        id: 3,
-        name: "Backpacking Gear Essentials",
-        brand: "AdventurePro",
-        category: "gear",
-        price: 5399.82,
-        originalPrice: 6299.82,
-        rating: 4.8,
-        description: "Complete backpacking gear set including sleeping bag, camping mat, portable stove, and essential survival tools.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
-        features: ["Complete Set", "Lightweight", "Compact", "Weather Resistant"],
-        inStock: true,
-        dateAdded: "2024-01-20"
-    },
-    {
-        id: 4,
-        name: "Merino Wool Base Layer",
-        brand: "NatureFit",
-        category: "clothing",
-        price: 1439.82,
-        originalPrice: 1799.82,
-        rating: 4.6,
-        description: "Premium merino wool base layer for temperature regulation and moisture wicking. Naturally odor-resistant and comfortable.",
-        image: "../images/Women-Hiking-Boots.jpg",
-        features: ["Merino Wool", "Moisture Wicking", "Odor Resistant", "Temperature Control"],
-        inStock: true,
-        dateAdded: "2024-02-10"
-    },
-    {
-        id: 5,
-        name: "GPS Navigation Device",
-        brand: "TrailTech",
-        category: "safety",
-        price: 4499.82,
-        originalPrice: null,
-        rating: 4.4,
-        description: "Advanced GPS device with topographic maps, weather alerts, and emergency SOS functionality. Essential for backcountry adventures.",
-        image: "../images/Hiking-Gloves.jpg",
-        features: ["GPS Navigation", "Topographic Maps", "Weather Alerts", "SOS Function"],
-        inStock: false,
-        dateAdded: "2024-01-30"
-    },
-    {
-        id: 6,
-        name: "Ultralight Hiking Jacket",
-        brand: "WindShield",
-        category: "clothing",
-        price: 3419.82,
-        originalPrice: 4139.82,
-        rating: 4.3,
-        description: "Packable ultralight jacket with wind and water resistance. Perfect for unpredictable mountain weather conditions.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
-        features: ["Ultralight", "Packable", "Water Resistant", "Wind Proof"],
-        inStock: true,
-        dateAdded: "2024-02-05"
-    },
-    {
-        id: 7,
-        name: "Trekking Poles Set",
-        brand: "StableStep",
-        category: "gear",
-        price: 1619.82,
-        originalPrice: null,
-        rating: 4.7,
-        description: "Adjustable carbon fiber trekking poles with ergonomic grips and shock absorption. Reduces strain on knees and improves stability.",
-        image: "../images/Women-Hiking-Boots.jpg",
-        features: ["Carbon Fiber", "Adjustable", "Shock Absorption", "Ergonomic"],
-        inStock: true,
-        dateAdded: "2024-01-25"
-    },
-    {
-        id: 8,
-        name: "Trail Running Shoes",
-        brand: "SpeedTrail",
-        category: "footwear",
-        price: 2339.82,
-        originalPrice: 2879.82,
-        rating: 4.4,
-        description: "Lightweight trail running shoes with aggressive tread pattern and rock protection. Built for speed on technical terrain.",
-        image: "../images/Hiking-Gloves.jpg",
-        features: ["Lightweight", "Rock Protection", "Aggressive Tread", "Quick Dry"],
-        inStock: true,
-        dateAdded: "2024-02-12"
-    },
-    {
-        id: 9,
-        name: "Hydration Backpack",
-        brand: "HydroFlow",
-        category: "gear",
-        price: 2159.82,
-        originalPrice: null,
-        rating: 4.5,
-        description: "25L hydration pack with 3L reservoir, multiple compartments, and breathable back panel. Perfect for day hikes and trail running.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
-        features: ["3L Reservoir", "25L Capacity", "Breathable", "Multiple Pockets"],
-        inStock: true,
-        dateAdded: "2024-01-18"
-    },
-    {
-        id: 10,
-        name: "Camping Headlamp",
-        brand: "BrightBeam",
-        category: "accessories",
-        price: 899.82,
-        originalPrice: 1169.82,
-        rating: 4.6,
-        description: "High-powered LED headlamp with multiple brightness settings, red light mode, and waterproof design. Essential for night hiking.",
-        image: "../images/Women-Hiking-Boots.jpg",
-        features: ["LED Light", "Multiple Modes", "Waterproof", "Long Battery"],
-        inStock: true,
-        dateAdded: "2024-02-08"
-    },
-    {
-        id: 14,
-        name: "Multi-Tool Kit",
-        brand: "ToolMaster",
-        category: "accessories",
-        price: 719.82,
-        originalPrice: 899.82,
-        rating: 4.4,
-        description: "Compact multi-tool with knife, pliers, screwdrivers, and essential outdoor tools. Perfect for trail repairs.",
-        image: "../images/Women-Hiking-Boots.jpg",
-        features: ["15 Tools", "Compact", "Stainless Steel", "Belt Clip"],
-        inStock: true,
-        dateAdded: "2024-02-03"
-    },
-    {
-        id: 15,
-        name: "Hiking Hat",
-        brand: "SunGuard",
-        category: "accessories",
-        price: 479.82,
-        originalPrice: null,
-        rating: 4.3,
-        description: "UV protection hiking hat with moisture-wicking band and adjustable chin strap. Keeps you cool and protected.",
-        image: "../images/Hiking-Gloves.jpg",
-        features: ["UV Protection", "Moisture Wicking", "Adjustable", "Lightweight"],
-        inStock: true,
-        dateAdded: "2024-01-28"
-    },
-    {
-        id: 21,
-        name: "Emergency Whistle",
-        brand: "SafeSound",
-        category: "safety",
-        price: 179.82,
-        originalPrice: null,
-        rating: 4.5,
-        description: "High-decibel emergency whistle with lanyard. Essential safety item for solo hikers and emergency situations.",
-        image: "../images/whistle.png",
-        features: ["High Decibel", "Lightweight", "Lanyard Included", "Weather Resistant"],
-        inStock: true,
-        dateAdded: "2024-02-12"
-    },
-    {
-        id: 24,
-        name: "Reflective Safety Vest",
-        brand: "VisibleTrek",
-        category: "safety",
-        price: 359.82,
-        originalPrice: 479.82,
-        rating: 4.2,
-        description: "High-visibility reflective vest for early morning or late evening hikes. Lightweight and adjustable.",
-        image: "../images/Hiking-Gloves.jpg",
-        features: ["High Visibility", "Reflective", "Lightweight", "Adjustable"],
-        inStock: true,
-        dateAdded: "2024-02-05"
+    const PRODUCT_OVERRIDES = {
+   3:  { image: "../images/backge.jpg", images: ["../images/backge.jpg"], description: "Compact, trail-ready kit: 3-season sleeping system, cook set, repair essentials and packing cubes—optimized for low weight and fast setup.", features: ["Complete Set","Lightweight","Compact","Weather Resistant","Quick Setup","Trail-Ready"], reviews: [{ user: "Sibusiso N.", rating: 5, date: "2025-06-01", title: "Great starter kit", text: "Had everything I needed for an overnight in Cederberg." }, { user: "Nandi K.", rating: 4, date: "2025-04-17", title: "Well thought out", text: "Smart selection—added my own mug and was set." }] },
+      7:  { image: "../images/trekkingpoles.jpg", images: ["../images/trekkingpoles.jpg","../images/trekkingpoles1.jpg","../images/trekkingpoles2.jpg"], description: "Carbon fiber trekking poles with quick-lock length adjust, ergonomic cork grips and carbide tips for confident traction on steep terrain.", features: ["Carbon Fiber","Quick-Lock Adjust","Cork Grips","Carbide Tips","Shock Absorption","Adjustable Straps"], reviews: [{ user: "Thandi P.", rating: 5, date: "2025-05-20", title: "Knees say thanks", text: "Massive difference on Table Mountain descents." }, { user: "Musa R.", rating: 4, date: "2025-03-03", title: "Light but sturdy", text: "Locks hold firm; tips bite well on rock." }] },
+      9:  { image: "../images/hydrationbackpack.jpg", images: [ "../images/hydrationbackpack.jpg","../images/backwater1.jpg","../images/backwater2.jpg"], description: "2 L daypack, ventilated back panel, hose clip and stretch pockets—balanced carry for long day hikes.", features: ["2L Reservoir","Ventilated Back Panel","Hose Clip","Stretch Pockets","Chest & Hip Straps","Lightweight"], reviews: [{ user: "Aisha K.", rating: 4, date: "2025-04-10", title: "Comfy carry", text: "Breathes well; hip pockets could be larger." }, { user: "Sipho Z.", rating: 5, date: "2025-02-25", title: "Great value", text: "Perfect for Magalies day hikes. No sloshing." }] },
+      16: { image: "../images/stove.jpg", images: ["../images/stove1.jpg","../images/stove.jpg"], description: "Ultralight canister stove with wind-shielded burner and fast boil performance; packs small with fold-out pot supports for stability.", features: ["Ultralight","Wind Shielded Burner","Fast Boil","Compact Fold","Stable Supports","Fuel Efficient"], reviews: [{ user: "Lerato P.", rating: 5, date: "2025-03-12", title: "Boils fast", text: "Wind didn’t faze it. Coffee in minutes." }, { user: "Kyle D.", rating: 4, date: "2025-01-29", title: "Tiny & tough", text: "Packs into my pot; great simmer control." }] },
+      17: { image: "../images/sleepingbag.jpg", images: ["../images/sleepingbag.jpg","../images/sleepingbag1.jpg","../images/sleepingbag2.jpg"], description: "3-season mummy bag with down insulation, draft collar and DWR shell—warmth, low bulk and reliable comfort around −5 °C.", features: ["Down Insulation","Draft Collar","DWR Shell","3-Season","Compression Sack","Lightweight"], reviews: [{ user: "Nomsa D.", rating: 5, date: "2025-07-01", title: "Warm & compact", text: "No cold spots in Drakensberg. Packs small." }, { user: "Craig J.", rating: 4, date: "2025-05-09", title: "Good at −2°C", text: "Comfortable sleep with a liner. Zips smoothly." }] },
+      5:  { image: "../images/gps.jpg", images: ["../images/gps.jpg","../images/gps1.jpg"], description: "Handheld GPS with topo maps, multi-GNSS support, weather alerts and breadcrumb track-back—built for off-grid navigation.", features: ["Multi-GNSS","Topo Maps","Weather Alerts","Track-Back","IPX7 Waterproof","Long Battery"], reviews: [{ user: "Daniel R.", rating: 4, date: "2025-06-15", title: "Reliable lock", text: "Kept signal under canopy. Interface is basic but fine." }, { user: "Palesa S.", rating: 5, date: "2025-03-22", title: "Saved my route", text: "Track-back worked perfectly after a wrong turn." }] },
+      21: { image: "../images/whistle.png", images: ["../images/whistle.png","../images/whistle2.png"], description: "High-output emergency whistle with lanyard; lightweight, durable and audible over wind and river noise.", features: ["120 dB Output","Lightweight","Durable","Weather Resistant","Lanyard Included"], reviews: [{ user: "Zanele S.", rating: 5, date: "2025-05-11", title: "Loud!", text: "Cuts through wind. Easy to clip onto sternum strap." }, { user: "Pieter L.", rating: 4, date: "2025-02-08", title: "Simple & tough", text: "No moving parts—exactly what I want for safety." }] },
+      22: { image: "../images/firstaidkit.png", images: ["../images/firstaidkit.png","../images/first1.jpg"], description: "Trail-focused first aid kit in a water-resistant pouch: bandages, antiseptic wipes, blister care, tape and mini shears.", features: ["Comprehensive","Water-Resistant Pouch","Blister Care","Mini Shears","Compact"], reviews: [{ user: "Aviwe T.", rating: 4, date: "2025-04-03", title: "Well organized", text: "Great selection; I added extra tape and meds." }, { user: "Lungi M.", rating: 5, date: "2025-01-19", title: "Trail essential", text: "Used the blister kit—worked brilliantly." }] },
+      23: { image: "../images/beacon.jpg", images: ["../images/beacon.jpg", "../images/beacon1.jpg","../images/beacon2.jpg"], description: "Satellite SOS beacon with one-touch emergency alert and location sharing—designed for remote backcountry trips.", features: ["Satellite SOS","GPS Tracking","Location Share","IP67 Waterproof","Long Battery"], reviews: [{ user: "Leroy N.", rating: 5, date: "2025-05-28", title: "Peace of mind", text: "Setup was easy; tracking breadcrumb is neat." }, { user: "Nomonde H.", rating: 4, date: "2025-02-14", title: "Solid build", text: "Compact and tough. App could be smoother." }] },
+      24: { image: "../images/vest.png", images: ["../images/vest.png","../images/vest1.jpg"], description: "High-visibility mesh vest with 360° reflective strips and adjustable sides—packs flat for early/late starts.", features: ["360° Reflective","Mesh Fabric","Adjustable Sides","Packs Flat","Lightweight"], reviews: [{ user: "Aisha K.", rating: 4, date: "2025-02-19", title: "Does the job", text: "Very visible at dawn; comfy over a jacket." }, { user: "Tumi B.", rating: 5, date: "2025-01-05", title: "Light & bright", text: "Lives in my pack now—no bulk at all." }] },
+      25: { image: "../images/waterPure.jpg", description: "Compact chlorine-dioxide tablets for emergency water treatment; simple, packable and reliable for backcountry use.", features: ["Chlorine Dioxide","Emergency Use","Lightweight","Long Shelf Life","Simple to Use"], reviews: [{ user: "Pieter L.", rating: 5, date: "2025-01-30", title: "Always carry", text: "Backup to my filter—great peace of mind." }, { user: "Thabo M.", rating: 4, date: "2024-12-12", title: "Tastes fine", text: "Minimal aftertaste; instructions are clear." }] }
+    };
+
+    function applyProductOverrides(list) {
+      return list.map(p => {
+        const isTargetCat = p.category === 'gear' || p.category === 'safety';
+        return (isTargetCat && PRODUCT_OVERRIDES[p.id]) ? { ...p, ...PRODUCT_OVERRIDES[p.id] } : p;
+      });
     }
-];
 
-// Global variables
+    window.ProductData = {
+      products: PRODUCTS,
+      overrides: PRODUCT_OVERRIDES,
+      getProducts: () => applyProductOverrides(PRODUCTS)
+    };
+  })();
+}
+
+// Helper accessor
+const getProducts = () => window.ProductData.getProducts();
+
+// ===================== PRODUCT PAGE LOGIC =====================
 let currentProduct = null;
 let quantity = 1;
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
 
-// Initialize page when DOM loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Get product ID from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = parseInt(urlParams.get('id'));
-    
-    if (productId) {
-        loadProduct(productId);
-    } else {
-        // Default to first accessory product for demo
-        const defaultProduct = products.find(p => p.category === 'accessories');
-        if (defaultProduct) {
-            loadProduct(defaultProduct.id);
-        }
-    }
-    
-    // Initialize other components
-    updateCartCount();
-    setupEventListeners();
+document.addEventListener('DOMContentLoaded', function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = parseInt(urlParams.get('id'), 10);
+
+  if (productId) {
+    loadProduct(productId);
+  } else {
+    const def = getProducts().find(p => p.category === 'accessories');
+    if (def) loadProduct(def.id);
+  }
+
+  updateCartCount();
+  setupEventListeners();
 });
 
-// Load and display product details
 function loadProduct(productId) {
-    currentProduct = products.find(p => p.id === productId);
-    
-    if (!currentProduct) {
-        console.error('Product not found');
-        return;
-    }
-    
-    updateProductDisplay();
-    generateRelatedProducts();
-    updateURL(productId);
+  const withOverrides = getProducts();
+  currentProduct = withOverrides.find(p => p.id === productId);
+  if (!currentProduct) { console.error('Product not found'); return; }
+
+  updateProductDisplay();
+  generateRelatedProducts();
+  updateURL(productId);
 }
 
-// Update all product information on the page
 function updateProductDisplay() {
-    if (!currentProduct) return;
-    
-    // Update simple breadcrumb
-    document.getElementById('breadcrumbCategory').textContent = capitalizeFirst(currentProduct.category);
-    document.getElementById('breadcrumbProduct').textContent = currentProduct.name;
-    
-    // Update product header
-    document.getElementById('productBrand').textContent = currentProduct.brand.toUpperCase();
-    document.getElementById('productName').textContent = currentProduct.name;
-    document.title = `TrailBlazer - ${currentProduct.name}`;
-    
-    // Update rating
-    updateRatingDisplay(currentProduct.rating);
-    document.getElementById('ratingScore').textContent = currentProduct.rating;
-    
-    // Update pricing
-    updatePricingDisplay();
-    
-    // Update stock status
-    updateStockStatus();
-    
-    // Update main image
-    document.getElementById('mainProductImage').src = currentProduct.image;
-    document.getElementById('mainProductImage').alt = currentProduct.name;
-    
-    // Update description
-    document.getElementById('productDescription').textContent = currentProduct.description;
-    
-    // Update features
-    updateFeaturesDisplay();
-    
-    // Update wishlist button state
-    updateWishlistButton();
+  if (!currentProduct) return;
+
+  // Breadcrumb + header
+  document.getElementById('breadcrumbCategory').textContent = capitalizeFirst(currentProduct.category);
+  document.getElementById('breadcrumbProduct').textContent = currentProduct.name;
+
+  document.getElementById('productBrand').textContent = currentProduct.brand.toUpperCase();
+  document.getElementById('productName').textContent = currentProduct.name;
+  document.title = `TrailBlazer - ${currentProduct.name}`;
+
+  // Rating
+  updateRatingDisplay(currentProduct.rating);
+  document.getElementById('ratingScore').textContent = currentProduct.rating;
+
+  // Pricing
+  updatePricingDisplay();
+
+  // Stock
+  updateStockStatus();
+
+  // Images
+  document.getElementById('mainProductImage').src = currentProduct.image;
+  document.getElementById('mainProductImage').alt = currentProduct.name;
+
+  // Description + features
+  document.getElementById('productDescription').textContent = currentProduct.description;
+  updateFeaturesDisplay();
+
+  // Gallery + reviews
+  updateGalleryDisplay();
+  updateReviewsDisplay();
+
+  // Wishlist state
+  updateWishlistButton();
 }
 
-// Update rating stars display
 function updateRatingDisplay(rating) {
-    const starsContainer = document.getElementById('productRating');
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-    let starsHTML = '';
-    
-    for (let i = 0; i < fullStars; i++) {
-        starsHTML += '★';
-    }
-    if (hasHalfStar) {
-        starsHTML += '☆';
-    }
-    for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
-        starsHTML += '☆';
-    }
-    
-    starsContainer.innerHTML = starsHTML;
+  const starsContainer = document.getElementById('productRating');
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
+  let s = '';
+  for (let i = 0; i < full; i++) s += '★';
+  if (hasHalfStar = half) s += '☆';
+  for (let i = full + (half ? 1 : 0); i < 5; i++) s += '☆';
+  starsContainer.innerHTML = s;
 }
 
-// Update pricing display
 function updatePricingDisplay() {
-    document.getElementById('productPrice').textContent = currentProduct.price.toFixed(2);
-    
-    const originalPriceContainer = document.getElementById('originalPriceContainer');
-    
-    if (currentProduct.originalPrice) {
-        document.getElementById('originalPrice').textContent = currentProduct.originalPrice.toFixed(2);
-        originalPriceContainer.style.display = 'flex';
-    } else {
-        originalPriceContainer.style.display = 'none';
-    }
+  document.getElementById('productPrice').textContent = currentProduct.price.toFixed(2);
+  const oc = document.getElementById('originalPriceContainer');
+  if (currentProduct.originalPrice) {
+    document.getElementById('originalPrice').textContent = currentProduct.originalPrice.toFixed(2);
+    oc.style.display = 'flex';
+  } else {
+    oc.style.display = 'none';
+  }
 }
 
-// Update stock status
 function updateStockStatus() {
-    const stockIndicator = document.getElementById('stockIndicator');
-    const addToCartBtn = document.querySelector('.add-to-cart-btn');
-    
-    if (currentProduct.inStock) {
-        stockIndicator.className = 'stock-indicator in-stock';
-        stockIndicator.innerHTML = '<span class="status-icon">✓</span><span class="status-text">In stock</span>';
-        addToCartBtn.disabled = false;
-    } else {
-        stockIndicator.className = 'stock-indicator out-of-stock';
-        stockIndicator.innerHTML = '<span class="status-icon">✗</span><span class="status-text">Currently out of stock</span>';
-        addToCartBtn.disabled = true;
-    }
-}
-
-// Update features display
-function updateFeaturesDisplay() {
-    const featuresContainer = document.getElementById('productFeatures');
-    featuresContainer.innerHTML = '';
-    
-    currentProduct.features.forEach(feature => {
-        const featureItem = document.createElement('div');
-        featureItem.className = 'feature-item';
-        
-        featureItem.innerHTML = `
-            <span class="feature-text">${feature}</span>
-        `;
-        
-        featuresContainer.appendChild(featureItem);
-    });
-}
-
-// Setup event listeners
-function setupEventListeners() {
-    // Image zoom
-    document.getElementById('mainProductImage').addEventListener('click', openZoomModal);
-    
-    // Quantity input validation
-    document.getElementById('quantity').addEventListener('change', function() {
-        const value = parseInt(this.value);
-        if (value < 1) this.value = 1;
-        if (value > 10) this.value = 10;
-        quantity = parseInt(this.value);
-    });
-}
-
-// Change main product image
-function changeMainImage(src) {
-    document.getElementById('mainProductImage').src = src;
-    
-    // Update thumbnail active state
-    document.querySelectorAll('.thumbnail').forEach(thumb => {
-        thumb.classList.remove('active');
-    });
-    event.target.classList.add('active');
-}
-
-// Change quantity
-function changeQuantity(change) {
-    const quantityInput = document.getElementById('quantity');
-    let newQuantity = parseInt(quantityInput.value) + change;
-    
-    if (newQuantity < 1) newQuantity = 1;
-    if (newQuantity > 10) newQuantity = 10;
-    
-    quantityInput.value = newQuantity;
-    quantity = newQuantity;
-}
-
-// Add product to cart
-function addToCart() {
-    if (!currentProduct || !currentProduct.inStock) return;
-    
-    const cartItem = {
-        id: currentProduct.id,
-        name: currentProduct.name,
-        brand: currentProduct.brand,
-        price: currentProduct.price,
-        image: currentProduct.image,
-        quantity: quantity,
-        dateAdded: new Date().toISOString()
-    };
-    
-    // Check if item already exists in cart
-    const existingItemIndex = cart.findIndex(item => 
-        item.id === cartItem.id
-    );
-    
-    if (existingItemIndex > -1) {
-        cart[existingItemIndex].quantity += quantity;
-    } else {
-        cart.push(cartItem);
-    }
-    
-    // Save to localStorage
-    localStorage.setItem('cart', JSON.stringify(cart));
-    
-    // Update UI
-    updateCartCount();
-    showAddToCartFeedback();
-}
-
-// Show add to cart feedback
-function showAddToCartFeedback() {
-    const btn = document.querySelector('.add-to-cart-btn');
-    const originalText = btn.innerHTML;
-    
-    btn.classList.add('added');
-    btn.innerHTML = 'Added to Cart';
+  const stockIndicator = document.getElementById('stockIndicator');
+  const btn = document.querySelector('.add-to-cart-btn');
+  if (currentProduct.inStock) {
+    stockIndicator.className = 'stock-indicator in-stock';
+    stockIndicator.innerHTML = '<span class="status-icon">✓</span><span class="status-text">In stock and ready to ship</span>';
+    btn.disabled = false;
+  } else {
+    stockIndicator.className = 'stock-indicator out-of-stock';
+    stockIndicator.innerHTML = '<span class="status-icon">✗</span><span class="status-text">Currently out of stock</span>';
     btn.disabled = true;
-    
-    setTimeout(() => {
-        btn.classList.remove('added');
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-    }, 3000);
+  }
 }
 
-// Toggle wishlist
+function updateFeaturesDisplay() {
+  const box = document.getElementById('productFeatures');
+  box.innerHTML = '';
+  currentProduct.features.forEach(f => {
+    const el = document.createElement('div');
+    el.className = 'feature-item';
+    el.innerHTML = `<span class="feature-text">${f}</span>`;
+    box.appendChild(el);
+  });
+}
+
+function setupEventListeners() {
+  document.getElementById('mainProductImage').addEventListener('click', openZoomModal);
+  document.getElementById('quantity').addEventListener('change', function () {
+    const v = parseInt(this.value, 10);
+    if (v < 1) this.value = 1;
+    if (v > 10) this.value = 10;
+    quantity = parseInt(this.value, 10);
+  });
+}
+
+function changeMainImage(src, el) {
+  document.getElementById('mainProductImage').src = src;
+  document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+function changeQuantity(d) {
+  const input = document.getElementById('quantity');
+  let q = parseInt(input.value, 10) + d;
+  if (q < 1) q = 1;
+  if (q > 10) q = 10;
+  input.value = q;
+  quantity = q;
+}
+
+function addToCart() {
+  if (!currentProduct || !currentProduct.inStock) return;
+  const cartItem = {
+    id: currentProduct.id, name: currentProduct.name, brand: currentProduct.brand,
+    price: currentProduct.price, image: currentProduct.image, quantity, dateAdded: new Date().toISOString()
+  };
+  const idx = cart.findIndex(i => i.id === cartItem.id);
+  if (idx > -1) cart[idx].quantity += quantity; else cart.push(cartItem);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  showAddToCartFeedback();
+}
+
+function showAddToCartFeedback() {
+  const btn = document.querySelector('.add-to-cart-btn');
+  const original = btn.innerHTML;
+  btn.classList.add('added'); btn.innerHTML = 'Added to Cart'; btn.disabled = true;
+  setTimeout(() => { btn.classList.remove('added'); btn.innerHTML = original; btn.disabled = false; }, 3000);
+}
+
 function toggleWishlist() {
-    if (!currentProduct) return;
-    
-    const btn = document.querySelector('.wishlist-btn');
-    const isInWishlist = wishlist.some(item => item.id === currentProduct.id);
-    
-    if (isInWishlist) {
-        wishlist = wishlist.filter(item => item.id !== currentProduct.id);
-        btn.classList.remove('active');
-        btn.querySelector('.heart-icon').textContent = '♡';
-    } else {
-        wishlist.push({
-            id: currentProduct.id,
-            name: currentProduct.name,
-            price: currentProduct.price,
-            image: currentProduct.image,
-            dateAdded: new Date().toISOString()
-        });
-        btn.classList.add('active');
-        btn.querySelector('.heart-icon').textContent = '♥';
-    }
-    
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  if (!currentProduct) return;
+  const btn = document.querySelector('.wishlist-btn');
+  const isIn = wishlist.some(i => i.id === currentProduct.id);
+  if (isIn) {
+    wishlist = wishlist.filter(i => i.id !== currentProduct.id);
+    btn.classList.remove('active'); btn.querySelector('.heart-icon').textContent = '♡';
+  } else {
+    wishlist.push({ id: currentProduct.id, name: currentProduct.name, price: currentProduct.price, image: currentProduct.image, dateAdded: new Date().toISOString() });
+    btn.classList.add('active'); btn.querySelector('.heart-icon').textContent = '♥';
+  }
+  localStorage.setItem('wishlist', JSON.stringify(wishlist));
 }
 
-// Update wishlist button state
 function updateWishlistButton() {
-    const btn = document.querySelector('.wishlist-btn');
-    const isInWishlist = wishlist.some(item => item.id === currentProduct.id);
-    
-    if (isInWishlist) {
-        btn.classList.add('active');
-        btn.querySelector('.heart-icon').textContent = '♥';
-    } else {
-        btn.classList.remove('active');
-        btn.querySelector('.heart-icon').textContent = '♡';
-    }
+  const btn = document.querySelector('.wishlist-btn');
+  const isIn = wishlist.some(i => i.id === currentProduct.id);
+  if (isIn) { btn.classList.add('active'); btn.querySelector('.heart-icon').textContent = '♥'; }
+  else { btn.classList.remove('active'); btn.querySelector('.heart-icon').textContent = '♡'; }
 }
 
-// Update cart count display
 function updateCartCount() {
-    const cartCount = document.querySelector('.cart-count');
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCount.textContent = totalItems;
+  const el = document.querySelector('.cart-count');
+  const total = cart.reduce((s, i) => s + i.quantity, 0);
+  el.textContent = total;
 }
 
-// Show tab content
-function showTab(tabName) {
-    // Hide all tab panels
-    document.querySelectorAll('.tab-panel').forEach(panel => {
-        panel.classList.remove('active');
-    });
-    
-    // Remove active class from all tab buttons
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.classList.remove('active');
-    });
-    
-    // Show selected tab panel
-    document.getElementById(tabName).classList.add('active');
-    
-    // Add active class to clicked button
-    event.target.classList.add('active');
+function showTab(tabName, el) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabName).classList.add('active');
+  if (el) el.classList.add('active');
 }
 
-// Generate related products
 function generateRelatedProducts() {
-    if (!currentProduct) return;
-    
-    // Get products from same category, excluding current product
-    const relatedProducts = products
-        .filter(p => p.category === currentProduct.category && p.id !== currentProduct.id)
-        .slice(0, 4);
-    
-    const container = document.getElementById('relatedProductsGrid');
-    container.innerHTML = '';
-    
-    relatedProducts.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.className = 'related-product-card';
-        productCard.onclick = () => loadProduct(product.id);
-        
-        productCard.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" class="related-product-image">
-            <div class="related-product-info">
-                <div class="related-product-name">${product.name}</div>
-                <div class="related-product-price">R${product.price.toFixed(2)}</div>
-            </div>
-        `;
-        
-        container.appendChild(productCard);
-    });
+  if (!currentProduct) return;
+  const withOverrides = getProducts();
+  const related = withOverrides.filter(p => p.category === currentProduct.category && p.id !== currentProduct.id).slice(0, 4);
+  const container = document.getElementById('relatedProductsGrid');
+  container.innerHTML = '';
+  related.forEach(product => {
+    const card = document.createElement('div');
+    card.className = 'related-product-card';
+    card.onclick = () => loadProduct(product.id);
+    card.innerHTML = `
+      <img src="${product.image}" alt="${product.name}" class="related-product-image">
+      <div class="related-product-info">
+        <div class="related-product-name">${product.name}</div>
+        <div class="related-product-price">R${product.price.toFixed(2)}</div>
+      </div>`;
+    container.appendChild(card);
+  });
 }
 
-// Open image zoom modal
 function openZoomModal() {
-    const modal = document.getElementById('imageZoomModal');
-    const zoomedImage = document.getElementById('zoomedImage');
-    
-    zoomedImage.src = this.src;
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+  const modal = document.getElementById('imageZoomModal');
+  const zoomed = document.getElementById('zoomedImage');
+  zoomed.src = this.src;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
 }
 
-// Close image zoom modal
 function closeZoomModal() {
-    const modal = document.getElementById('imageZoomModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
+  const modal = document.getElementById('imageZoomModal');
+  modal.style.display = 'none';
+  document.body.style.overflow = 'auto';
 }
 
-// Update URL without page reload
 function updateURL(productId) {
-    const newURL = `${window.location.pathname}?id=${productId}`;
-    window.history.replaceState({}, '', newURL);
+  const newURL = `${window.location.pathname}?id=${productId}`;
+  window.history.replaceState({}, '', newURL);
 }
 
-// Utility function to capitalize first letter
-function capitalizeFirst(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
+function capitalizeFirst(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
 
-// Handle browser back/forward navigation
-window.addEventListener('popstate', function(event) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = parseInt(urlParams.get('id'));
-    
-    if (productId && productId !== currentProduct?.id) {
-        loadProduct(productId);
-    }
+window.addEventListener('popstate', function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = parseInt(urlParams.get('id'), 10);
+  if (productId && productId !== (currentProduct && currentProduct.id)) loadProduct(productId);
 });
+
+function updateGalleryDisplay() {
+  const thumbsEl = document.getElementById('productThumbnails');
+  if (!thumbsEl) return;
+  thumbsEl.innerHTML = '';
+  const imgs = Array.isArray(currentProduct.images) && currentProduct.images.length ? currentProduct.images : [currentProduct.image];
+  imgs.forEach((src, i) => {
+    const item = document.createElement('div');
+    item.className = 'thumbnail' + (i === 0 ? ' active' : '');
+    item.innerHTML = `<img src="${src}" alt="${currentProduct.name} thumbnail">`;
+    item.onclick = () => changeMainImage(src, item);
+    thumbsEl.appendChild(item);
+  });
+  document.getElementById('mainProductImage').src = imgs[0];
+}
+
+function updateReviewsDisplay() {
+  const list = document.getElementById('reviewsList');
+  if (!list) return;
+  const reviews = currentProduct.reviews || [];
+  if (!reviews.length) { list.innerHTML = `<p class="no-reviews">No reviews yet.</p>`; return; }
+  list.innerHTML = reviews.map(r => `
+    <div class="review">
+      <div class="review-header">
+        <strong>${r.title || 'Review'}</strong>
+        <span class="review-rating">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+      </div>
+      <div class="review-meta">${r.user} • ${r.date}</div>
+      <p class="review-text">${r.text}</p>
+    </div>`).join('');
+}
+
+// Optional: catalogue helper used elsewhere
+function viewProductDetails(productId) {
+  window.location.href = `ProductPage.html?id=${productId}`;
+}
 
 // Close modal when clicking outside
-document.addEventListener('click', function(event) {
-    const modal = document.getElementById('imageZoomModal');
-    if (event.target === modal) {
-        closeZoomModal();
-    }
+document.addEventListener('click', function (event) {
+  const modal = document.getElementById('imageZoomModal');
+  if (event.target === modal) closeZoomModal();
 });
 
 // Keyboard navigation for modal
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        closeZoomModal();
-    }
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') closeZoomModal();
 });
-
-// Function to navigate to product page from catalogue (used by ProductCatalogue.js)
-function viewProductDetails(productId) {
-    window.location.href = `ProductPage.html?id=${productId}`;
-}
