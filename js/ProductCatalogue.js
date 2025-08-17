@@ -441,7 +441,8 @@ function displayProducts(productsToDisplay) {
             <div class="product-item ${stockClass}" data-id="${product.id}">
                 <div class="product-info">
                     <img src="${product.image}" alt="${product.name}" class="product-image" 
-                         onerror="this.src='../images/Women-Hiking-Boots.jpg'">
+                         onerror="this.src='../images/Women-Hiking-Boots.jpg'"
+                         onclick="viewProduct(${product.id})" style="cursor: pointer;">
                     <div class="product-details">
                         ${categoryBadge}
                         <h3>${product.name}${stockStatus}</h3>
