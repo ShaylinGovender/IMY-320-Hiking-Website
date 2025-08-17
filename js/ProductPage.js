@@ -334,29 +334,6 @@ function updateFeaturesDisplay() {
     const featuresContainer = document.getElementById('productFeatures');
     featuresContainer.innerHTML = '';
     
-    const featureIcons = {
-        'Touchscreen Compatible': '📱',
-        'Breathable': '💨',
-        'Enhanced Grip': '✋',
-        'Lightweight': '🪶',
-        'LED Light': '💡',
-        'Multiple Modes': '⚙️',
-        'Waterproof': '💧',
-        'Long Battery': '🔋',
-        '15 Tools': '🔧',
-        'Compact': '📦',
-        'Stainless Steel': '⚡',
-        'Belt Clip': '📎',
-        'UV Protection': '☀️',
-        'Moisture Wicking': '💧',
-        'Adjustable': '📏',
-        'High Decibel': '🔊',
-        'Lanyard Included': '🏷️',
-        'Weather Resistant': '🌧️',
-        'High Visibility': '👁️',
-        'Reflective': '✨'
-    };
-    
     currentProduct.features.forEach(feature => {
         const featureItem = document.createElement('div');
         featureItem.className = 'feature-item';
