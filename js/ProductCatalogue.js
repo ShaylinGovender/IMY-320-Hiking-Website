@@ -31,6 +31,7 @@ if (!window.ProductData) {
       { id: 4,  name: "Merino Wool Base Layer", brand: "NatureFit", category: "clothing",
         price: 1439.82, originalPrice: 1799.82, rating: 4.6,
         description: "Premium merino wool base layer for temperature regulation and moisture wicking. Naturally odor-resistant and comfortable.",
+<<<<<<< HEAD
         image: "../images/Women-Hiking-Boots.jpg",
         features: ["Merino Wool","Moisture Wicking","Odor Resistant","Temperature Control"], inStock: true,  dateAdded: "2024-02-10" },
 
@@ -92,6 +93,149 @@ if (!window.ProductData) {
       // ----- Accessories / Gear / Clothing / Safety -----
       { id: 14, name: "Multi-Tool Kit", brand: "ToolMaster", category: "accessories",
         price: 719.82, originalPrice: 899.82, rating: 4.4,
+=======
+        image: "../images/Women-Hiking-Boots.jpg", // Placeholder image
+        features: ["Merino Wool", "Moisture Wicking", "Odor Resistant", "Temperature Control"],
+        inStock: true,
+        dateAdded: "2024-02-10"
+    },
+    {
+        id: 5,
+        name: "GPS Navigation Device",
+        brand: "TrailTech",
+        category: "safety",
+        price: 4499.82,
+        originalPrice: null,
+        rating: 4.4,
+        description: "Advanced GPS device with topographic maps, weather alerts, and emergency SOS functionality. Essential for backcountry adventures.",
+        image: "../images/Hiking-Gloves.jpg", // Placeholder image
+        features: ["GPS Navigation", "Topographic Maps", "Weather Alerts", "SOS Function"],
+        inStock: false,
+        dateAdded: "2024-01-30"
+    },
+    {
+        id: 6,
+        name: "Ultralight Hiking Jacket",
+        brand: "WindShield",
+        category: "clothing",
+        price: 3419.82,
+        originalPrice: 4139.82,
+        rating: 4.3,
+        description: "Packable ultralight jacket with wind and water resistance. Perfect for unpredictable mountain weather conditions.",
+        image: "../images/Backpacking-Gear-Essentials.jpg", // Placeholder image
+        features: ["Ultralight", "Packable", "Water Resistant", "Wind Proof"],
+        inStock: true,
+        dateAdded: "2024-02-05"
+    },
+    {
+        id: 7,
+        name: "Trekking Poles Set",
+        brand: "StableStep",
+        category: "gear",
+        price: 1619.82,
+        originalPrice: null,
+        rating: 4.7,
+        description: "Adjustable carbon fiber trekking poles with ergonomic grips and shock absorption. Reduces strain on knees and improves stability.",
+        image: "../images/Women-Hiking-Boots.jpg", // Placeholder image
+        features: ["Carbon Fiber", "Adjustable", "Shock Absorption", "Ergonomic"],
+        inStock: true,
+        dateAdded: "2024-01-25"
+    },
+    {
+        id: 8,
+        name: "Trail Running Shoes",
+        brand: "SpeedTrail",
+        category: "footwear",
+        price: 2339.82,
+        originalPrice: 2879.82,
+        rating: 4.4,
+        description: "Lightweight trail running shoes with aggressive tread pattern and rock protection. Built for speed on technical terrain.",
+        image: "../images/Trail Running Shoes.jpg",
+        features: ["Lightweight", "Rock Protection", "Aggressive Tread", "Quick Dry"],
+        inStock: true,
+        dateAdded: "2024-02-12"
+    },
+    {
+        id: 9,
+        name: "Hydration Backpack",
+        brand: "HydroFlow",
+        category: "gear",
+        price: 2159.82,
+        originalPrice: null,
+        rating: 4.5,
+        description: "25L hydration pack with 3L reservoir, multiple compartments, and breathable back panel. Perfect for day hikes and trail running.",
+        image: "../images/Backpacking-Gear-Essentials.jpg", // Placeholder image
+        features: ["3L Reservoir", "25L Capacity", "Breathable", "Multiple Pockets"],
+        inStock: true,
+        dateAdded: "2024-01-18"
+    },
+    {
+        id: 10,
+        name: "Camping Headlamp",
+        brand: "BrightBeam",
+        category: "accessories",
+        price: 899.82,
+        originalPrice: 1169.82,
+        rating: 4.6,
+        description: "High-powered LED headlamp with multiple brightness settings, red light mode, and waterproof design. Essential for night hiking.",
+        image: "../images/Women-Hiking-Boots.jpg", // Placeholder image
+        features: ["LED Light", "Multiple Modes", "Waterproof", "Long Battery"],
+        inStock: true,
+        dateAdded: "2024-02-08"
+    },
+    // Additional Footwear Products
+    {
+        id: 11,
+        name: "Mountaineering Boots",
+        brand: "AlpinePro",
+        category: "footwear",
+        price: 4199.82,
+        originalPrice: 4799.82,
+        rating: 4.7,
+        description: "Heavy-duty mountaineering boots with crampon compatibility and insulation for extreme cold conditions.",
+        image: "../images/Mountaineering Boots.jpeg",
+        features: ["Crampon Compatible", "Insulated", "Waterproof", "Steel Shank"],
+        inStock: true,
+        dateAdded: "2024-01-10"
+    },
+    {
+        id: 12,
+        name: "Lightweight Hiking Sandals",
+        brand: "ComfortWalk",
+        category: "footwear",
+        price: 1299.82,
+        originalPrice: null,
+        rating: 4.2,
+        description: "Breathable hiking sandals with excellent grip and quick-dry materials. Perfect for water crossings and hot weather.",
+        image: "../images/Lightweight Hiking Sandals.jpeg",
+        features: ["Quick Dry", "Water Friendly", "Lightweight", "Adjustable Straps"],
+        inStock: true,
+        dateAdded: "2024-02-15"
+    },
+    {
+        id: 13,
+        name: "Winter Hiking Boots",
+        brand: "WinterTrek",
+        category: "footwear",
+        price: 3599.82,
+        originalPrice: 4319.82,
+        rating: 4.5,
+        description: "Insulated winter hiking boots with thermal lining and snow-gripping outsole for cold weather adventures.",
+        image: "../images/Winter Hiking Boots.jpeg",
+        features: ["Thermal Insulation", "Snow Grip", "Waterproof", "Warm Lining"],
+        inStock: false,
+        dateAdded: "2024-01-05"
+    },
+    // Additional Accessories
+    {
+        id: 14,
+        name: "Multi-Tool Kit",
+        brand: "ToolMaster",
+        category: "accessories",
+        price: 719.82,
+        originalPrice: 899.82,
+        rating: 4.4,
+>>>>>>> origin/dev
         description: "Compact multi-tool with knife, pliers, screwdrivers, and essential outdoor tools. Perfect for trail repairs.",
         image: "../images/Women-Hiking-Boots.jpg",
         features: ["15 Tools","Compact","Stainless Steel","Belt Clip"], inStock: true, dateAdded: "2024-02-03" },
