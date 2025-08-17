@@ -180,7 +180,7 @@ const products = [
         originalPrice: null,
         rating: 4.5,
         description: "High-decibel emergency whistle with lanyard. Essential safety item for solo hikers and emergency situations.",
-        image: "../images/Hiking-Gloves.jpg",
+        image: "../images/whistle.png",
         features: ["High Decibel", "Lightweight", "Lanyard Included", "Weather Resistant"],
         inStock: true,
         dateAdded: "2024-02-12"

@@ -95,7 +95,7 @@ const products = [
         originalPrice: null,
         rating: 4.7,
         description: "Adjustable carbon fiber trekking poles with ergonomic grips and shock absorption. Reduces strain on knees and improves stability.",
-        image: "../images/Women-Hiking-Boots.jpg", // Placeholder image
+        image: "../images/trekkingpoles.jpg", // Placeholder image
         features: ["Carbon Fiber", "Adjustable", "Shock Absorption", "Ergonomic"],
         inStock: true,
         dateAdded: "2024-01-25"
@@ -123,7 +123,7 @@ const products = [
         originalPrice: null,
         rating: 4.5,
         description: "25L hydration pack with 3L reservoir, multiple compartments, and breathable back panel. Perfect for day hikes and trail running.",
-        image: "../images/Backpacking-Gear-Essentials.jpg", // Placeholder image
+        image: "../images/hydartionbackpack.jpg", // Placeholder image
         features: ["3L Reservoir", "25L Capacity", "Breathable", "Multiple Pockets"],
         inStock: true,
         dateAdded: "2024-01-18"
@@ -224,7 +224,7 @@ const products = [
         originalPrice: 2159.82,
         rating: 4.6,
         description: "Lightweight portable stove with wind shield and efficient fuel consumption. Perfect for backcountry cooking.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
+        image: "../images/stove.jpg",
         features: ["Lightweight", "Wind Resistant", "Fuel Efficient", "Compact"],
         inStock: true,
         dateAdded: "2024-01-12"
@@ -238,7 +238,7 @@ const products = [
         originalPrice: 3599.82,
         rating: 4.5,
         description: "3-season sleeping bag with down insulation and compression sack. Rated for temperatures down to -5°C.",
-        image: "../images/Women-Hiking-Boots.jpg",
+        image: "../images/sleepingbag.jpg",
         features: ["Down Insulation", "3-Season", "Compression Sack", "Lightweight"],
         inStock: true,
         dateAdded: "2024-02-20"
@@ -296,7 +296,7 @@ const products = [
         originalPrice: null,
         rating: 4.5,
         description: "High-decibel emergency whistle with lanyard. Essential safety item for solo hikers and emergency situations.",
-        image: "../images/Hiking-Gloves.jpg",
+        image: "../images/whistle.png",
         features: ["High Decibel", "Lightweight", "Lanyard Included", "Weather Resistant"],
         inStock: true,
         dateAdded: "2024-02-12"
@@ -310,7 +310,7 @@ const products = [
         originalPrice: 899.82,
         rating: 4.7,
         description: "Comprehensive first aid kit with bandages, antiseptic, and emergency medications. Compact and trail-ready.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
+        image: "../images/firstaidkit.png",
         features: ["Comprehensive", "Compact", "Trail Ready", "Emergency Meds"],
         inStock: true,
         dateAdded: "2024-01-15"
@@ -324,7 +324,7 @@ const products = [
         originalPrice: null,
         rating: 4.8,
         description: "Satellite emergency beacon with GPS tracking and SOS messaging. Critical safety device for remote adventures.",
-        image: "../images/Women-Hiking-Boots.jpg",
+        image: "../images/beacon.jpg",
         features: ["Satellite", "GPS Tracking", "SOS Messaging", "Long Battery"],
         inStock: true,
         dateAdded: "2024-01-30"
@@ -338,7 +338,7 @@ const products = [
         originalPrice: 479.82,
         rating: 4.2,
         description: "High-visibility reflective vest for early morning or late evening hikes. Lightweight and adjustable.",
-        image: "../images/Hiking-Gloves.jpg",
+        image: "../images/vest.png",
         features: ["High Visibility", "Reflective", "Lightweight", "Adjustable"],
         inStock: true,
         dateAdded: "2024-02-05"
@@ -352,7 +352,7 @@ const products = [
         originalPrice: null,
         rating: 4.4,
         description: "Emergency water purification tablets for treating questionable water sources. Essential for backcountry safety.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
+        image: "../images/waterPure.jpg",
         features: ["Water Purification", "Emergency Use", "Lightweight", "Long Shelf Life"],
         inStock: true,
         dateAdded: "2024-01-18"
