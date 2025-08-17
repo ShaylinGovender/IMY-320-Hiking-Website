@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrailBlazer - Product Details</title>
+    <link rel="stylesheet" href="../css/ProductPage.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">🏔️ TrailBlazer</div>
+                <ul class="nav-links">
+                    <li><a href="landingPage.html">Home</a></li>
+                    <li><a href="ProductCatalogue.html">Gear</a></li>
+                    <li><a href="#trails">Trails</a></li>
+                    <li><a href="#community">Community</a></li>
+                    <li><a href="AboutUsPage.html">About Us</a></li>
+                </ul>
+            </div>
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search gear, trails...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="account-section">
+                    <a href="LoginPage.html" class="account-btn">👤 Sign In</a>
+                    <div class="cart-icon">
+                        🛒
+                        <span class="cart-count">2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Simple Breadcrumb -->
+            <div class="simple-breadcrumb">
+                <span>TrailBlazer</span>
+                <span class="separator">/</span>
+                <span id="breadcrumbCategory">Accessories</span>
+                <span class="separator">/</span>
+                <span id="breadcrumbProduct">Product Name</span>
+            </div>
+
+            <!-- Product Detail Section -->
+            <div class="product-detail-container">
+                <!-- Product Images Section -->
+                <div class="product-images">
+                    <div class="main-image-container">
+                        <img id="mainProductImage" src="../images/Hiking-Gloves.jpg" alt="Product Image" class="main-product-image">
+                        <div class="image-zoom-overlay">
+                            <span class="zoom-text">🔍 Click to zoom</span>
+                        </div>
+                    </div>
+                    <div class="thumbnail-images">
+                        <div id="productThumbnails" class="thumbnail-images"></div>
+
+                    </div>
+                </div>
+
+                <!-- Product Information Section -->
+                <div class="product-info">
+                    <div class="product-header">
+                        <span id="productBrand" class="brand-name">GRIPTECH</span>
+                        <h1 id="productName" class="product-title">Hiking Gloves</h1>
+                        
+                        <div class="rating-section">
+                            <div id="productRating" class="stars">
+                                ★★★★☆
+                            </div>
+                            <span id="ratingScore" class="rating-score">4.2</span>
+                            <span class="rating-count">(128 reviews)</span>
+                        </div>
+                    </div>
+
+                    <div class="price-section">
+                        <div class="price-container">
+                            <div class="current-price">
+                                <span class="currency">R</span>
+                                <span id="productPrice" class="price-amount">539.82</span>
+                            </div>
+                            <div id="originalPriceContainer" class="original-price" style="display: none;">
+                                <span class="currency">R</span>
+                                <span id="originalPrice" class="original-amount">699.82</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stock-status">
+                        <div id="stockIndicator" class="stock-indicator in-stock">
+                            <span class="status-icon">✓</span>
+                            <span class="status-text">In stock and ready to ship</span>
+                        </div>
+                    </div>
+
+                    <div class="purchase-section">
+                        <div class="quantity-selector">
+                            <button class="quantity-btn minus" onclick="changeQuantity(-1)">−</button>
+                            <input type="number" id="quantity" value="1" min="1" max="10">
+                            <button class="quantity-btn plus" onclick="changeQuantity(1)">+</button>
+                        </div>
+
+                        <button class="add-to-cart-btn" onclick="addToCart()">
+                            <span class="cart-icon">🛒</span>
+                            Add To Cart
+                        </button>
+
+                        <button class="wishlist-btn" onclick="toggleWishlist()">
+                            <span class="heart-icon">♡</span>
+                        </button>
+                    </div>
+
+                    <div class="delivery-info">
+                        <div class="delivery-option">
+                            <span class="delivery-icon">🚚</span>
+                            <span class="delivery-text">Free delivery on orders R500+</span>
+                        </div>
+                        <div class="delivery-option">
+                            <span class="delivery-icon">📦</span>
+                            <span class="delivery-text">Same day delivery available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details Tabs -->
+            <div class="product-details-section">
+                <div class="tabs">
+                    <button class="tab-button active" onclick="showTab('description')">Description</button>
+                    <button class="tab-button" onclick="showTab('features')">Features</button>
+                    <button class="tab-button" onclick="showTab('specifications')">Specifications</button>
+                    <button class="tab-button" onclick="showTab('reviews')">Reviews</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="description" class="tab-panel active">
+                        <div class="description-content">
+                            <h3>Product Description</h3>
+                            <p id="productDescription">
+                                Lightweight, breathable hiking gloves with enhanced grip and touchscreen compatibility. 
+                                Ideal for trail navigation and protection.
+                            </p>
+                            <div class="description-details">
+                                <h4>Perfect For:</h4>
+                                <ul>
+                                    <li>Day hiking and trail walking</li>
+                                    <li>Rock climbing and mountaineering</li>
+                                    <li>Cold weather outdoor activities</li>
+                                    <li>Photography and device operation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="features" class="tab-panel">
+                        <div class="features-content">
+                            <h3>Key Features</h3>
+                            <div id="productFeatures" class="features-list">
+                                <div class="feature-item">
+                                    <span class="feature-icon">📱</span>
+                                    <span class="feature-text">Touchscreen Compatible</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">💨</span>
+                                    <span class="feature-text">Breathable</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">✋</span>
+                                    <span class="feature-text">Enhanced Grip</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">🪶</span>
+                                    <span class="feature-text">Lightweight</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="specifications" class="tab-panel">
+                        <div class="specs-content">
+                            <h3>Technical Specifications</h3>
+                            <table class="specs-table">
+                                <tr>
+                                    <td>Material</td>
+                                    <td>Synthetic leather and mesh</td>
+                                </tr>
+                                <tr>
+                                    <td>Weight</td>
+                                    <td>45g per pair</td>
+                                </tr>
+                                <tr>
+                                    <td>Sizes Available</td>
+                                    <td>S, M, L, XL</td>
+                                </tr>
+                                <tr>
+                                    <td>Touchscreen</td>
+                                    <td>Compatible (thumb and index finger)</td>
+                                </tr>
+                                <tr>
+                                    <td>Water Resistance</td>
+                                    <td>DWR coating</td>
+                                </tr>
+                                <tr>
+                                    <td>Care Instructions</td>
+                                    <td>Hand wash, air dry</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="reviews" class="tab-panel">
+                        <div class="reviews-content">
+                            <h3>Customer Reviews</h3>
+                            <div class="reviews-summary">
+                                <div class="rating-breakdown">
+                                    <div class="overall-rating">
+                                        <span class="big-rating">4.2</span>
+                                        <div class="stars">★★★★☆</div>
+                                        <span class="review-count">Based on 128 reviews</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="reviews-list">
+                              
+                          <div id="reviewsList" class="reviews-list"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <div class="related-products-section">
+                <h2>Related Products</h2>
+                <div class="related-products-grid" id="relatedProductsGrid">
+                    <!-- Related products will be dynamically generated -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Image Zoom Modal -->
+    <div id="imageZoomModal" class="zoom-modal" style="display: none;">
+        <div class="zoom-modal-content">
+            <span class="zoom-close" onclick="closeZoomModal()">&times;</span>
+            <img id="zoomedImage" src="" alt="Zoomed Product Image" class="zoomed-image">
+        </div>
+    </div>
+
+    <script src="../js/ProductPage.js"></script>
+</body>
+</html>
