@@ -45,20 +45,6 @@ const products = [
         dateAdded: "2024-01-20"
     },
     {
-        id: 4,
-        name: "Merino Wool Base Layer",
-        brand: "NatureFit",
-        category: "clothing",
-        price: 1439.82,
-        originalPrice: 1799.82,
-        rating: 4.6,
-        description: "Premium merino wool base layer for temperature regulation and moisture wicking. Naturally odor-resistant and comfortable.",
-        image: "../images/Women-Hiking-Boots.jpg", // Placeholder image
-        features: ["Merino Wool", "Moisture Wicking", "Odor Resistant", "Temperature Control"],
-        inStock: true,
-        dateAdded: "2024-02-10"
-    },
-    {
         id: 5,
         name: "GPS Navigation Device",
         brand: "TrailTech",
@@ -81,7 +67,7 @@ const products = [
         originalPrice: 4139.82,
         rating: 4.3,
         description: "Packable ultralight jacket with wind and water resistance. Perfect for unpredictable mountain weather conditions.",
-        image: "../images/Backpacking-Gear-Essentials.jpg", // Placeholder image
+        image: "../images/hikingjacket.jpg",
         features: ["Ultralight", "Packable", "Water Resistant", "Wind Proof"],
         inStock: true,
         dateAdded: "2024-02-05"
@@ -137,7 +123,7 @@ const products = [
         originalPrice: 1169.82,
         rating: 4.6,
         description: "High-powered LED headlamp with multiple brightness settings, red light mode, and waterproof design. Essential for night hiking.",
-        image: "../images/Women-Hiking-Boots.jpg", // Placeholder image
+        image: "../images/headlamp.jpg", // Placeholder image
         features: ["LED Light", "Multiple Modes", "Waterproof", "Long Battery"],
         inStock: true,
         dateAdded: "2024-02-08"
@@ -185,31 +171,16 @@ const products = [
         inStock: false,
         dateAdded: "2024-01-05"
     },
-    // Additional Accessories
-    {
-        id: 14,
-        name: "Multi-Tool Kit",
-        brand: "ToolMaster",
-        category: "accessories",
-        price: 719.82,
-        originalPrice: 899.82,
-        rating: 4.4,
-        description: "Compact multi-tool with knife, pliers, screwdrivers, and essential outdoor tools. Perfect for trail repairs.",
-        image: "../images/Women-Hiking-Boots.jpg",
-        features: ["15 Tools", "Compact", "Stainless Steel", "Belt Clip"],
-        inStock: true,
-        dateAdded: "2024-02-03"
-    },
     {
         id: 15,
-        name: "Hiking Hat",
+        name: "Hiking Cap",
         brand: "SunGuard",
         category: "accessories",
         price: 479.82,
         originalPrice: null,
         rating: 4.3,
         description: "UV protection hiking hat with moisture-wicking band and adjustable chin strap. Keeps you cool and protected.",
-        image: "../images/Hiking-Gloves.jpg",
+        image: "../images/hikingCap3.jpg",
         features: ["UV Protection", "Moisture Wicking", "Adjustable", "Lightweight"],
         inStock: true,
         dateAdded: "2024-01-28"
@@ -243,35 +214,6 @@ const products = [
         inStock: true,
         dateAdded: "2024-02-20"
     },
-    // Additional Clothing
-    {
-        id: 18,
-        name: "Hiking Pants",
-        brand: "TrailFlex",
-        category: "clothing",
-        price: 1799.82,
-        originalPrice: null,
-        rating: 4.4,
-        description: "Durable hiking pants with stretch fabric and multiple pockets. Water-resistant and quick-drying.",
-        image: "../images/Hiking-Gloves.jpg",
-        features: ["Stretch Fabric", "Water Resistant", "Quick Dry", "Multiple Pockets"],
-        inStock: true,
-        dateAdded: "2024-01-22"
-    },
-    {
-        id: 19,
-        name: "Thermal Underwear Set",
-        brand: "WarmLayer",
-        category: "clothing",
-        price: 1079.82,
-        originalPrice: 1439.82,
-        rating: 4.3,
-        description: "Thermal underwear set with moisture-wicking properties and odor control. Essential for cold weather hiking.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
-        features: ["Thermal", "Moisture Wicking", "Odor Control", "Comfortable Fit"],
-        inStock: true,
-        dateAdded: "2024-02-01"
-    },
     {
         id: 20,
         name: "Rain Poncho",
@@ -281,7 +223,7 @@ const products = [
         originalPrice: 1169.82,
         rating: 4.1,
         description: "Lightweight rain poncho with hood and snap closures. Packs small and provides excellent rain protection.",
-        image: "../images/Women-Hiking-Boots.jpg",
+        image: "../images/raincoat.jpg",
         features: ["Waterproof", "Lightweight", "Packable", "Hood"],
         inStock: false,
         dateAdded: "2024-01-08"
