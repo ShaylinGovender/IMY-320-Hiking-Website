@@ -110,7 +110,7 @@ const products = [
         originalPrice: 2879.82,
         rating: 4.4,
         description: "Lightweight trail running shoes with aggressive tread pattern and rock protection. Built for speed on technical terrain.",
-        image: "../images/Hiking-Gloves.jpg",
+        image: "../images/Trail Running Shoes.jpg",
         features: ["Lightweight", "Rock Protection", "Aggressive Tread", "Quick Dry"],
         inStock: true,
         dateAdded: "2024-02-12"
@@ -142,6 +142,48 @@ const products = [
         features: ["LED Light", "Multiple Modes", "Waterproof", "Long Battery"],
         inStock: true,
         dateAdded: "2024-02-08"
+    },
+    {
+        id: 11,
+        name: "Mountaineering Boots",
+        brand: "AlpinePro",
+        category: "footwear",
+        price: 4199.82,
+        originalPrice: 4799.82,
+        rating: 4.7,
+        description: "Heavy-duty mountaineering boots designed for extreme alpine conditions. Featuring rigid construction, crampon compatibility, and superior insulation for high-altitude adventures.",
+        image: "../images/Mountaineering Boots.jpeg",
+        features: ["Crampon Compatible", "Insulated", "Rigid Construction", "Alpine Ready"],
+        inStock: true,
+        dateAdded: "2024-01-10"
+    },
+    {
+        id: 12,
+        name: "Lightweight Hiking Sandals",
+        brand: "ComfortWalk",
+        category: "footwear",
+        price: 1299.82,
+        originalPrice: null,
+        rating: 4.2,
+        description: "Ultra-lightweight hiking sandals with superior comfort and excellent grip. Perfect for warm weather adventures, river crossings, and casual trail walking.",
+        image: "../images/Lightweight Hiking Sandals.jpeg",
+        features: ["Lightweight", "Quick Dry", "Adjustable Straps", "Excellent Grip"],
+        inStock: true,
+        dateAdded: "2024-02-15"
+    },
+    {
+        id: 13,
+        name: "Winter Hiking Boots",
+        brand: "WinterTrek",
+        category: "footwear",
+        price: 3599.82,
+        originalPrice: 4319.82,
+        rating: 4.5,
+        description: "Insulated winter hiking boots designed for extreme cold weather conditions. Features waterproof construction, thermal insulation, and aggressive tread for snow and ice traction.",
+        image: "../images/Winter Hiking Boots.jpeg",
+        features: ["Thermal Insulation", "Waterproof", "Ice Traction", "Cold Weather"],
+        inStock: false,
+        dateAdded: "2024-01-05"
     },
     {
         id: 14,
@@ -269,11 +311,25 @@ function updateProductDisplay() {
     document.getElementById('mainProductImage').src = currentProduct.image;
     document.getElementById('mainProductImage').alt = currentProduct.name;
     
+    // Hide thumbnail images for Women's Hiking Boots (product ID 1), Trail Running Shoes (product ID 8), Mountaineering Boots (product ID 11), Lightweight Hiking Sandals (product ID 12), and Winter Hiking Boots (product ID 13)
+    const thumbnailImages = document.querySelector('.thumbnail-images');
+    if (thumbnailImages) {
+        if (currentProduct.id === 1 || currentProduct.id === 8 || currentProduct.id === 11 || currentProduct.id === 12 || currentProduct.id === 13) {
+            thumbnailImages.style.display = 'none';
+        } else {
+            thumbnailImages.style.display = 'flex'; // or whatever the default display value is
+        }
+    }
+    
     // Update description
     document.getElementById('productDescription').textContent = currentProduct.description;
     
     // Update features
     updateFeaturesDisplay();
+    
+    // Update specifications and reviews for footwear products
+    updateSpecificationsDisplay();
+    updateReviewsDisplay();
     
     // Update wishlist button state
     updateWishlistButton();
@@ -344,6 +400,220 @@ function updateFeaturesDisplay() {
         
         featuresContainer.appendChild(featureItem);
     });
+}
+
+// Update specifications display based on product type
+function updateSpecificationsDisplay() {
+    const specsTableBody = document.querySelector('.specs-table');
+    if (!specsTableBody) return;
+    
+    // Define specifications for different footwear products
+    const footwearSpecs = {
+        1: { // Women's Hiking Boots
+            "Material": "Full-grain leather and synthetic mesh",
+            "Weight": "620g per pair (size 7)",
+            "Sizes Available": "5, 6, 7, 8, 9, 10, 11",
+            "Sole": "Vibram® Megagrip outsole",
+            "Waterproofing": "GORE-TEX® membrane",
+            "Care Instructions": "Clean with brush, air dry, condition leather"
+        },
+        8: { // Trail Running Shoes
+            "Material": "Mesh upper with synthetic overlays",
+            "Weight": "280g per pair (size 7)",
+            "Sizes Available": "5, 6, 7, 8, 9, 10, 11, 12",
+            "Sole": "Aggressive lug outsole",
+            "Drop": "4mm heel-to-toe drop",
+            "Care Instructions": "Machine wash cold, air dry"
+        },
+        11: { // Mountaineering Boots
+            "Material": "Full leather upper with insulation",
+            "Weight": "950g per pair (size 7)",
+            "Sizes Available": "6, 7, 8, 9, 10, 11, 12",
+            "Sole": "Rigid mountaineering sole",
+            "Insulation": "Primaloft® synthetic insulation",
+            "Temperature Rating": "-40°C to -10°C",
+            "Crampon Compatibility": "C2 (semi-automatic) and C3 (automatic)",
+            "Care Instructions": "Clean with brush, air dry, waterproof regularly"
+        },
+        12: { // Lightweight Hiking Sandals
+            "Material": "Synthetic webbing and EVA footbed",
+            "Weight": "195g per pair (size 7)",
+            "Sizes Available": "5, 6, 7, 8, 9, 10, 11, 12",
+            "Sole": "Non-marking rubber outsole",
+            "Footbed": "Contoured EVA with arch support",
+            "Straps": "Adjustable heel and toe straps",
+            "Water Rating": "Quick-dry, suitable for water activities",
+            "Care Instructions": "Rinse with water, air dry"
+        },
+        13: { // Winter Hiking Boots
+            "Material": "Waterproof leather with insulated lining",
+            "Weight": "780g per pair (size 7)",
+            "Sizes Available": "6, 7, 8, 9, 10, 11, 12",
+            "Sole": "Deep-lug outsole with ice traction",
+            "Insulation": "400g Thinsulate™ insulation",
+            "Temperature Rating": "-25°C to 5°C",
+            "Waterproofing": "Sealed seam waterproof construction",
+            "Height": "7-inch ankle support",
+            "Care Instructions": "Clean with damp cloth, air dry, apply waterproofing treatment"
+        }
+    };
+    
+    const specs = footwearSpecs[currentProduct.id];
+    if (specs) {
+        specsTableBody.innerHTML = '';
+        Object.entries(specs).forEach(([key, value]) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${key}</td>
+                <td>${value}</td>
+            `;
+            specsTableBody.appendChild(row);
+        });
+    }
+}
+
+// Update reviews display based on product
+function updateReviewsDisplay() {
+    const reviewsList = document.querySelector('.reviews-list');
+    const overallRating = document.querySelector('.big-rating');
+    const reviewCount = document.querySelector('.review-count');
+    const starsDisplay = document.querySelector('.overall-rating .stars');
+    
+    if (!reviewsList) return;
+    
+    // Define reviews for different footwear products
+    const footwearReviews = {
+        1: { // Women's Hiking Boots
+            rating: 4.5,
+            count: 245,
+            reviews: [
+                {
+                    name: "Jennifer L.",
+                    stars: "★★★★★",
+                    date: "1 week ago",
+                    text: "Amazing boots! Completely waterproof and incredibly comfortable even on long hikes. The ankle support is excellent and they have great traction on rocky terrain."
+                },
+                {
+                    name: "Maria K.",
+                    stars: "★★★★☆",
+                    date: "2 weeks ago",
+                    text: "Great quality boots, very durable. Took a few hikes to break them in but now they're perfect. Worth the investment for serious hikers."
+                }
+            ]
+        },
+        8: { // Trail Running Shoes
+            rating: 4.4,
+            count: 189,
+            reviews: [
+                {
+                    name: "Alex R.",
+                    stars: "★★★★★",
+                    date: "3 days ago",
+                    text: "Perfect for trail running! Lightweight yet protective. The grip on technical terrain is outstanding and they drain water quickly."
+                },
+                {
+                    name: "Emily S.",
+                    stars: "★★★★☆",
+                    date: "1 week ago",
+                    text: "Great shoes for fast hiking and trail running. Very comfortable and the rock protection works well. Sizing runs a bit small."
+                }
+            ]
+        },
+        11: { // Mountaineering Boots
+            rating: 4.7,
+            count: 156,
+            reviews: [
+                {
+                    name: "Mark T.",
+                    stars: "★★★★★",
+                    date: "2 weeks ago",
+                    text: "Exceptional boots for serious mountaineering. Used them on a winter ascent and they kept my feet warm and dry in -30°C. Crampon attachment is secure and reliable."
+                },
+                {
+                    name: "Sarah W.",
+                    stars: "★★★★★",
+                    date: "1 month ago",
+                    text: "These boots are built like tanks! Heavy but incredibly durable. Perfect for alpine climbing and glacier travel. The insulation is top-notch."
+                }
+            ]
+        },
+        12: { // Lightweight Hiking Sandals
+            rating: 4.2,
+            count: 127,
+            reviews: [
+                {
+                    name: "Lisa M.",
+                    stars: "★★★★☆",
+                    date: "5 days ago",
+                    text: "Perfect for summer hiking! Super comfortable and they dry incredibly fast after river crossings. Great grip on wet rocks. Sizing is accurate."
+                },
+                {
+                    name: "David R.",
+                    stars: "★★★★★",
+                    date: "2 weeks ago",
+                    text: "Love these sandals! So lightweight I barely notice them. Perfect for warm weather hikes and beach walks. The adjustable straps ensure a perfect fit."
+                }
+            ]
+        },
+        13: { // Winter Hiking Boots
+            rating: 4.5,
+            count: 203,
+            reviews: [
+                {
+                    name: "Michael S.",
+                    stars: "★★★★★",
+                    date: "1 week ago",
+                    text: "Outstanding winter boots! Kept my feet warm and dry during a -20°C winter hike. The ice traction is phenomenal and they're surprisingly comfortable for long distances."
+                },
+                {
+                    name: "Karen J.",
+                    stars: "★★★★☆",
+                    date: "3 weeks ago",
+                    text: "Great boots for winter hiking. Very warm and completely waterproof. They run a bit large, so size down half a size. Worth the investment for serious winter adventurers."
+                }
+            ]
+        }
+    };
+    
+    const productReviews = footwearReviews[currentProduct.id];
+    if (productReviews) {
+        // Update overall rating
+        if (overallRating) overallRating.textContent = productReviews.rating;
+        if (reviewCount) reviewCount.textContent = `Based on ${productReviews.count} reviews`;
+        if (starsDisplay) {
+            const fullStars = Math.floor(productReviews.rating);
+            const hasHalfStar = productReviews.rating % 1 >= 0.5;
+            let starsHTML = '';
+            for (let i = 0; i < fullStars; i++) {
+                starsHTML += '★';
+            }
+            if (hasHalfStar) {
+                starsHTML += '☆';
+            }
+            for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+                starsHTML += '☆';
+            }
+            starsDisplay.innerHTML = starsHTML;
+        }
+        
+        // Update reviews list
+        reviewsList.innerHTML = '';
+        productReviews.reviews.forEach(review => {
+            const reviewItem = document.createElement('div');
+            reviewItem.className = 'review-item';
+            reviewItem.innerHTML = `
+                <div class="review-header">
+                    <span class="reviewer-name">${review.name}</span>
+                    <div class="review-stars">${review.stars}</div>
+                    <span class="review-date">${review.date}</span>
+                </div>
+                <p class="review-text">
+                    "${review.text}"
+                </p>
+            `;
+            reviewsList.appendChild(reviewItem);
+        });
+    }
 }
 
 // Setup event listeners

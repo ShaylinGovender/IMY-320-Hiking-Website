@@ -109,7 +109,7 @@ const products = [
         originalPrice: 2879.82,
         rating: 4.4,
         description: "Lightweight trail running shoes with aggressive tread pattern and rock protection. Built for speed on technical terrain.",
-        image: "../images/Hiking-Gloves.jpg", // Placeholder image
+        image: "../images/Trail Running Shoes.jpg",
         features: ["Lightweight", "Rock Protection", "Aggressive Tread", "Quick Dry"],
         inStock: true,
         dateAdded: "2024-02-12"
@@ -152,7 +152,7 @@ const products = [
         originalPrice: 4799.82,
         rating: 4.7,
         description: "Heavy-duty mountaineering boots with crampon compatibility and insulation for extreme cold conditions.",
-        image: "../images/Women-Hiking-Boots.jpg",
+        image: "../images/Mountaineering Boots.jpeg",
         features: ["Crampon Compatible", "Insulated", "Waterproof", "Steel Shank"],
         inStock: true,
         dateAdded: "2024-01-10"
@@ -166,7 +166,7 @@ const products = [
         originalPrice: null,
         rating: 4.2,
         description: "Breathable hiking sandals with excellent grip and quick-dry materials. Perfect for water crossings and hot weather.",
-        image: "../images/Hiking-Gloves.jpg",
+        image: "../images/Lightweight Hiking Sandals.jpeg",
         features: ["Quick Dry", "Water Friendly", "Lightweight", "Adjustable Straps"],
         inStock: true,
         dateAdded: "2024-02-15"
@@ -180,7 +180,7 @@ const products = [
         originalPrice: 4319.82,
         rating: 4.5,
         description: "Insulated winter hiking boots with thermal lining and snow-gripping outsole for cold weather adventures.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
+        image: "../images/Winter Hiking Boots.jpeg",
         features: ["Thermal Insulation", "Snow Grip", "Waterproof", "Warm Lining"],
         inStock: false,
         dateAdded: "2024-01-05"
