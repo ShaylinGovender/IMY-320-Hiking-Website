@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrailBlazer - Discover Amazing Trails</title>
+    <link rel="stylesheet" href="../css/TrailsPage.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">🏔️ TrailBlazer</div>
+                <ul class="nav-links">
+                    <li><a href="landingPage.html">Home</a></li>
+                    <li><a href="ProductCatalogue.html">Gear</a></li>
+                    <li><a href="TrailsPage.html" class="active">Trails</a></li>
+                    <li><a href="GroupHikes.html">Community</a></li>
+                    <li><a href="AboutUsPage.html">About Us</a></li>
+                </ul>
+            </div>
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search trails...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="account-section">
+                    <a href="AdminPanel.html" class="account-btn" title="Admin Panel">⚙️</a>
+                    <a href="LoginPage.html" class="account-btn">👤 Sign In</a>
+                    <a href="CheckoutPage.html" class="cart-icon">
+                        🛒
+                        <span class="cart-count">2</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Search and Filter Section -->
+             <div></div>
+            <section class="search-filter-section">
+                <div class="filter-header">
+                    <h2>Find Your Perfect Trail</h2>
+                    <p>Use our advanced filters to discover trails that match your experience level and preferences</p>
+                </div>
+                
+                <div class="filters-container">
+                    <div class="filter-group">
+                        <label>Location</label>
+                        <select id="locationFilter">
+                            <option value="">All Locations</option>
+                            <option value="western-cape">Western Cape</option>
+                            <option value="gauteng">Gauteng</option>
+                            <option value="kwazulu-natal">KwaZulu-Natal</option>
+                            <option value="mpumalanga">Mpumalanga</option>
+                            <option value="eastern-cape">Eastern Cape</option>
+                            <option value="northern-cape">Northern Cape</option>
+                            <option value="free-state">Free State</option>
+                            <option value="north-west">North West</option>
+                            <option value="limpopo">Limpopo</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Difficulty Level</label>
+                        <select id="difficultyFilter">
+                            <option value="">All Levels</option>
+                            <option value="easy">Easy - Beginner Friendly</option>
+                            <option value="moderate">Moderate - Some Experience</option>
+                            <option value="challenging">Challenging - Experienced</option>
+                            <option value="expert">Expert - Very Challenging</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Duration</label>
+                        <select id="durationFilter">
+                            <option value="">Any Duration</option>
+                            <option value="short">Short (1-3 hours)</option>
+                            <option value="half-day">Half Day (3-6 hours)</option>
+                            <option value="full-day">Full Day (6+ hours)</option>
+                            <option value="multi-day">Multi-Day</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Trail Type</label>
+                        <select id="typeFilter">
+                            <option value="">All Types</option>
+                            <option value="mountain">Mountain Hiking</option>
+                            <option value="forest">Forest Trails</option>
+                            <option value="coastal">Coastal Walks</option>
+                            <option value="desert">Desert Trails</option>
+                            <option value="waterfall">Waterfall Hikes</option>
+                            <option value="viewpoint">Scenic Viewpoints</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn-filter" onclick="applyFilters()">Apply Filters</button>
+                        <button class="btn-clear" onclick="clearFilters()">Clear All</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All Trails Section -->
+            <section class="all-trails">
+                <div class="section-header">
+                    <h2>All Trails</h2>
+                    <div class="view-options">
+                        <span class="results-count" id="resultsCount">Showing all trails</span>
+                        <div class="sort-options">
+                            <select id="sortBy" onchange="sortTrails()">
+                                <option value="name">Sort by Name</option>
+                                <option value="difficulty">Sort by Difficulty</option>
+                                <option value="duration">Sort by Duration</option>
+                                <option value="rating">Sort by Rating</option>
+                                <option value="distance">Sort by Distance</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="trails-grid" id="allTrails">
+                    <!-- All trails will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Trail of the Month -->
+            <section class="trail-spotlight">
+                <div class="spotlight-content">
+                    <div class="spotlight-image">
+                        <img src="https://images.unsplash.com/photo-1624209808748-5dd13edf5eb6?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Trail of the Month">
+                        <div class="spotlight-badge">Trail of the Month</div>
+                    </div>
+                    <div class="spotlight-info">
+                        <h3>Table Mountain - Platteklip Gorge</h3>
+                        <p>Experience the iconic Table Mountain via the classic Platteklip Gorge route. This challenging hike rewards you with breathtaking views of Cape Town and the Atlantic Ocean.</p>
+                        <div class="trail-details">
+                            <span class="detail">📍 Western Cape</span>
+                            <span class="detail">🏃 Challenging</span>
+                            <span class="detail">⏱️ 3-4 hours</span>
+                            <span class="detail">📏 5.5 km</span>
+                            <span class="detail">⭐ 4.8/5</span>
+                        </div>
+                        <div class="spotlight-actions">
+                            <button class="btn-primary" onclick="viewTrailDetails('table-mountain')">View Details</button>
+                            <button class="btn-secondary" onclick="addToFavorites('table-mountain')">❤️ Add to Favorites</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Favourite Trails Section -->
+            <section class="featured-trails">
+                <h2>Your Favourite Trails</h2>
+                <div class="trails-grid" id="featuredTrails">
+                    <!-- Favourite trails will be loaded here -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Trail Details Modal -->
+    <div class="modal" id="trailModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTrailModal()">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- Trail details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/TrailsPage.js"></script>
+</body>
+</html>
