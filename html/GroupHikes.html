@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrailBlazer - Group Hikes & Community</title>
+    <link rel="stylesheet" href="../css/GroupHikes.css">
+</head>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">🏔️ TrailBlazer</div>
+                <ul class="nav-links">
+                    <li><a href="landingPage.html">Home</a></li>
+                    <li><a href="ProductCatalogue.html">Gear</a></li>
+                    <li><a href="TrailsPage.html" class="active">Trails</a></li>
+                    <li><a href="GroupHikes.html">Community</a></li>
+                    <li><a href="AboutUsPage.html">About Us</a></li>
+                </ul>
+            </div>
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search trails...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="account-section">
+                    <a href="AdminPanel.html" class="account-btn" title="Admin Panel">⚙️</a>
+                    <a href="LoginPage.html" class="account-btn">👤 Sign In</a>
+                    <a href="CheckoutPage.html" class="cart-icon">
+                        🛒
+                        <span class="cart-count">2</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Join Our Hiking Community</h1>
+            <p>Connect with fellow adventurers, join group hikes, and explore South Africa's most beautiful trails together. Safety, friendship, and adventure await!</p>
+            
+            <div class="hero-cta-section">
+                <div class="cta-primary">
+                    <button class="btn-hero-primary" onclick="scrollToOrganize()">
+                        <span class="btn-text">
+                            <strong>Organize a Hike</strong>
+                            <small>Lead your own adventure</small>
+                        </span>
+                    </button>
+                </div>
+                <div class="cta-secondary">
+                    <button class="btn-hero-secondary" onclick="scrollToUpcoming()">
+                        <span class="btn-text">
+                            <strong>Join a Group</strong>
+                            <small>Find hiking partners</small>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Quick Actions -->
+            <section class="quick-actions" id="organizeSection">
+                <h2>Organize a Group Hike</h2>
+                
+                <div class="organize-content">
+                    <div class="organize-info">
+                        <h3>Why Organize with TrailBlazer?</h3>
+                        <ul class="organize-benefits">
+                            <li>Reach thousands of active hikers</li>
+                            <li>Built-in safety protocols and guidelines</li>
+                            <li>Easy event management tools</li>
+                            <li>Build your reputation as a hike leader</li>
+                            <li>Connect with like-minded adventurers</li>
+                        </ul>
+                        
+                        <div class="organize-stats">
+                            <div class="stat-item">
+                                <strong>500+</strong>
+                                <span>Hikes Organized</span>
+                            </div>
+                            <div class="stat-item">
+                                <strong>50+</strong>
+                                <span>Active Leaders</span>
+                            </div>
+                            <div class="stat-item">
+                                <strong>4.8★</strong>
+                                <span>Average Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="organize-form-container">
+                        <form id="createHikeForm" class="organize-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="hikeName">Hike Name*</label>
+                                    <input type="text" id="hikeName" name="hikeName" required placeholder="e.g., Table Mountain Sunrise Hike">
+                                </div>
+                                <div class="form-group">
+                                    <label for="hikeDate">Date*</label>
+                                    <input type="date" id="hikeDate" name="hikeDate" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="hikeTime">Meeting Time*</label>
+                                    <input type="time" id="hikeTime" name="hikeTime" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hikeDuration">Duration*</label>
+                                    <select id="hikeDuration" name="hikeDuration" required>
+                                        <option value="">Select duration</option>
+                                        <option value="2-4 hours">2-4 hours</option>
+                                        <option value="4-6 hours">4-6 hours</option>
+                                        <option value="6-8 hours">6-8 hours</option>
+                                        <option value="Full day">Full day</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="meetingPoint">Meeting Point*</label>
+                                <input type="text" id="meetingPoint" name="meetingPoint" required placeholder="e.g., Table Mountain Lower Cable Station Parking">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="difficulty">Difficulty Level*</label>
+                                    <select id="difficulty" name="difficulty" required>
+                                        <option value="">Select difficulty</option>
+                                        <option value="easy">Easy - Beginner friendly</option>
+                                        <option value="moderate">Moderate - Some experience required</option>
+                                        <option value="challenging">Challenging - Advanced hikers</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="maxParticipants">Max Participants*</label>
+                                    <input type="number" id="maxParticipants" name="maxParticipants" required min="3" max="20" placeholder="e.g., 12">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hikeDescription">Description*</label>
+                                <textarea id="hikeDescription" name="hikeDescription" required placeholder="Describe the trail, what to expect, and any special requirements..." rows="4"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="requiredGear">Required Gear</label>
+                                <textarea id="requiredGear" name="requiredGear" placeholder="List essential gear participants should bring..." rows="3"></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-organize-primary">Create Hike Event</button>
+                                <button type="button" class="btn-organize-secondary" onclick="resetForm()">Clear Form</button>
+                            </div>
+                        </form>
+                    </div>
+            </section>
+
+            <!-- Upcoming Group Hikes -->
+            <section class="upcoming-hikes" id="upcomingHikes">
+                <div class="section-header">
+                    <h2>Upcoming Group Hikes</h2>
+                    <div class="filter-controls">
+                        <select id="difficultyFilter" onchange="filterHikes()">
+                            <option value="">All Difficulty Levels</option>
+                            <option value="easy">Easy</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="challenging">Challenging</option>
+                        </select>
+                        <select id="locationFilter" onchange="filterHikes()">
+                            <option value="">All Locations</option>
+                            <option value="western-cape">Western Cape</option>
+                            <option value="gauteng">Gauteng</option>
+                            <option value="kwazulu-natal">KwaZulu-Natal</option>
+                            <option value="mpumalanga">Mpumalanga</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="hikes-grid" id="hikesGrid">
+                    <!-- Group hikes will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Success Stories -->
+            <section class="success-stories">
+                <h2>Community Stories</h2>
+                <div class="stories-grid">
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="story-avatar">SM</div>
+                            <div class="story-info">
+                                <h4>Sarah M.</h4>
+                                <span>Cape Town Mountaineers</span>
+                            </div>
+                        </div>
+                        <p>"Joining TrailBlazer was the best decision I made this year! I've met amazing people and discovered trails I never knew existed. The community is so supportive and welcoming."</p>
+                        <div class="story-meta">
+                            <span>★★★★★</span>
+                            <span>2 days ago</span>
+                        </div>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="story-avatar">MT</div>
+                            <div class="story-info">
+                                <h4>Mike T.</h4>
+                                <span>Weekend Warriors</span>
+                            </div>
+                        </div>
+                        <p>"As a beginner, I was nervous about group hiking. But the Weekend Warriors made me feel so comfortable. Now I'm leading my own hikes!"</p>
+                        <div class="story-meta">
+                            <span>★★★★★</span>
+                            <span>1 week ago</span>
+                        </div>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <div class="story-avatar">LK</div>
+                            <div class="story-info">
+                                <h4>Lisa K.</h4>
+                                <span>Coastal Explorers</span>
+                            </div>
+                        </div>
+                        <p>"The safety protocols and group support gave me confidence to tackle more challenging trails. I've grown so much as a hiker!"</p>
+                        <div class="story-meta">
+                            <span>★★★★★</span>
+                            <span>2 weeks ago</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Your Hikes Section -->
+            <section class="your-hikes" id="yourHikes">
+                <div class="section-header">
+                    <h2>Your Hikes</h2>
+                    <p>Track your hiking adventures - both joined and organized hikes</p>
+                </div>
+                
+                <div class="your-hikes-container" id="yourHikesContainer">
+                    <div class="empty-state">
+                        <div class="empty-icon">🥾</div>
+                        <h3>No hikes yet</h3>
+                        <p>Join or organize a group hike to see it appear here!</p>
+                        <button class="btn-primary" onclick="scrollToUpcoming()">Browse Hikes</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Create Hike Modal -->
+    <div class="modal" id="createHikeModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCreateHikeModal()">&times;</span>
+            <div class="modal-body">
+                <h2>Organize a Group Hike</h2>
+                <form id="createHikeForm" class="create-hike-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hikeName">Hike Name*</label>
+                            <input type="text" id="hikeName" name="hikeName" required placeholder="e.g., Table Mountain Sunrise Hike">
+                        </div>
+                        <div class="form-group">
+                            <label for="hikeDate">Date*</label>
+                            <input type="date" id="hikeDate" name="hikeDate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hikeTime">Meeting Time*</label>
+                            <input type="time" id="hikeTime" name="hikeTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hikeDuration">Duration*</label>
+                            <select id="hikeDuration" name="hikeDuration" required>
+                                <option value="">Select duration</option>
+                                <option value="2-4 hours">2-4 hours</option>
+                                <option value="4-6 hours">4-6 hours</option>
+                                <option value="6-8 hours">6-8 hours</option>
+                                <option value="Full day">Full day</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="meetingPoint">Meeting Point*</label>
+                        <input type="text" id="meetingPoint" name="meetingPoint" required placeholder="e.g., Table Mountain Lower Cable Station Parking">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="difficulty">Difficulty Level*</label>
+                            <select id="difficulty" name="difficulty" required>
+                                <option value="">Select difficulty</option>
+                                <option value="easy">Easy - Beginner friendly</option>
+                                <option value="moderate">Moderate - Some experience required</option>
+                                <option value="challenging">Challenging - Advanced hikers</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="maxParticipants">Max Participants*</label>
+                            <input type="number" id="maxParticipants" name="maxParticipants" required min="3" max="20" placeholder="e.g., 12">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hikeDescription">Description*</label>
+                        <textarea id="hikeDescription" name="hikeDescription" required placeholder="Describe the trail, what to expect, and any special requirements..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="requiredGear">Required Gear</label>
+                        <textarea id="requiredGear" name="requiredGear" placeholder="List essential gear participants should bring..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeCreateHikeModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Create Hike</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hike Details Modal -->
+    <div class="modal" id="hikeDetailsModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeHikeDetailsModal()">&times;</span>
+            <div class="modal-body" id="hikeModalBody">
+                <!-- Hike details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/GroupHikes.js"></script>
+</body>
+</html>
