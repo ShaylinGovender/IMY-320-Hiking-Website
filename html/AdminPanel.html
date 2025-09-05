@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrailBlazer - Admin Panel</title>
+    <link rel="stylesheet" href="../css/AdminPanel.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">🏔️ TrailBlazer Admin</div>
+                <ul class="nav-links">
+                    <li><a href="landingPage.html">Back to Site</a></li>
+                    <li><a href="#products">Products</a></li>
+                </ul>
+            </div>
+            <div class="nav-actions">
+                <div class="admin-info">
+                    <span>👤 Admin User</span>
+                    <a href="LoginPage.html" class="logout-btn">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="container">
+
+            <!-- Product Management Section -->
+            <section id="products" class="admin-section active">
+                <div class="section-header">
+                    <h1>Product Management</h1>
+                    <button class="btn-primary" onclick="showAddProductForm()">+ Add New Product</button>
+                </div>
+
+                <!-- Quality Assurance Checklist -->
+                <div class="qa-checklist-container" id="qaChecklist" style="display: none;">
+                    <div class="qa-header">
+                        <h2>🔍 Quality Assurance Checklist</h2>
+                        <p class="qa-description">Complete all Google Merchant specification checks before logging product to system</p>
+                        <div class="qa-progress-bar">
+                            <div class="progress-fill" id="qaProgress"></div>
+                            <span class="progress-text">0% Complete</span>
+                        </div>
+                    </div>
+                    
+                    <form id="qaForm" class="qa-form">
+                        <!-- Google Merchant Core Fields Section -->
+                        <div class="checklist-section">
+                            <h3>Core Product Information (Google Merchant Required)</h3>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_id" required data-field="Product ID">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Product ID</strong> - Unique identifier verified and follows naming convention
+                                        <small>Must be unique, alphanumeric, max 50 characters</small>
+                                    </div>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_title" required data-field="Product Title">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Product Title</strong> - Accurate, descriptive, includes brand and key features
+                                        <small>150 characters max, no promotional text</small>
+                                    </div>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_description" required data-field="Description">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Description</strong> - Complete product details, features, and benefits
+                                        <small>5000 characters max, accurate and relevant</small>
+                                    </div>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_brand" required data-field="Brand">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Brand Information</strong> - Verified brand name matches official spelling
+                                        <small>Must match manufacturer's official brand name</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Pricing & Availability Section -->
+                        <div class="checklist-section">
+                            <h3>Pricing & Availability Verification</h3>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_price" required data-field="Price">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Price Accuracy</strong> - Current market price verified and competitive
+                                        <small>Include currency (ZAR), no promotional pricing</small>
+                                    </div>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_availability" required data-field="Availability">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Availability Status</strong> - Stock levels confirmed with warehouse
+                                        <small>in stock | out of stock | preorder | discontinued</small>
+                                    </div>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_availability_date" required data-field="Availability Date">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Availability Date</strong> - Restocking or availability date confirmed (if applicable)
+                                        <small>ISO 8601 format (YYYY-MM-DD)</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Media & Links Section -->
+                        <div class="checklist-section">
+                            <h3>Media & Link Verification</h3>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_image" required data-field="Product Image">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Product Image</strong> - High-quality, representative image validated
+                                        <small>Min 100x100px, no watermarks, white/neutral background preferred</small>
+                                    </div>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_link" required data-field="Product Link">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Product Link</strong> - Direct link to product page tested and functional
+                                        <small>Must lead directly to product, secure HTTPS preferred</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Final Compliance Section -->
+                        <div class="checklist-section">
+                            <h3>Google Merchant Compliance</h3>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_merchant_compliance" required data-field="Merchant Standards">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Google Merchant Standards</strong> - All fields meet Google Shopping requirements
+                                        <small>Verified against current Google Merchant Center policies</small>
+                                    </div>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="qa_final_approval" required data-field="Quality Approval">
+                                    <span class="checkmark"></span>
+                                    <div class="check-content">
+                                        <strong>Quality Assurance Approval</strong> - Product ready for system logging
+                                        <small>Final sign-off by QA team member</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="qa-actions">
+                            <button type="button" class="btn-secondary" onclick="hideQAChecklist()">
+                                <span></span> Back to Product Form
+                            </button>
+                            <button type="submit" class="btn-primary" id="qaSubmitBtn" disabled>
+                                <span></span> Complete QA & Log Product
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Add Product Form -->
+                <div class="add-product-form" id="addProductForm" style="display: none;">
+                    <h2>Add New Product</h2>
+                    
+                    <form id="productForm" class="product-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="productId">Product ID*</label>
+                                <input type="text" id="productId" name="id" required placeholder="e.g., PROD-001">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productTitle">Product Title*</label>
+                                <input type="text" id="productTitle" name="title" required placeholder="e.g., Women's Hiking Boots">
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="productDescription">Product Description*</label>
+                                <textarea id="productDescription" name="description" required placeholder="Detailed product description including features and benefits"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productLink">Product Link</label>
+                                <input type="url" id="productLink" name="link" placeholder="https://example.com/product">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productImage">Product Image URL*</label>
+                                <input type="url" id="productImage" name="image" required placeholder="../images/product.jpg">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productAvailability">Availability*</label>
+                                <select id="productAvailability" name="availability" required>
+                                    <option value="">Select availability</option>
+                                    <option value="in stock">In Stock</option>
+                                    <option value="out of stock">Out of Stock</option>
+                                    <option value="preorder">Pre-order</option>
+                                    <option value="discontinued">Discontinued</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="availabilityDate">Availability Date</label>
+                                <input type="date" id="availabilityDate" name="availability_date">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productPrice">Price (R)*</label>
+                                <input type="number" id="productPrice" name="price" step="0.01" required placeholder="0.00">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productBrand">Brand*</label>
+                                <input type="text" id="productBrand" name="brand" required placeholder="e.g., TrailMaster">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productCategory">Category*</label>
+                                <select id="productCategory" name="category" required>
+                                    <option value="">Select category</option>
+                                    <option value="footwear">Footwear</option>
+                                    <option value="clothing">Clothing</option>
+                                    <option value="gear">Gear & Equipment</option>
+                                    <option value="accessories">Accessories</option>
+                                    <option value="safety">Safety & Navigation</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="hideAddProductForm()">Cancel</button>
+                            <button type="submit" class="btn-primary">Proceed to Quality Check</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Product List -->
+                <div class="product-list-admin" id="productListAdmin">
+                    <div class="list-header">
+                        <h3>Existing Products</h3>
+                        <div class="list-controls">
+                            <input type="text" id="adminSearch" placeholder="Search products..." onkeyup="filterAdminProducts()">
+                            <select id="adminCategoryFilter" onchange="filterAdminProducts()">
+                                <option value="">All Categories</option>
+                                <option value="footwear">Footwear</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="gear">Gear & Equipment</option>
+                                <option value="accessories">Accessories</option>
+                                <option value="safety">Safety & Navigation</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="admin-products-grid" id="adminProductsGrid">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="../js/AdminPanel.js"></script>
+</body>
+</html>
