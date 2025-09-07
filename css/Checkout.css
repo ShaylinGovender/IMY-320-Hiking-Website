@@ -58,6 +58,7 @@ img{max-width:100%;display:block;border-radius:10px}
 .btn.danger{background:var(--danger);border-color:var(--danger)}
 .btn.danger:hover{background:#c0392b;border-color:#c0392b}
 
+/* Make primary actions green */
 #checkout-btn,#continue-to-payment-btn,#pay-btn{background:var(--forest-green);border-color:var(--forest-green)}
 #checkout-btn:hover,#continue-to-payment-btn:hover,#pay-btn:hover{background:#1f8f4e;border-color:#1f8f4e}
 
@@ -73,6 +74,9 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
 .kicker{font-size:.9rem;color:#7f8c8d}
 
 .summary{position:sticky;top:90px;height:max-content}
+.summary .row{display:flex;gap:12px;align-items:flex-end}
+.summary .row>div:first-child{flex:1}
+#apply-discount{font-size:.9rem;padding:.6rem .9rem}
 
 .line{display:flex;justify-content:space-between;align-items:center;margin:.5rem 0}
 .line.total{font-weight:700;font-size:1.1rem;color:var(--deep-forest)}
@@ -84,22 +88,20 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
 }
 .item img{width:80px;height:80px;object-fit:cover;border:2px solid var(--line);border-radius:10px}
 .item h4{margin:0;font-size:1rem;color:var(--deep-forest)}
-.item .btn.danger{padding:.55rem .9rem;font-size:.9rem;border-radius:8px}
 .price{white-space:nowrap;font-weight:600}
 
-.qty{display:flex;gap:.5rem;align-items:center}
+/* Quantity: keep only the numeric field, hide +/- but NOT the Remove button */
+.qty{display:flex;gap:8px;align-items:center}
+.qty button:first-child,.qty button:last-child{display:none !important}
 .qty input{width:72px;text-align:center}
 
-.badge{
-  display:inline-flex;align-items:center;gap:.4rem;
-  background:var(--cloud-white);border:1px solid var(--line);
-  color:var(--mountain-slate);border-radius:999px;padding:.35rem .6rem;
-  font-size:.75rem;font-weight:600
-}
+/* Remove button sizing */
+.item .btn.danger{padding:.55rem .9rem;font-size:.9rem;border-radius:8px}
 
 .hero{
   display:flex;flex-direction:column;align-items:center;text-align:center;
-  padding:1rem 1.25rem;gap:.6rem;max-width:520px;margin:0 auto .5rem;background:#fff;border:1px solid var(--line);border-radius:15px
+  padding:.9rem 1rem;gap:.6rem;max-width:520px;margin:0 auto .75rem;
+  background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.08)
 }
 .hero h1{font-size:2rem;color:var(--deep-forest)}
 
@@ -109,12 +111,6 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 
 .confetti{position:fixed;inset:0;pointer-events:none}
 
-#apply-discount{font-size:.9rem;padding:.6rem .9rem;margin-left:8px}
-
-/* Hide +/- quantity buttons and keep only the numeric field */
-.qty > *:not(input){display:none !important;}
-.qty{gap:0}
-.qty input{width:64px;text-align:center}
-.item .qty > *:not(input){display:none !important;}
-
-
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:780px){.form-grid{grid-template-columns:1fr}}
+.form-grid .col-span-2{grid-column:1/-1}
