@@ -73,6 +73,12 @@ class RegisterPage {
                 this.clearFieldError(confirmPasswordInput);
             });
         }
+
+        // Add event listener for terms checkbox
+        const termsCheckbox = document.getElementById('terms');
+        if (termsCheckbox) {
+            termsCheckbox.addEventListener('change', () => this.clearFieldError(termsCheckbox));
+        }
     }
 
     loadUsers() {
@@ -199,7 +205,7 @@ class RegisterPage {
         }
 
         if (!termsAccepted) {
-            this.showError('You must accept the Terms of Service and Privacy Policy to continue.');
+            this.showFieldError('terms', 'You must accept the Terms of Service and Privacy Policy to continue.');
             isValid = false;
         }
 
@@ -465,26 +471,80 @@ class RegisterPage {
 
     showFieldError(fieldName, message) {
         const field = document.getElementById(fieldName);
-        if (field) {
-            field.style.borderColor = '#e74c3c';
+        let formGroup = field?.parentNode;
+        
+        // For checkboxes, we need to find the correct container
+        if (field && field.type === 'checkbox') {
+            formGroup = field.closest('.checkbox-group') || field.closest('.form-group');
+        }
+        
+        if (field && formGroup) {
+            // Add error styling
+            formGroup.classList.add('error');
             
-            const existingError = field.parentNode.querySelector('.field-error');
-            if (existingError) {
-                existingError.remove();
+            // Handle different field types
+            if (field.type === 'checkbox') {
+                field.style.outline = '2px solid #e74c3c';
+                field.style.outlineOffset = '2px';
+            } else {
+                field.style.borderColor = '#e74c3c';
             }
+            
+            // Remove existing error elements
+            const existingError = formGroup.querySelector('.field-error');
+            const existingPopup = formGroup.querySelector('.validation-popup');
+            if (existingError) existingError.remove();
+            if (existingPopup) existingPopup.remove();
 
-            const errorEl = document.createElement('div');
-            errorEl.className = 'field-error';
-            errorEl.textContent = message;
-            field.parentNode.appendChild(errorEl);
+            // Create custom validation popup
+            const popup = document.createElement('div');
+            popup.className = 'validation-popup';
+            popup.textContent = message;
+            
+            // Special positioning for checkbox
+            if (field.type === 'checkbox') {
+                popup.style.position = 'absolute';
+                popup.style.top = '100%';
+                popup.style.left = '0';
+                popup.style.marginTop = '0.25rem';
+            }
+            
+            formGroup.appendChild(popup);
+
+            // Auto-remove popup after 4 seconds
+            setTimeout(() => {
+                if (popup.parentNode) {
+                    popup.remove();
+                }
+            }, 4000);
+
+            // Focus the field for better UX
+            field.focus();
         }
     }
 
     clearFieldError(field) {
-        field.style.borderColor = '#ddd';
-        const errorEl = field.parentNode.querySelector('.field-error');
-        if (errorEl) {
-            errorEl.remove();
+        let formGroup = field?.parentNode;
+        
+        // For checkboxes, we need to find the correct container
+        if (field && field.type === 'checkbox') {
+            formGroup = field.closest('.checkbox-group') || field.closest('.form-group');
+        }
+        
+        if (formGroup) {
+            formGroup.classList.remove('error');
+            
+            // Handle different field types
+            if (field.type === 'checkbox') {
+                field.style.outline = 'none';
+            } else {
+                field.style.borderColor = '#ddd';
+            }
+            
+            const errorEl = formGroup.querySelector('.field-error');
+            const popup = formGroup.querySelector('.validation-popup');
+            if (errorEl) errorEl.remove();
+            if (popup) popup.remove();
         }
     }
 
