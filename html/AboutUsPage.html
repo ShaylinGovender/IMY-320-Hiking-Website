@@ -8,33 +8,34 @@
 </head>
 <body>
     <nav id="navbar">
-        <div class="nav-container">
-            <div class="nav-left">
-                <div class="logo">🏔️ TrailBlazer</div>
-                <ul class="nav-links">
-                    <li><a href="../html/landingPage.html">Home</a></li>
-                    <li><a href="../html/ProductCatalogue.html">Gear</a></li>
-                    <li><a href="../html/TrailsPage.html">Trails</a></li>
-                    <li><a href="../html/GroupHikes.html">Community</a></li>
-                    <li><a href="#about" class="active">About Us</a></li>
-                </ul>
-            </div>
-            <div class="nav-actions">
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Search gear, trails...">
-                    <button class="search-btn">🔍</button>
-                </div>
-                <div class="account-section">
-                    <a href="../html/AdminPanel.html" class="account-btn" title="Admin Panel">⚙️Admin</a>
-                    <a href="../html/LoginPage.html" class="account-btn">👤 Logout</a>
-                    <div class="cart-icon">
-                        🛒
-                        <span class="cart-count">2</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+  <div class="nav-container">
+    <div class="nav-left">
+      <div class="logo">🏔️ TrailBlazer</div>
+      <ul class="nav-links">
+        <li><a href="../html/landingPage.html">Home</a></li>
+        <li><a href="../html/ProductCatalogue.html">Gear</a></li>
+        <li><a href="../html/TrailsPage.html">Trails</a></li>
+        <li><a href="../html/GroupHikes.html">Community</a></li>
+        <li><a href="#about" class="active">About Us</a></li>
+      </ul>
+    </div>
+    <div class="nav-actions">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search gear, trails...">
+        <button class="search-btn">🔍</button>
+      </div>
+      <div class="account-section">
+        <a href="../html/AdminPanel.html" class="account-btn" title="Admin Panel">⚙️Admin</a>
+        <a href="../html/LoginPage.html" class="account-btn">👤 Logout</a>
+        <a href="../html/Cart.html" class="cart-icon" aria-label="Cart">
+          🛒
+          <span class="cart-count" id="cart-count" data-cart-count>0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
 
     <section class="hero" id="about">
         <div class="hero-content">
@@ -230,5 +231,6 @@
     </footer>
 
     <script src="../js/AboutUsPage.js"></script>
+    <script src="../js/Cart.js"></script>
 </body>
 </html>
