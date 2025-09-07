@@ -689,7 +689,10 @@ function generateRelatedProducts() {
   related.forEach(product => {
     const card = document.createElement('div');
     card.className = 'related-product-card';
-    card.onclick = () => loadProduct(product.id);
+    card.onclick = () => {
+      resetPageState();
+      loadProduct(product.id);
+    };
     card.innerHTML = `
       <img src="${product.image}" alt="${product.name}" class="related-product-image">
       <div class="related-product-info">
@@ -698,6 +701,28 @@ function generateRelatedProducts() {
       </div>`;
     container.appendChild(card);
   });
+}
+
+function resetPageState() {
+  // Jump to top of page instantly
+  window.scrollTo(0, 0);
+  
+  closeZoomModal();
+  
+  // Reset quantity selector to 1
+  const quantityInput = document.getElementById('quantity');
+  if (quantityInput) {
+    quantityInput.value = 1;
+  }
+  
+  const sizeButtons = document.querySelectorAll('.size-option');
+  sizeButtons.forEach(btn => btn.classList.remove('selected'));
+  
+  const colorButtons = document.querySelectorAll('.color-option');
+  colorButtons.forEach(btn => btn.classList.remove('selected'));
+  
+  const reviewContents = document.querySelectorAll('.review-content.expanded');
+  reviewContents.forEach(content => content.classList.remove('expanded'));
 }
 
 /* ---------- Zoom Modal ---------- */
