@@ -6,8 +6,14 @@
     <title>TrailBlazer - Product Details</title>
     <link rel="stylesheet" href="../css/ProductPage.css">
 </head>
-<body>
-    <!-- Navigation -->
+<body
+  data-product-id="griptech-hiking-gloves"
+  data-product-title="Hiking Gloves"
+  data-product-price="539.82"
+  data-product-image="../images/Hiking-Gloves.jpg"
+  data-product-brand="GRIPTECH"
+  data-product-descriptor="Lightweight, breathable gloves with enhanced grip and touchscreen compatibility">
+
     <nav id="navbar">
   <div class="nav-container">
     <div class="nav-left">
@@ -37,11 +43,8 @@
   </div>
 </nav>
 
-
-    <!-- Main Content -->
     <main class="main-content">
         <div class="container">
-            <!-- Simple Breadcrumb -->
             <div class="simple-breadcrumb">
                 <span>TrailBlazer</span>
                 <span class="separator">/</span>
@@ -50,9 +53,7 @@
                 <span id="breadcrumbProduct">Product Name</span>
             </div>
 
-            <!-- Product Detail Section -->
             <div class="product-detail-container">
-                <!-- Product Images Section -->
                 <div class="product-images">
                     <div class="main-image-container">
                         <img id="mainProductImage" src="../images/Hiking-Gloves.jpg" alt="Product Image" class="main-product-image">
@@ -62,16 +63,13 @@
                     </div>
                     <div class="thumbnail-images">
                         <div id="productThumbnails" class="thumbnail-images"></div>
-
                     </div>
                 </div>
 
-                <!-- Product Information Section -->
                 <div class="product-info">
                     <div class="product-header">
                         <span id="productBrand" class="brand-name">GRIPTECH</span>
                         <h1 id="productName" class="product-title">Hiking Gloves</h1>
-                        
                         <div class="rating-section">
                             <div id="productRating" class="stars">
                                 ★★★★☆
@@ -131,7 +129,6 @@
                 </div>
             </div>
 
-            <!-- Product Details Tabs -->
             <div class="product-details-section">
                 <div class="tabs">
                     <button class="tab-button active" onclick="showTab('description')">Description</button>
@@ -229,26 +226,20 @@
                                 </div>
                             </div>
                             <div class="reviews-list">
-                              
-                          <div id="reviewsList" class="reviews-list"></div>
-
+                              <div id="reviewsList" class="reviews-list"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Related Products -->
             <div class="related-products-section">
                 <h2>Related Products</h2>
-                <div class="related-products-grid" id="relatedProductsGrid">
-                    <!-- Related products will be dynamically generated -->
-                </div>
+                <div class="related-products-grid" id="relatedProductsGrid"></div>
             </div>
         </div>
     </main>
 
-    <!-- Image Zoom Modal -->
     <div id="imageZoomModal" class="zoom-modal" style="display: none;">
         <div class="zoom-modal-content">
             <span class="zoom-close" onclick="closeZoomModal()">&times;</span>
@@ -258,5 +249,23 @@
 
     <script src="../js/ProductPage.js"></script>
     <script src="../js/Cart.js"></script>
+    <script>
+      function addToCart(){
+        const d=document.body.dataset
+        const qty=Math.max(1,parseInt((document.getElementById('quantity')||{}).value||'1',10))
+        const product={
+          id:d.productId,
+          title:d.productTitle,
+          price:parseFloat(d.productPrice),
+          image:d.productImage,
+          brand:d.productBrand,
+          descriptor:d.productDescriptor||'',
+          link:location.href,
+          availability:'in_stock',
+          availabilityDate:new Date().toISOString()
+        }
+        Cart.add(product,qty)
+      }
+    </script>
 </body>
 </html>

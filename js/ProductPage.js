@@ -724,3 +724,22 @@ document.addEventListener('click', function (event) {
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') closeZoomModal();
 });
+
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('[data-add-to-cart]');
+  if(!btn)return;
+  const qtyEl=document.querySelector('[data-qty]');
+  const qty=Math.max(1,parseInt(qtyEl?qtyEl.value:1,10));
+  const product={
+    id:document.body.dataset.productId,
+    title:document.body.dataset.productTitle,
+    price:parseFloat(document.body.dataset.productPrice),
+    image:document.body.dataset.productImage,
+    brand:document.body.dataset.productBrand,
+    descriptor:document.body.dataset.productDescriptor||'',
+    link:location.href,
+    availability:'in_stock',
+    availabilityDate:new Date().toISOString()
+  };
+  Cart.add(product,qty);
+});
