@@ -250,22 +250,26 @@
     <script src="../js/ProductPage.js"></script>
     <script src="../js/Cart.js"></script>
     <script>
-      function addToCart(){
-        const d=document.body.dataset
-        const qty=Math.max(1,parseInt((document.getElementById('quantity')||{}).value||'1',10))
-        const product={
-          id:d.productId,
-          title:d.productTitle,
-          price:parseFloat(d.productPrice),
-          image:d.productImage,
-          brand:d.productBrand,
-          descriptor:d.productDescriptor||'',
-          link:location.href,
-          availability:'in_stock',
-          availabilityDate:new Date().toISOString()
-        }
-        Cart.add(product,qty)
-      }
-    </script>
+function addToCart(){
+  function t(sel){var el=document.querySelector(sel);return el?el.textContent.trim():''}
+  function price(s){
+    if(!s) return 0;
+    var x=s.replace(/[^\d,.-]/g,'').replace(/\s/g,'');
+    if((x.match(/,/g)||[]).length===1 && x.indexOf(',')>x.indexOf('.')) x=x.replace(/\./g,'').replace(',','.');
+    else x=x.replace(/,/g,'');
+    var n=parseFloat(x); return isNaN(n)?0:n;
+  }
+  var title=t('#productName') || document.body.dataset.productTitle || 'Item';
+  var brand=t('#productBrand') || document.body.dataset.productBrand || '';
+  var p=price(t('#productPrice') || document.body.dataset.productPrice || '0');
+  var imgEl=document.querySelector('#mainProductImage, .main-product-image, img');
+  var image=imgEl?imgEl.src:(document.body.dataset.productImage||'');
+  var id=(title+'-'+brand).toLowerCase().replace(/[^a-z0-9]+/g,'-');
+  var qEl=document.getElementById('quantity');
+  var qty=Math.max(1,parseInt(qEl?qEl.value:1,10)||1);
+  Cart.add({id:id,title:title,price:p,image:image,brand:brand,descriptor:t('#productDescription')||'',link:location.href,availability:'in_stock',availabilityDate:new Date().toISOString()},qty);
+}
+</script>
+
 </body>
 </html>
