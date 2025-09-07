@@ -40,8 +40,8 @@
   <div class="success-hero">
     <span class="badge">Order placed</span>
     <h1>Thank you!</h1>
-    <div id="success-total" class="kicker"></div>
-    <div id="order-id" class="kicker"></div>
+    <div id="success-total" class="kicker">Total R0.00</div>
+    <div id="order-id" class="kicker">Order ID Loading...</div>
     <div class="row" style="gap:10px;margin-top:6px;justify-content:center">
       <a class="btn" href="./ProductCatalogue.html">Continue shopping</a>
       <a class="btn secondary" href="./GroupHikes.html">Find a group hike</a>
@@ -49,13 +49,117 @@
   </div>
 
   <div class="grid" style="margin-top:10px">
-    <div class="card"><h3>Items</h3><div id="success-items"></div></div>
-    <div class="card summary"><h3>Summary</h3><div id="success-summary"></div></div>
+    <div class="card"><h3>Items</h3><div id="success-items">Loading items...</div></div>
+    <div class="card summary"><h3>Summary</h3><div id="success-summary">Loading summary...</div></div>
   </div>
 </div>
 
-<script src="../js/Cart.js"></script>
-<script src="../js/OrderSuccess.js"></script>
+<script>
+console.log('Starting complete takeover script...');
+
+window.Cart = {
+  render: function() { console.log('Cart render blocked'); },
+  add: function() {},
+  remove: function() {},
+  clear: function() {},
+  get: function() { return []; },
+  items: function() { return []; },
+  count: function() { return 0; },
+  totals: function() { return {subtotal:0,tax:0,total:0}; },
+  loadLastOrder: function() { 
+    try {
+      return JSON.parse(localStorage.getItem('tb_last_order'));
+    } catch (e) {
+      return null;
+    }
+  }
+};
+
+function forceRender() {
+  console.log('Force render starting...');
+  
+  const orderData = localStorage.getItem('tb_last_order');
+  console.log('Order data:', orderData);
+  
+  if (!orderData) {
+    console.error('No order data!');
+    return;
+  }
+  
+  let order;
+  try {
+    order = JSON.parse(orderData);
+    console.log('Order parsed:', order);
+  } catch (e) {
+    console.error('Parse error:', e);
+    return;
+  }
+  
+  const totalEl = document.getElementById('success-total');
+  const orderIdEl = document.getElementById('order-id');
+  const itemsEl = document.getElementById('success-items');
+  const summaryEl = document.getElementById('success-summary');
+  
+  console.log('Elements:', {
+    total: !!totalEl,
+    orderId: !!orderIdEl,
+    items: !!itemsEl,
+    summary: !!summaryEl
+  });
+  
+  if (totalEl && order.totals) {
+    totalEl.textContent = 'Total R' + order.totals.total.toFixed(2);
+    console.log('Updated total to:', order.totals.total);
+  }
+  
+  if (orderIdEl && order.id) {
+    orderIdEl.textContent = 'Order ID ' + order.id;
+    console.log('Updated order ID to:', order.id);
+  }
+  
+  if (itemsEl && order.items) {
+    itemsEl.innerHTML = '';
+    order.items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `
+        <img src="${item.image || ''}" alt="" width="72" height="72">
+        <div>
+          <h4>${item.title || 'Item'}</h4>
+          <div class="kicker">${item.brand || ''}</div>
+        </div>
+        <div class="price kicker">x${item.qty} • R${(item.price || 0).toFixed(2)}</div>
+      `;
+      itemsEl.appendChild(div);
+    });
+    console.log('Items rendered');
+  }
+  
+  if (summaryEl && order.totals) {
+    summaryEl.innerHTML = `
+      <div class="line"><span>Subtotal</span><strong>R${order.totals.subtotal.toFixed(2)}</strong></div>
+      <div class="line"><span>Discount</span><strong>-R${order.totals.discount.toFixed(2)}</strong></div>
+      <div class="line"><span>Shipping</span><strong>R${order.totals.shipping.toFixed(2)}</strong></div>
+      <div class="line"><span>Tax</span><strong>R${order.totals.tax.toFixed(2)}</strong></div>
+      <div class="line total"><span>Total</span><strong>R${order.totals.total.toFixed(2)}</strong></div>
+    `;
+    console.log('Summary updated');
+  }
+  
+  console.log('Force render complete');
+}
+
+forceRender();
+setTimeout(forceRender, 50);
+setTimeout(forceRender, 100);
+setTimeout(forceRender, 200);
+setTimeout(forceRender, 500);
+
+document.addEventListener('DOMContentLoaded', forceRender);
+
+console.log('Script setup complete');
+</script>
+
 <script>
 (function(){
   var c=document.getElementById('confetti'); if(!c) return;
