@@ -48,9 +48,9 @@
     <main class="main-content">
         <div class="container">
             <div class="simple-breadcrumb">
-                <span>TrailBlazer</span>
+                <a href="#" id="breadcrumbHome" onclick="navigateToHome()">TrailBlazer</a>
                 <span class="separator">/</span>
-                <span id="breadcrumbCategory">Accessories</span>
+                <a href="#" id="breadcrumbCategory" onclick="navigateToCategory()">Accessories</a>
                 <span class="separator">/</span>
                 <span id="breadcrumbProduct">Product Name</span>
             </div>
@@ -133,10 +133,10 @@
 
             <div class="product-details-section">
                 <div class="tabs">
-                    <button class="tab-button active" onclick="showTab('description')">Description</button>
-                    <button class="tab-button" onclick="showTab('features')">Features</button>
-                    <button class="tab-button" onclick="showTab('specifications')">Specifications</button>
-                    <button class="tab-button" onclick="showTab('reviews')">Reviews</button>
+                    <button class="tab-button active" onclick="showTab('description', this)">Description</button>
+                    <button class="tab-button" onclick="showTab('features', this)">Features</button>
+                    <button class="tab-button" onclick="showTab('specifications', this)">Specifications</button>
+                    <button class="tab-button" onclick="showTab('reviews', this)">Reviews</button>
                 </div>
 
                 <div class="tab-content">

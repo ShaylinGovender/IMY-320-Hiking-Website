@@ -28,12 +28,6 @@ if (!window.ProductData) {
         image: "../images/Backpacking-Gear-Essentials.jpg",
         features: ["Complete Set","Lightweight","Compact","Weather Resistant"], inStock: true,  dateAdded: "2024-01-20" },
 
-      { id: 4,  name: "Merino Wool Base Layer", brand: "NatureFit", category: "clothing",
-        price: 1439.82, originalPrice: 1799.82, rating: 4.6,
-        description: "Premium merino wool base layer for temperature regulation and moisture wicking. Naturally odor-resistant and comfortable.",
-        image: "../images/Women-Hiking-Boots.jpg",
-        features: ["Merino Wool","Moisture Wicking","Odor Resistant","Temperature Control"], inStock: true,  dateAdded: "2024-02-10" },
-
       { id: 5,  name: "GPS Navigation Device", brand: "TrailTech", category: "safety",
         price: 4499.82, originalPrice: null, rating: 4.4,
         description: "Advanced GPS device with topographic maps, weather alerts, and emergency SOS functionality. Essential for backcountry adventures.",
@@ -43,7 +37,7 @@ if (!window.ProductData) {
       { id: 6,  name: "Ultralight Hiking Jacket", brand: "WindShield", category: "clothing",
         price: 3419.82, originalPrice: 4139.82, rating: 4.3,
         description: "Packable ultralight jacket with wind and water resistance. Perfect for unpredictable mountain weather conditions.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
+        image: "../images/hikingjacket.jpg",
         features: ["Ultralight","Packable","Water Resistant","Wind Proof"], inStock: true,  dateAdded: "2024-02-05" },
 
       { id: 7,  name: "Trekking Poles Set", brand: "StableStep", category: "gear",
@@ -112,22 +106,10 @@ if (!window.ProductData) {
         image: "../images/sleepingbag.jpg",
         features: ["Down Insulation","3-Season","Compression Sack","Lightweight"], inStock: true, dateAdded: "2024-02-20" },
 
-      { id: 18, name: "Hiking Pants", brand: "TrailFlex", category: "clothing",
-        price: 1799.82, originalPrice: null, rating: 4.4,
-        description: "Durable hiking pants with stretch fabric and multiple pockets. Water-resistant and quick-drying.",
-        image: "../images/Hiking-Gloves.jpg",
-        features: ["Stretch Fabric","Water Resistant","Quick Dry","Multiple Pockets"], inStock: true, dateAdded: "2024-01-22" },
-
-      { id: 19, name: "Thermal Underwear Set", brand: "WarmLayer", category: "clothing",
-        price: 1079.82, originalPrice: 1439.82, rating: 4.3,
-        description: "Thermal underwear set with moisture-wicking properties and odor control. Essential for cold weather hiking.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
-        features: ["Thermal","Moisture Wicking","Odor Control","Comfortable Fit"], inStock: true, dateAdded: "2024-02-01" },
-
       { id: 20, name: "Rain Poncho", brand: "StormShield", category: "clothing",
         price: 899.82, originalPrice: 1169.82, rating: 4.1,
         description: "Lightweight rain poncho with hood and snap closures. Packs small and provides excellent rain protection.",
-        image: "../images/Women-Hiking-Boots.jpg",
+        image: "../images/raincoat.jpg",
         features: ["Waterproof","Lightweight","Packable","Hood"], inStock: false, dateAdded: "2024-01-08" },
 
       { id: 21, name: "Emergency Whistle", brand: "SafeSound", category: "safety",
@@ -239,13 +221,45 @@ if (!window.ProductData) {
             reviews: [
               { user: "Pieter L.", rating: 5, date: "2025-01-30", title: "Always carry", text: "Backup to my filter—great peace of mind." },
               { user: "Thabo M.",  rating: 4, date: "2024-12-12", title: "Tastes fine",   text: "Minimal aftertaste; instructions are clear." }
+            ] },
+      6:  { image: "../images/hikingjacket.jpg", images: ["../images/hikingjacket.jpg"],
+            description: "Ultralight packable jacket with advanced DWR coating and windproof membrane. Perfect for unpredictable mountain weather with exceptional breathability and comfort.",
+            features: ["Ultralight Design","DWR Water Resistant","Windproof Membrane","Packable","Breathable Fabric","Adjustable Hood","Elastic Cuffs"],
+            specifications: {
+              "Weight": "180g (Size M)",
+              "Material": "20D Ripstop Nylon",
+              "Water Resistance": "DWR Coating + Windproof Membrane",
+              "Packability": "Packs into own pocket",
+              "Sizes": "XS, S, M, L, XL, XXL",
+              "Care": "Machine wash cold, air dry"
+            },
+            reviews: [
+              { user: "Sarah M.", rating: 5, date: "2025-06-15", title: "Amazing packability", text: "This jacket is incredible! Weighs almost nothing and packs down to the size of an apple. Kept me dry and comfortable during a sudden thunderstorm on Table Mountain." },
+              { user: "Mike R.", rating: 4, date: "2025-05-22", title: "Great for layering", text: "Perfect outer layer. Breathes well during uphill climbs and blocks wind effectively. Only wish the pockets were a bit larger." },
+              { user: "Nomsa K.", rating: 5, date: "2025-04-18", title: "Ultralight champion", text: "Best hiking jacket I've owned. The DWR coating works brilliantly - water just beads off. Essential for any serious hiker." }
+            ] },
+      20: { image: "../images/raincoat.jpg", images: ["../images/raincoat.jpg"],
+            description: "Durable rain poncho with adjustable hood and snap closures. Provides excellent coverage and protection from heavy rain while maintaining breathability for active use.",
+            features: ["Waterproof Construction","Adjustable Hood","Snap Closures","Breathable Fabric","Reinforced Seams","Lightweight","Compact Storage"],
+            specifications: {
+              "Weight": "320g",
+              "Material": "Ripstop Polyester with PU Coating",
+              "Water Resistance": "5000mm waterproof rating",
+              "Size": "One size fits most",
+              "Coverage": "Full torso and thigh protection",
+              "Storage": "Compact stuff sack included"
+            },
+            reviews: [
+              { user: "James T.", rating: 4, date: "2025-07-02", title: "Great emergency gear", text: "Saved me during an unexpected downpour in Cederberg. Easy to put on quickly and covers my backpack too. Quality construction." },
+              { user: "Lisa P.", rating: 4, date: "2025-05-30", title: "Reliable protection", text: "Keeps me completely dry even in heavy rain. The hood adjustment is excellent. Only downside is it can get a bit warm during intense activity." },
+              { user: "David L.", rating: 5, date: "2025-04-25", title: "Perfect for hiking", text: "Lightweight but incredibly durable. The snap closures are secure and the cut allows good mobility while hiking. Essential gear!" }
             ] }
     };
 
     function applyProductOverrides(list) {
       return list.map(p => {
-        const isGearOrSafety = p.category === 'gear' || p.category === 'safety';
-        return (isGearOrSafety && PRODUCT_OVERRIDES[p.id]) ? { ...p, ...PRODUCT_OVERRIDES[p.id] } : p;
+        const hasOverride = p.category === 'gear' || p.category === 'safety' || p.category === 'clothing';
+        return (hasOverride && PRODUCT_OVERRIDES[p.id]) ? { ...p, ...PRODUCT_OVERRIDES[p.id] } : p;
       });
     }
 
@@ -785,3 +799,16 @@ document.addEventListener('click',e=>{
   };
   Cart.add(product,qty);
 });
+
+/* ---------- Breadcrumb Navigation Functions ---------- */
+function navigateToHome() {
+  window.location.href = 'ProductCatalogue.html';
+}
+
+function navigateToCategory() {
+  if (!currentProduct) return;
+  
+  // Create URL with category filter parameter
+  const categoryFilter = currentProduct.category.toLowerCase();
+  window.location.href = `ProductCatalogue.html?category=${categoryFilter}`;
+}

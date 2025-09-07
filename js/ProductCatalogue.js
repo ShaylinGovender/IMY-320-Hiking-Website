@@ -28,12 +28,6 @@ if (!window.ProductData) {
         image: "../images/Backpacking-Gear-Essentials.jpg",
         features: ["Complete Set","Lightweight","Compact","Weather Resistant"], inStock: true,  dateAdded: "2024-01-20" },
 
-      { id: 4,  name: "Merino Wool Base Layer", brand: "NatureFit", category: "clothing",
-        price: 1439.82, originalPrice: 1799.82, rating: 4.6,
-        description: "Premium merino wool base layer for temperature regulation and moisture wicking. Naturally odor-resistant and comfortable.",
-        image: "../images/Women-Hiking-Boots.jpg",
-        features: ["Merino Wool","Moisture Wicking","Odor Resistant","Temperature Control"], inStock: true,  dateAdded: "2024-02-10" },
-
       { id: 5,  name: "GPS Navigation Device", brand: "TrailTech", category: "safety",
         price: 4499.82, originalPrice: null, rating: 4.4,
         description: "Advanced GPS device with topographic maps, weather alerts, and emergency SOS functionality. Essential for backcountry adventures.",
@@ -43,7 +37,7 @@ if (!window.ProductData) {
       { id: 6,  name: "Ultralight Hiking Jacket", brand: "WindShield", category: "clothing",
         price: 3419.82, originalPrice: 4139.82, rating: 4.3,
         description: "Packable ultralight jacket with wind and water resistance. Perfect for unpredictable mountain weather conditions.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
+        image: "../images/hikingjacket.jpg",
         features: ["Ultralight","Packable","Water Resistant","Wind Proof"], inStock: true,  dateAdded: "2024-02-05" },
 
       { id: 7,  name: "Trekking Poles Set", brand: "StableStep", category: "gear",
@@ -114,22 +108,10 @@ if (!window.ProductData) {
         image: "../images/sleepingbag.jpg", // your improved asset
         features: ["Down Insulation","3-Season","Compression Sack","Lightweight"], inStock: true, dateAdded: "2024-02-20" },
 
-      { id: 18, name: "Hiking Pants", brand: "TrailFlex", category: "clothing",
-        price: 1799.82, originalPrice: null, rating: 4.4,
-        description: "Durable hiking pants with stretch fabric and multiple pockets. Water-resistant and quick-drying.",
-        image: "../images/Hiking-Gloves.jpg",
-        features: ["Stretch Fabric","Water Resistant","Quick Dry","Multiple Pockets"], inStock: true, dateAdded: "2024-01-22" },
-
-      { id: 19, name: "Thermal Underwear Set", brand: "WarmLayer", category: "clothing",
-        price: 1079.82, originalPrice: 1439.82, rating: 4.3,
-        description: "Thermal underwear set with moisture-wicking properties and odor control. Essential for cold weather hiking.",
-        image: "../images/Backpacking-Gear-Essentials.jpg",
-        features: ["Thermal","Moisture Wicking","Odor Control","Comfortable Fit"], inStock: true, dateAdded: "2024-02-01" },
-
       { id: 20, name: "Rain Poncho", brand: "StormShield", category: "clothing",
         price: 899.82, originalPrice: 1169.82, rating: 4.1,
         description: "Lightweight rain poncho with hood and snap closures. Packs small and provides excellent rain protection.",
-        image: "../images/Women-Hiking-Boots.jpg",
+        image: "../images/raincoat.jpg",
         features: ["Waterproof","Lightweight","Packable","Hood"], inStock: false, dateAdded: "2024-01-08" },
 
       { id: 21, name: "Emergency Whistle", brand: "SafeSound", category: "safety",
@@ -285,9 +267,29 @@ function initNavbarScroll() {
 
 document.addEventListener('DOMContentLoaded', function () {
   populateBrandFilter();
+  
+  // Check for URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const categoryParam = urlParams.get('category');
+  
+  // Set category filter if provided in URL
+  if (categoryParam) {
+    const categoryFilter = document.getElementById('categoryFilter');
+    if (categoryFilter) {
+      categoryFilter.value = categoryParam;
+      currentFilters.category = categoryParam;
+    }
+  }
+  
   const all = getProducts();
-  displayProducts(all);
-  updateResultsCount(all.length);
+  
+  // Apply filters if category was set from URL
+  if (categoryParam) {
+    applyFiltersInternal();
+  } else {
+    displayProducts(all);
+    updateResultsCount(all.length);
+  }
 
   const searchInput = document.getElementById('productSearch');
   if (searchInput) {
