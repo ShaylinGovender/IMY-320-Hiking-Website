@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Order Success</title>
+<link rel="stylesheet" href="../css/Checkout.css">
+</head>
+<body>
+<canvas class="confetti" id="confetti"></canvas>
+<div class="container">
+  <div class="hero card">
+    <span class="badge">Order placed</span>
+    <h1>Thank you</h1>
+    <div id="success-total" class="kicker"></div>
+    <div id="order-id" class="kicker"></div>
+    <div class="row" style="margin-top:10px">
+      <a class="btn" href="./ProductCatalogue.html">Continue shopping</a>
+      <a class="btn secondary" href="./GroupHikes.html">Find a group hike</a>
+    </div>
+  </div>
+  <div class="grid" style="margin-top:12px">
+    <div class="card">
+      <h3>Items</h3>
+      <div id="success-items"></div>
+    </div>
+    <div class="card summary">
+      <h3>Summary</h3>
+      <div id="success-summary"></div>
+    </div>
+  </div>
+</div>
+<script src="../js/OrderSuccess.js"></script>
+</body>
+</html>

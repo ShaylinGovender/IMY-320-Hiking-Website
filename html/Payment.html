@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Payment</title>
+<link rel="stylesheet" href="../css/Checkout.css">
+</head>
+<body>
+<div class="container">
+  <h1>Payment</h1>
+  <div class="grid">
+    <form class="card" id="payment-form">
+      <div>
+        <label class="kicker">Payment method</label>
+        <div class="row">
+          <label><input type="radio" name="method" value="card" checked> Card</label>
+          <label><input type="radio" name="method" value="eft"> EFT</label>
+        </div>
+      </div>
+      <div id="card-fields">
+        <div>
+          <label class="kicker">Card number</label>
+          <input class="input" id="cardNumber" maxlength="19" placeholder="0000 0000 0000 0000">
+        </div>
+        <div class="row">
+          <div>
+            <label class="kicker">Expiry</label>
+            <input class="input" id="cardExpiry" placeholder="MM/YY">
+          </div>
+          <div>
+            <label class="kicker">CVC</label>
+            <input class="input" id="cardCvc" maxlength="4">
+          </div>
+        </div>
+        <div>
+          <label class="kicker">Name on card</label>
+          <input class="input" id="cardName">
+        </div>
+      </div>
+      <button class="btn" style="width:100%;margin-top:10px" id="pay-btn">Pay now</button>
+      <a class="btn link" href="./Checkout.html" style="width:100%;margin-top:8px">Back to details</a>
+      <div id="paying" class="kicker hidden" style="margin-top:8px">Processing...</div>
+    </form>
+    <div class="card summary">
+      <div id="payment-summary"></div>
+    </div>
+  </div>
+</div>
+<script src="../js/Cart.js"></script>
+<script src="../js/Payment.js"></script>
+</body>
+</html>

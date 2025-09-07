@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Checkout • Details</title>
+<link rel="stylesheet" href="../css/Checkout.css">
+</head>
+<body>
+<div class="container">
+  <h1>Shipping Details</h1>
+  <div class="grid">
+    <form class="card" id="details-form">
+      <div class="row">
+        <div>
+          <label class="kicker">Email</label>
+          <input class="input" id="email" type="email" required>
+        </div>
+        <div>
+          <label class="kicker">Phone</label>
+          <input class="input" id="phone" required>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label class="kicker">First name</label>
+          <input class="input" id="firstName" required>
+        </div>
+        <div>
+          <label class="kicker">Last name</label>
+          <input class="input" id="lastName" required>
+        </div>
+      </div>
+      <div>
+        <label class="kicker">Address line 1</label>
+        <input class="input" id="address1" required>
+      </div>
+      <div>
+        <label class="kicker">Address line 2</label>
+        <input class="input" id="address2">
+      </div>
+      <div class="row">
+        <div>
+          <label class="kicker">City</label>
+          <input class="input" id="city" required>
+        </div>
+        <div>
+          <label class="kicker">Province</label>
+          <input class="input" id="province" required>
+        </div>
+        <div>
+          <label class="kicker">Postal code</label>
+          <input class="input" id="postalCode" required>
+        </div>
+      </div>
+      <div>
+        <label class="kicker">Country</label>
+        <input class="input" id="country" value="South Africa" required>
+      </div>
+      <button class="btn" style="width:100%;margin-top:10px">Continue to payment</button>
+      <div class="small" style="margin-top:8px">By continuing, you agree to receive order updates via email.</div>
+    </form>
+    <div class="card summary">
+      <div id="checkout-summary"></div>
+      <a class="btn link" href="./Cart.html" style="width:100%;margin-top:10px">Back to cart</a>
+    </div>
+  </div>
+</div>
+<script src="../js/Cart.js"></script>
+<script src="../js/Checkout.js"></script>
+</body>
+</html>

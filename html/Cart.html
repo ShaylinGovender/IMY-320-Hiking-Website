@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cart • PeakTrail</title>
+<link rel="stylesheet" href="../css/Checkout.css">
+</head>
+<body>
+<div class="container">
+  <h1>Your Cart</h1>
+  <div class="grid">
+    <div class="card">
+      <div id="cart-empty" class="kicker hidden">Your cart is empty.</div>
+      <div id="cart-items"></div>
+    </div>
+    <div class="card summary">
+      <div class="row">
+        <div>
+          <label class="kicker">Discount code</label>
+          <input class="input" id="discount-code" placeholder="Enter code">
+        </div>
+        <div style="align-self:end">
+          <button class="btn" id="apply-discount">Apply</button>
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <label class="kicker">Shipping method</label>
+        <select id="shipping-method" class="input">
+          <option value="standard">Standard</option>
+          <option value="express">Express</option>
+          <option value="pickup">Pickup</option>
+        </select>
+      </div>
+      <hr>
+      <div id="summary-lines"></div>
+      <button class="btn" id="checkout-btn" style="width:100%;margin-top:10px">Proceed to checkout</button>
+      <button class="btn link" id="continue-shopping" style="width:100%;margin-top:8px">Continue shopping</button>
+    </div>
+  </div>
+</div>
+<script src="../js/Cart.js"></script>
+<script src="../js/CartPage.js"></script>
+</body>
+</html>
