@@ -9,7 +9,6 @@
   --sunset-orange:#e67e22;
   --cloud-white:#ecf0f1;
   --danger:#e74c3c;
-
   --bg:#f8f9fa;
   --card:#ffffff;
   --line:#e9ecef;
@@ -75,7 +74,7 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
 .summary{position:sticky;top:90px;height:max-content}
 .summary .row{display:flex;gap:12px;align-items:flex-end}
 .summary .row>div:first-child{flex:1}
-#apply-discount{font-size:.9rem;padding:.6rem .9rem}
+#apply-discount{font-size:.9rem;padding:.6rem .9rem;margin-left:8px}
 
 .line{display:flex;justify-content:space-between;align-items:center;margin:.5rem 0}
 .line.total{font-weight:700;font-size:1.1rem;color:var(--deep-forest)}
@@ -111,3 +110,11 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:780px){.form-grid{grid-template-columns:1fr}}
 .form-grid .col-span-2{grid-column:1/-1}
+
+#cart-items .item button.plus,
+#cart-items .item [aria-label*="increase" i],
+#cart-items .item [class*="increase" i],
+#cart-items .item [id*="increase" i]{display:none!important}
+
+#cart-items .item .qty+.remove-item{margin-left:8px}
+#cart-items .item .remove-item{margin-left:8px}

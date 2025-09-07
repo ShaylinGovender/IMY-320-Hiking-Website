@@ -49,8 +49,8 @@
       '<div class="kicker">' + money(item.price) + "</div>" +
       "</div>" +
       '<div style="display:flex;gap:8px;align-items:center">' +
-      '<div class="qty"><input type="number" min="1" value="' + item.qty + '"></div>' +
-      '<button class="btn danger remove-item">Remove</button>' +
+      '<div class="qty"><input type="number" min="1" value="' + item.qty + '" data-id="' + item.id + '"></div>' +
+      '<button class="btn danger remove-item" data-id="' + item.id + '">Remove</button>' +
       "</div>" +
       "</div>"
     );
@@ -58,60 +58,79 @@
 
   function renderCartPage() {
     var wrap = document.getElementById("cart-items");
-    var summaryBox = document.querySelector(".summary");
-    if (!wrap || !summaryBox) return;
+    if (!wrap) return;
 
     var cart = load();
+    
     if (!cart.length) {
       wrap.innerHTML = '<div class="kicker">Your cart is empty.</div>';
-    } else {
-      wrap.innerHTML = cart.map(cartItemHTML).join("");
+      var summaryLines = document.getElementById("summary-lines");
+      if (summaryLines) summaryLines.innerHTML = '';
+      return;
     }
+
+    wrap.innerHTML = cart.map(cartItemHTML).join("");
 
     var sub = subtotal(cart);
     var tx = tax(cart);
     var tot = total(cart);
 
-    summaryBox.innerHTML =
-      '<div class="row" style="margin-bottom:12px">' +
-      '<div><label class="kicker">Discount code</label><input id="discount-code" class="input" placeholder="Enter code"></div>' +
-      '<button id="apply-discount" class="btn" type="button">Apply</button>' +
-      '</div>' +
-      '<div style="margin-bottom:12px"><label class="kicker">Shipping method</label><select id="shipping" class="input"><option value="standard" selected>Standard</option></select></div>' +
-      '<div class="line"><span>Subtotal</span><span id="sum-subtotal">' + money(sub) + '</span></div>' +
-      '<div class="line"><span>Discount</span><span id="sum-discount">-R0.00</span></div>' +
-      '<div class="line"><span>Shipping</span><span id="sum-shipping">R0.00</span></div>' +
-      '<div class="line"><span>Tax</span><span id="sum-tax">' + money(tx) + '</span></div>' +
-      '<div class="line total"><span>Total</span><span id="sum-total">' + money(tot) + '</span></div>' +
-      '<button id="checkout-btn" class="btn" style="width:100%;margin-top:10px">Proceed to checkout</button>' +
-      '<a class="btn link" href="./ProductCatalogue.html" style="width:100%;margin-top:8px;text-align:center">Continue shopping</a>';
+    var summaryLines = document.getElementById("summary-lines");
+    if (summaryLines) {
+      summaryLines.innerHTML =
+        '<div class="line"><span>Subtotal</span><span>' + money(sub) + '</span></div>' +
+        '<div class="line"><span>Discount</span><span>-R0.00</span></div>' +
+        '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
+        '<div class="line"><span>Tax</span><span>' + money(tx) + '</span></div>' +
+        '<div class="line total"><span>Total</span><span>' + money(tot) + '</span></div>';
+    }
+
+    attachEventListeners();
+  }
+
+  function attachEventListeners() {
+    var wrap = document.getElementById("cart-items");
+    if (!wrap) return;
 
     wrap.querySelectorAll(".item .qty input").forEach(function (inp) {
-      inp.addEventListener("change", function () {
-        var id = inp.closest(".item").getAttribute("data-id");
-        var cart = load();
-        var idx = findIndex(cart, id);
-        if (idx >= 0) {
-          var v = Math.max(1, parseInt(inp.value || "1", 10));
-          cart[idx].qty = v;
-          save(cart);
-          renderCartPage();
-        }
-      });
+      inp.removeEventListener("input", handleQuantityChange);
+      inp.addEventListener("input", handleQuantityChange);
     });
 
     wrap.querySelectorAll(".item .remove-item").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var id = btn.closest(".item").getAttribute("data-id");
-        Cart.remove(id);
-      });
+      btn.removeEventListener("click", handleRemoveClick);
+      btn.addEventListener("click", handleRemoveClick);
     });
 
-    document.getElementById("checkout-btn").addEventListener("click", function (e) {
-      e.preventDefault();
-      if (!load().length) return;
-      location.href = "./Checkout.html";
-    });
+    var checkoutBtn = document.getElementById("checkout-btn");
+    if (checkoutBtn) {
+      checkoutBtn.removeEventListener("click", handleCheckoutClick);
+      checkoutBtn.addEventListener("click", handleCheckoutClick);
+    }
+  }
+
+  function handleQuantityChange(e) {
+    var id = e.target.getAttribute("data-id");
+    var cart = load();
+    var idx = findIndex(cart, id);
+    if (idx >= 0) {
+      var v = Math.max(1, parseInt(e.target.value || "1", 10));
+      cart[idx].qty = v;
+      save(cart);
+      renderCartPage();
+    }
+  }
+
+  function handleRemoveClick(e) {
+    e.preventDefault();
+    var id = e.target.getAttribute("data-id");
+    Cart.remove(id);
+  }
+
+  function handleCheckoutClick(e) {
+    e.preventDefault();
+    if (!load().length) return;
+    location.href = "./Checkout.html";
   }
 
   function renderCheckoutSummary() {
@@ -126,35 +145,20 @@
       '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
       '<div class="line"><span>Tax</span><span>' + money(tax(cart)) + "</span></div>" +
       '<div class="line total"><span>Total</span><span>' + money(total(cart)) + "</span></div>";
-    var ctp = document.getElementById("continue-to-payment-btn");
-    if (ctp) ctp.addEventListener("click", function (e) { e.preventDefault(); location.href = "./Payment.html"; });
   }
 
   function renderPaymentSummary() {
     var box = document.querySelector(".summary");
-    if (!box) return;
+    if (!box || document.getElementById("cart-items")) return;
     var cart = load();
     box.innerHTML =
       '<div class="line"><span>Items</span><span>' + cart.reduce(function (s, i) { return s + i.qty; }, 0) + "</span></div>" +
       '<div class="line"><span>Shipping</span><span>standard</span></div>' +
       '<div class="line"><span>Subtotal</span><span>' + money(subtotal(cart)) + "</span></div>" +
-      '<div class="line"><span>Discount</span><span>-R0.00</span></div>"' +
+      '<div class="line"><span>Discount</span><span>-R0.00</span></div>' +
       '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
       '<div class="line"><span>Tax</span><span>' + money(tax(cart)) + "</span></div>" +
       '<div class="line total"><span>Total</span><span>' + money(total(cart)) + "</span></div>";
-    var pay = document.getElementById("pay-btn");
-    if (pay) pay.addEventListener("click", function (e) {
-      e.preventDefault();
-      if (!load().length) return;
-      var order = {
-        id: "ORD" + Date.now(),
-        total: total(load()),
-        items: load()
-      };
-      localStorage.setItem("tb_last_order", JSON.stringify(order));
-      save([]);
-      location.href = "./OrderSuccess.html";
-    });
   }
 
   function renderSuccess() {
@@ -219,7 +223,57 @@
       save([]);
       render();
     },
-    get: load
+    get: load,
+    items: load,
+    count: function () {
+      var cart = load();
+      return cart.reduce(function (s, i) { return s + i.qty; }, 0);
+    },
+    totals: function (options) {
+      options = options || {};
+      var cart = load();
+      var sub = subtotal(cart);
+      var discount = 0;
+      var shipping = 0;
+      var tx = tax(cart);
+      return {
+        subtotal: sub,
+        discount: discount,
+        shipping: shipping,
+        tax: tx,
+        total: sub + shipping + tx - discount
+      };
+    },
+    loadDraft: function () {
+      try {
+        return JSON.parse(localStorage.getItem("tb_draft") || "{}");
+      } catch (e) {
+        return {};
+      }
+    },
+    saveDraft: function (data) {
+      localStorage.setItem("tb_draft", JSON.stringify(data || {}));
+    },
+    loadProfile: function () {
+      try {
+        return JSON.parse(localStorage.getItem("tb_profile") || "{}");
+      } catch (e) {
+        return {};
+      }
+    },
+    saveProfile: function (data) {
+      localStorage.setItem("tb_profile", JSON.stringify(data || {}));
+    },
+    loadLastOrder: function () {
+      try {
+        return JSON.parse(localStorage.getItem("tb_last_order") || "null");
+      } catch (e) {
+        return null;
+      }
+    },
+    saveLastOrder: function (order) {
+      localStorage.setItem("tb_last_order", JSON.stringify(order));
+    }
   };
 
   window.Cart = Cart;
@@ -232,5 +286,18 @@
     renderSuccess();
   }
 
+  function forceCartRender() {
+    if (document.getElementById("cart-items")) {
+      renderCartPage();
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", render);
+  window.addEventListener("load", forceCartRender);
+  
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", render);
+  } else {
+    render();
+  }
 })();

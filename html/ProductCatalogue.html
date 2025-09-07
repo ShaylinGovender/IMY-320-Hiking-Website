@@ -135,47 +135,6 @@
 
     <script src="../js/ProductCatalogue.js"></script>
     <script src="../js/Cart.js"></script>
-<script>
-(function(){
-  function parsePrice(s){
-    if(!s)return 0;
-    const t=s.replace(/[^\d,.-]/g,'').replace(/\s/g,'').replace(/\.(?=\d{3}\b)/g,'').replace(',', '.');
-    const n=parseFloat(t);return isNaN(n)?0:n;
-  }
-  function rowData(row){
-    const title=(row.querySelector('.product-name, .name, [data-title]')||{}).textContent||'';
-    const brand=(row.querySelector('.brand, .brand-cell, [data-brand]')||{}).textContent||'';
-    const priceText=(row.querySelector('.price, .price-cell, [data-price]')||{}).textContent||'';
-    const img=(row.querySelector('img')||{}).src||'';
-    const id=(title.trim()+'-'+brand.trim()).toLowerCase().replace(/[^a-z0-9]+/g,'-');
-    return {id,title:title.trim(),brand:brand.trim(),price:parsePrice(priceText),image:img};
-  }
-  function hydrate(){
-    document.querySelectorAll('table tr').forEach(tr=>{
-      const btn=[...tr.querySelectorAll('button,a')].find(b=>/add to cart/i.test(b.textContent||''));
-      if(!btn)return;
-      const p=rowData(tr);
-      btn.dataset.addToCart='';
-      btn.dataset.id=p.id;
-      btn.dataset.title=p.title;
-      btn.dataset.price=String(p.price);
-      btn.dataset.brand=p.brand;
-      btn.dataset.image=p.image;
-    });
-  }
-  document.addEventListener('click',e=>{
-    const b=e.target.closest('[data-add-to-cart]');
-    if(!b)return;
-    const d=b.dataset;
-    const product={id:d.id,title:d.title,price:parseFloat(d.price||'0'),image:d.image,brand:d.brand,descriptor:'',link:location.href,availability:'in_stock',availabilityDate:new Date().toISOString()};
-    Cart.add(product,1);
-  });
-  window.addEventListener('load',hydrate);
-})();
-</script>
-<script src="../js/Cart.js"></script>
-<script src="../js/CatalogueCartHook.js"></script>
-
-
+    <script src="../js/CatalogueCartHook.js"></script>
 </body>
 </html>

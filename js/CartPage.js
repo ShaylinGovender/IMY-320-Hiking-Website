@@ -10,16 +10,16 @@
       const div=document.createElement('div');
       div.className='item';
       div.innerHTML=`
-        <img src="${p.image||''}" alt="" width="72" height="72">
+        <img src="${p.image||''}" alt="">
         <div>
           <h4>${p.title||'Item'}</h4>
           <div class="kicker">${p.brand||''}</div>
-          <div class="price kicker">${'R'+(p.price).toFixed(2)}</div>
+          <div class="kicker">${'R'+(p.price).toFixed(2)}</div>
         </div>
-        <div class="qty">
-          <button class="btn" data-dec="${p.id}">-</button>
-          <input class="input" data-qty="${p.id}" value="${p.qty}" type="number" min="1">
-          <button class="btn" data-inc="${p.id}">+</button>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="qty">
+            <input class="input" data-qty="${p.id}" value="${p.qty}" type="number" min="1">
+          </div>
           <button class="btn danger" data-remove="${p.id}">Remove</button>
         </div>`;
       list.appendChild(div);
@@ -41,11 +41,7 @@
     Cart.saveDraft({...Cart.loadDraft(),discountCode:code,shippingMethod:method});
   }
   document.addEventListener('click',e=>{
-    const inc=e.target.getAttribute('data-inc');
-    const dec=e.target.getAttribute('data-dec');
     const rem=e.target.getAttribute('data-remove');
-    if(inc){const it=Cart.items().find(x=>x.id===inc);Cart.setQty(inc,(it.qty||1)+1);render()}
-    if(dec){const it=Cart.items().find(x=>x.id===dec);Cart.setQty(dec,Math.max(1,(it.qty||1)-1));render()}
     if(rem){Cart.remove(rem);render()}
   });
   document.addEventListener('input',e=>{
