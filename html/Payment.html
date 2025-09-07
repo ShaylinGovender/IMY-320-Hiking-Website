@@ -4,9 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Payment</title>
+<link rel="stylesheet" href="../css/LandingPage.css">
 <link rel="stylesheet" href="../css/Checkout.css">
 </head>
 <body>
+<nav id="navbar">
+  <div class="nav-container">
+    <div class="nav-left">
+      <div class="logo">🏔️ TrailBlazer</div>
+      <ul class="nav-links">
+        <li><a href="landingPage.html">Home</a></li>
+        <li><a href="ProductCatalogue.html">Gear</a></li>
+        <li><a href="TrailsPage.html">Trails</a></li>
+        <li><a href="GroupHikes.html">Community</a></li>
+        <li><a href="AboutUsPage.html">About Us</a></li>
+      </ul>
+    </div>
+    <div class="nav-actions">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search gear, trails...">
+        <button class="search-btn">🔍</button>
+      </div>
+      <div class="account-section">
+        <a href="AdminPanel.html" class="account-btn" title="Admin Panel">⚙️Admin</a>
+        <a href="LoginPage.html" class="account-btn">👤 Logout</a>
+        <a href="Cart.html" class="cart-icon" aria-label="Cart">🛒 <span class="cart-count" id="cart-count" data-cart-count>0</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+
 <div class="container">
   <h1>Payment</h1>
   <div class="grid">
@@ -19,32 +46,18 @@
         </div>
       </div>
       <div id="card-fields">
-        <div>
-          <label class="kicker">Card number</label>
-          <input class="input" id="cardNumber" maxlength="19" placeholder="0000 0000 0000 0000">
-        </div>
+        <div><label class="kicker">Card number</label><input class="input" id="cardNumber" maxlength="19" placeholder="0000 0000 0000 0000"></div>
         <div class="row">
-          <div>
-            <label class="kicker">Expiry</label>
-            <input class="input" id="cardExpiry" placeholder="MM/YY">
-          </div>
-          <div>
-            <label class="kicker">CVC</label>
-            <input class="input" id="cardCvc" maxlength="4">
-          </div>
+          <div><label class="kicker">Expiry</label><input class="input" id="cardExpiry" placeholder="MM/YY"></div>
+          <div><label class="kicker">CVC</label><input class="input" id="cardCvc" maxlength="4"></div>
         </div>
-        <div>
-          <label class="kicker">Name on card</label>
-          <input class="input" id="cardName">
-        </div>
+        <div><label class="kicker">Name on card</label><input class="input" id="cardName"></div>
       </div>
       <button class="btn" style="width:100%;margin-top:10px" id="pay-btn">Pay now</button>
       <a class="btn link" href="./Checkout.html" style="width:100%;margin-top:8px">Back to details</a>
       <div id="paying" class="kicker hidden" style="margin-top:8px">Processing...</div>
     </form>
-    <div class="card summary">
-      <div id="payment-summary"></div>
-    </div>
+    <div class="card summary"><div id="payment-summary"></div></div>
   </div>
 </div>
 <script src="../js/Cart.js"></script>

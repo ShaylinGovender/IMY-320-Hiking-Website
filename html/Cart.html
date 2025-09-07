@@ -3,10 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cart • PeakTrail</title>
+<title>Cart • TrailBlazer</title>
+<link rel="stylesheet" href="../css/LandingPage.css">
 <link rel="stylesheet" href="../css/Checkout.css">
 </head>
 <body>
+<nav id="navbar">
+  <div class="nav-container">
+    <div class="nav-left">
+      <div class="logo">🏔️ TrailBlazer</div>
+      <ul class="nav-links">
+        <li><a href="landingPage.html">Home</a></li>
+        <li><a href="ProductCatalogue.html">Gear</a></li>
+        <li><a href="TrailsPage.html">Trails</a></li>
+        <li><a href="GroupHikes.html">Community</a></li>
+        <li><a href="AboutUsPage.html">About Us</a></li>
+      </ul>
+    </div>
+    <div class="nav-actions">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search gear, trails...">
+        <button class="search-btn">🔍</button>
+      </div>
+      <div class="account-section">
+        <a href="AdminPanel.html" class="account-btn" title="Admin Panel">⚙️Admin</a>
+        <a href="LoginPage.html" class="account-btn">👤 Logout</a>
+        <a href="Cart.html" class="cart-icon" aria-label="Cart">🛒 <span class="cart-count" id="cart-count" data-cart-count>0</span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+
 <div class="container">
   <h1>Your Cart</h1>
   <div class="grid">
@@ -35,11 +62,12 @@
       <hr>
       <div id="summary-lines"></div>
       <button class="btn" id="checkout-btn" style="width:100%;margin-top:10px">Proceed to checkout</button>
-      <button class="btn link" id="continue-shopping" style="width:100%;margin-top:8px">Continue shopping</button>
+      <a class="btn link" id="continue-shopping" style="width:100%;margin-top:8px">Continue shopping</a>
     </div>
   </div>
 </div>
 <script src="../js/Cart.js"></script>
 <script src="../js/CartPage.js"></script>
+<script>document.getElementById('continue-shopping').onclick=()=>location.href='ProductCatalogue.html'</script>
 </body>
 </html>
