@@ -61,11 +61,11 @@ if (!window.ProductData) {
       { id: 10, name: "Camping Headlamp", brand: "BrightBeam", category: "accessories",
         price: 899.82, originalPrice: 1169.82, rating: 4.6,
         description: "High-powered LED headlamp with multiple brightness settings, red light mode, and waterproof design. Essential for night hiking.",
-        image: "../images/Women-Hiking-Boots.jpg",
+        image: "../images/headlamp.jpg",
         features: ["LED Light","Multiple Modes","Waterproof","Long Battery"], inStock: true, dateAdded: "2024-02-08" },
 
       { id: 11, name: "Mountaineering Boots", brand: "AlpinePro", category: "footwear",
-        price: 4199.82, originalPrice: 4799.82, rating: 4.7,
+        price: 1200, originalPrice: 799.99, rating: 4.7,
         description: "Heavy-duty mountaineering boots designed for extreme alpine conditions. Featuring rigid construction, crampon compatibility, and superior insulation for high-altitude adventures.",
         image: "../images/Mountaineering Boots.jpeg",
         features: ["Crampon Compatible","Insulated","Rigid Construction","Alpine Ready"], inStock: true, dateAdded: "2024-01-10" },
@@ -82,16 +82,11 @@ if (!window.ProductData) {
         image: "../images/Winter Hiking Boots.jpeg",
         features: ["Thermal Insulation","Waterproof","Ice Traction","Cold Weather"], inStock: false, dateAdded: "2024-01-05" },
 
-      { id: 14, name: "Multi-Tool Kit", brand: "ToolMaster", category: "accessories",
-        price: 719.82, originalPrice: 899.82, rating: 4.4,
-        description: "Compact multi-tool with knife, pliers, screwdrivers, and essential outdoor tools. Perfect for trail repairs.",
-        image: "../images/Women-Hiking-Boots.jpg",
-        features: ["15 Tools","Compact","Stainless Steel","Belt Clip"], inStock: true, dateAdded: "2024-02-03" },
 
-      { id: 15, name: "Hiking Hat", brand: "SunGuard", category: "accessories",
+      { id: 15, name: "Hiking Cap", brand: "SunGuard", category: "accessories",
         price: 479.82, originalPrice: null, rating: 4.3,
-        description: "UV protection hiking hat with moisture-wicking band and adjustable chin strap. Keeps you cool and protected.",
-        image: "../images/Hiking-Gloves.jpg",
+        description: "UV protection hiking cap with moisture-wicking band and adjustable chin strap. Keeps you cool and protected.",
+        image: "../images/hikingCap3.jpg",
         features: ["UV Protection","Moisture Wicking","Adjustable","Lightweight"], inStock: true, dateAdded: "2024-01-28" },
 
       { id: 16, name: "Portable Camping Stove", brand: "FlameMax", category: "gear",
@@ -253,12 +248,46 @@ if (!window.ProductData) {
               { user: "James T.", rating: 4, date: "2025-07-02", title: "Great emergency gear", text: "Saved me during an unexpected downpour in Cederberg. Easy to put on quickly and covers my backpack too. Quality construction." },
               { user: "Lisa P.", rating: 4, date: "2025-05-30", title: "Reliable protection", text: "Keeps me completely dry even in heavy rain. The hood adjustment is excellent. Only downside is it can get a bit warm during intense activity." },
               { user: "David L.", rating: 5, date: "2025-04-25", title: "Perfect for hiking", text: "Lightweight but incredibly durable. The snap closures are secure and the cut allows good mobility while hiking. Essential gear!" }
+            ] },
+      10: { image: "../images/headlamp.jpg", images: ["../images/headlamp.jpg"],
+            description: "Professional-grade LED headlamp with multiple brightness settings, red light mode, and waterproof construction. Features hands-free operation with gesture control and ultra-long battery life for extended adventures.",
+            features: ["High-Power LED","Multiple Brightness Settings","Red Light Mode","Waterproof IPX7","Gesture Control","Rechargeable Battery","Adjustable Headband","Lightweight Design"],
+            specifications: {
+              "Brightness": "800 lumens maximum output",
+              "Battery Life": "120 hours on low setting",
+              "Charging": "USB-C rechargeable",
+              "Weight": "85g with battery",
+              "Water Rating": "IPX7 waterproof",
+              "Beam Distance": "150 meters",
+              "Modes": "High, Medium, Low, Red, Strobe"
+            },
+            reviews: [
+              { user: "Marcus K.", rating: 5, date: "2025-06-20", title: "Incredibly bright", text: "This headlamp is amazing! The 800 lumens is more than enough for night hiking. The gesture control works perfectly and the battery lasts forever. Best headlamp I've owned." },
+              { user: "Rachel S.", rating: 5, date: "2025-05-15", title: "Perfect for camping", text: "Love the red light mode for preserving night vision. Super comfortable to wear for hours. The waterproofing has been tested in heavy rain - works perfectly!" },
+              { user: "Tom W.", rating: 4, date: "2025-04-28", title: "Great features", text: "Excellent headlamp with impressive battery life. The gesture control is a game-changer when your hands are full. Only minor complaint is the headband could be slightly more padded." }
+            ] },
+      15: { image: "../images/hikingCap3.jpg", images: ["../images/hikingCap3.jpg"],
+            description: "Professional hiking cap with UPF 50+ sun protection, moisture-wicking sweatband, and quick-dry fabric. Features adjustable chin strap and ventilation panels for maximum comfort during long outdoor adventures.",
+            features: ["UPF 50+ Sun Protection","Moisture-Wicking Sweatband","Quick-Dry Fabric","Adjustable Chin Strap","Ventilation Panels","Lightweight Construction","Packable Design","Reflective Details"],
+            specifications: {
+              "Material": "Polyester blend with UPF coating",
+              "Weight": "65g",
+              "Sun Protection": "UPF 50+ rating",
+              "Sizes": "One size fits most (adjustable)",
+              "Brim Width": "7.5cm all around",
+              "Care": "Machine wash cold, air dry",
+              "Special Features": "Crushable and packable"
+            },
+            reviews: [
+              { user: "Anna M.", rating: 5, date: "2025-06-25", title: "Perfect sun protection", text: "This cap is fantastic! The UPF 50+ protection really works - no sunburn on my face or neck during a full day hike in the Karoo." },
+              { user: "Peter J.", rating: 4, date: "2025-05-18", title: "Comfortable and practical", text: "Really comfortable cap with excellent ventilation. The moisture-wicking band works great during sweaty climbs. Packable design is perfect for travel. Highly recommended." },
+              { user: "Sue L.", rating: 5, date: "2025-04-12", title: "Great hiking essential", text: "Love this cap! Lightweight but provides excellent coverage. The quick-dry fabric is amazing - dries in minutes after getting wet. Perfect for multi-day hikes." }
             ] }
     };
 
     function applyProductOverrides(list) {
       return list.map(p => {
-        const hasOverride = p.category === 'gear' || p.category === 'safety' || p.category === 'clothing';
+        const hasOverride = p.category === 'gear' || p.category === 'safety' || p.category === 'clothing' || p.category === 'accessories';
         return (hasOverride && PRODUCT_OVERRIDES[p.id]) ? { ...p, ...PRODUCT_OVERRIDES[p.id] } : p;
       });
     }

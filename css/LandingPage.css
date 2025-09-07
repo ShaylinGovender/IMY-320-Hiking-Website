@@ -303,7 +303,7 @@ nav {
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 3rem;
-    color: #2c3e50;
+    color: #0b2845;
 }
 
 /* Explore Gear Section */
@@ -517,12 +517,15 @@ nav {
 
 /* Club Section */
 .club-section {
-    background: linear-gradient(rgba(39, 174, 96, 0.9), rgba(39, 174, 96, 0.9)),
+    background: linear-gradient(rgba(39, 120, 174, 0.9), rgba(118, 54, 8, 0.9)),
                 url('https://images.unsplash.com/photo-1578592391689-0e3d1a1b52b9?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     color: white;
+}
+.club-section .section-title {
+    color: white !important;
 }
 
 .club-content {

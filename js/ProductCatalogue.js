@@ -59,14 +59,14 @@ if (!window.ProductData) {
         features: ["3L Reservoir","25L Capacity","Breathable","Multiple Pockets"], inStock: true,  dateAdded: "2024-01-18" },
 
       { id: 10, name: "Camping Headlamp", brand: "BrightBeam", category: "accessories",
-        price: 899.82, originalPrice: 1169.82, rating: 4.6,
+        price: 899.82, originalPrice: 250, rating: 4.6,
         description: "High-powered LED headlamp with multiple brightness settings, red light mode, and waterproof design. Essential for night hiking.",
-        image: "../images/Women-Hiking-Boots.jpg",
+        image: "../images/headlamp.jpg",
         features: ["LED Light","Multiple Modes","Waterproof","Long Battery"], inStock: true, dateAdded: "2024-02-08" },
 
       // ----- Additional Footwear (prefer HER images) -----
       { id: 11, name: "Mountaineering Boots", brand: "AlpinePro", category: "footwear",
-        price: 4199.82, originalPrice: 4799.82, rating: 4.7,
+        price: 1200, originalPrice: 799.99, rating: 4.7,
         description: "Heavy-duty mountaineering boots with crampon compatibility and insulation for extreme cold conditions.",
         image: "../images/Mountaineering Boots.jpeg", // HER
         features: ["Crampon Compatible","Insulated","Waterproof","Steel Shank"], inStock: true, dateAdded: "2024-01-10" },
@@ -84,16 +84,11 @@ if (!window.ProductData) {
         features: ["Thermal Insulation","Snow Grip","Waterproof","Warm Lining"], inStock: false, dateAdded: "2024-01-05" },
 
       // ----- Accessories / Gear / Clothing / Safety -----
-      { id: 14, name: "Multi-Tool Kit", brand: "ToolMaster", category: "accessories",
-        price: 719.82, originalPrice: 899.82, rating: 4.4,
-        description: "Compact multi-tool with knife, pliers, screwdrivers, and essential outdoor tools. Perfect for trail repairs.",
-        image: "../images/Women-Hiking-Boots.jpg",
-        features: ["15 Tools","Compact","Stainless Steel","Belt Clip"], inStock: true, dateAdded: "2024-02-03" },
 
-      { id: 15, name: "Hiking Hat", brand: "SunGuard", category: "accessories",
+      { id: 15, name: "Hiking Cap", brand: "SunGuard", category: "accessories",
         price: 479.82, originalPrice: null, rating: 4.3,
-        description: "UV protection hiking hat with moisture-wicking band and adjustable chin strap. Keeps you cool and protected.",
-        image: "../images/Hiking-Gloves.jpg",
+        description: "UV protection hiking cap with moisture-wicking band and adjustable chin strap. Keeps you cool and protected.",
+        image: "../images/hikingCap3.jpg",
         features: ["UV Protection","Moisture Wicking","Adjustable","Lightweight"], inStock: true, dateAdded: "2024-01-28" },
 
       { id: 16, name: "Portable Camping Stove", brand: "FlameMax", category: "gear",
