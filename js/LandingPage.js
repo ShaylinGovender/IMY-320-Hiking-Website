@@ -30,7 +30,7 @@ document.querySelectorAll('.section').forEach(section => {
     observer.observe(section);
 });
 
-// Parallax effect for hero section
+// Parallax effect for hero section and navbar scroll effect
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const hero = document.querySelector('.hero');
@@ -38,12 +38,14 @@ window.addEventListener('scroll', () => {
         hero.style.transform = `translateY(${scrolled * 0.5}px)`;
     }
 
-    // Navbar background opacity
+    // Navbar background opacity - updated to match AboutUsPage
     const navbar = document.getElementById('navbar');
     if (scrolled > 100) {
-        navbar.style.background = 'rgba(44, 62, 80, 0.95)';
+        navbar.style.background = 'rgba(44, 62, 80, 0.98)';
+        navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
     } else {
-        navbar.style.background = 'rgba(44, 62, 80, 0.8)';
+        navbar.style.background = 'rgba(44, 62, 80, 0.95)';
+        navbar.style.boxShadow = 'none';
     }
 });
 

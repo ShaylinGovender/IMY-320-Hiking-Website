@@ -57,7 +57,6 @@ nav {
 .nav-links a {
     color: #ecf0f1;
     text-decoration: none;
-    font-weight: 500;
     transition: color 0.3s ease;
     position: relative;
 }
@@ -729,24 +728,31 @@ nav {
 @media (max-width: 768px) {
     .nav-container {
         padding: 0 1rem;
-        flex-direction: column;
-        height: auto;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
     }
-
+    
     .nav-left {
-        flex-direction: column;
         gap: 1rem;
     }
-
+    
     .nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
+        display: none;
     }
-
+    
+    .nav-actions {
+        gap: 0.5rem;
+    }
+    
     .search-input {
         width: 150px;
+    }
+    
+    .search-input:focus {
+        width: 180px;
+    }
+    
+    .account-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
     }
 
     .hero-content h1 {

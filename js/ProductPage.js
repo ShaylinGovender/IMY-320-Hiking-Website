@@ -268,6 +268,22 @@ let quantity = 1;
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
 
+/* ---------- Navbar scroll effect function ---------- */
+function initNavbarScroll() {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const navbar = document.getElementById('navbar');
+        
+        if (scrolled > 100) {
+            navbar.style.background = 'rgba(44, 62, 80, 0.98)';
+            navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        } else {
+            navbar.style.background = 'rgba(44, 62, 80, 0.95)';
+            navbar.style.boxShadow = 'none';
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   const urlParams = new URLSearchParams(window.location.search);
   const productId = parseInt(urlParams.get('id'), 10);
@@ -281,6 +297,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   updateCartCount();
   setupEventListeners();
+  initNavbarScroll(); // Add navbar scroll effect
 });
 
 function loadProduct(productId) {

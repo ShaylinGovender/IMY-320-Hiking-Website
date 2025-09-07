@@ -504,10 +504,27 @@ function shareTrail(trailId) {
     }
 }
 
+/* ---------- Navbar scroll effect function ---------- */
+function initNavbarScroll() {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const navbar = document.getElementById('navbar');
+        
+        if (scrolled > 100) {
+            navbar.style.background = 'rgba(44, 62, 80, 0.98)';
+            navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        } else {
+            navbar.style.background = 'rgba(44, 62, 80, 0.95)';
+            navbar.style.boxShadow = 'none';
+        }
+    });
+}
+
 // Initialize trails manager when DOM is loaded
 let trailsManager;
 document.addEventListener('DOMContentLoaded', () => {
     trailsManager = new TrailsManager();
+    initNavbarScroll(); // Add navbar scroll effect
     
     // Close modal when clicking outside
     window.onclick = function(event) {

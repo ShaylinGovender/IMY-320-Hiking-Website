@@ -876,3 +876,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+// Initialize navbar scroll functionality
+function initNavbarScroll() {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const navbar = document.getElementById('navbar');
+        
+        if (scrolled > 100) {
+            navbar.style.background = 'rgba(44, 62, 80, 0.98)';
+            navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        } else {
+            navbar.style.background = 'rgba(44, 62, 80, 0.95)';
+            navbar.style.boxShadow = 'none';
+        }
+    });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    initNavbarScroll();
+});
