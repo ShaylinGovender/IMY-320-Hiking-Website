@@ -972,3 +972,58 @@ nav {
 .wishlist-btn.active .heart-icon {
     content: '♥';
 }
+
+/* Footer */
+footer {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 3rem 0 11rem;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+    color: white;
+    text-align: left;
+}
+
+.footer-links {
+    list-style: none;
+    text-align: left;
+}
+
+.footer-links a {
+    color: #b9f5d8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    line-height: 1.8;
+}
+
+.footer-links a:hover {
+    color: #e67e22;
+}
+
+/* Footer Responsive Design */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+        padding: 0 2rem;
+    }
+    
+    .footer-links {
+        text-align: center;
+    }
+}
