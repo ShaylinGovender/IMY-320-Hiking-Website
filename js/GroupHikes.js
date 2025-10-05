@@ -374,6 +374,17 @@ class GroupHikesManager {
         this.closeCreateHikeModal();
         this.showMessage('Your group hike has been created successfully!', 'success');
         
+        // Auto-scroll to Your Hikes section
+        setTimeout(() => {
+            const yourHikesSection = document.getElementById('yourHikes');
+            if (yourHikesSection) {
+                yourHikesSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }, 500);
+        
         // Clear form
         form.reset();
     }
@@ -406,7 +417,7 @@ class GroupHikesManager {
             font-weight: bold;
             z-index: 1000;
             max-width: 300px;
-            background: ${type === 'success' ? '#8e44ad' : '#e74c3c'};
+            background: ${type === 'success' ? '#27ae60' : '#e74c3c'};
         `;
 
         document.body.appendChild(messageEl);
