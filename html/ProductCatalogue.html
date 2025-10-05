@@ -126,9 +126,30 @@
             <!-- No Results Message -->
             <div id="noResults" class="no-results" style="display: none;">
                 <div class="no-results-content">
+                    <div class="no-results-icon">🔍</div>
                     <h3>No products found</h3>
-                    <p>Try adjusting your search criteria or filters</p>
-                    <button onclick="clearAllFilters()" class="clear-btn">Clear All Filters</button>
+                    <p>We couldn't find any products matching your criteria</p>
+                    
+                    <div class="recovery-actions">
+                        <button onclick="clearAllFilters()" class="recovery-btn primary">
+                            <span class="btn-icon">🔄</span>
+                            Reset All Filters
+                        </button>
+                        <button onclick="showSuggestions()" class="recovery-btn secondary">
+                            <span class="btn-icon">💡</span>
+                            Show Suggestions
+                        </button>
+                    </div>
+                    
+                    <div class="quick-suggestions" id="quickSuggestions" style="display: none;">
+                        <h4>Try these popular categories:</h4>
+                        <div class="suggestion-tags">
+                            <button class="suggestion-tag" onclick="applySuggestion('footwear')">Footwear</button>
+                            <button class="suggestion-tag" onclick="applySuggestion('clothing')">Clothing</button>
+                            <button class="suggestion-tag" onclick="applySuggestion('gear')">Gear</button>
+                            <button class="suggestion-tag" onclick="applySuggestion('accessories')">Accessories</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

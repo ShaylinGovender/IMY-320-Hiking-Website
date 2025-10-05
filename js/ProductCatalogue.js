@@ -524,7 +524,45 @@ function clearAllFilters() {
   displayProducts(filteredProducts);
   updateResultsCount(filteredProducts.length);
   updateWishlistButtons();
-  updateWishlistButtons();
+  
+  // Hide suggestions if they were shown
+  const suggestions = document.getElementById('quickSuggestions');
+  if (suggestions) {
+    suggestions.style.display = 'none';
+  }
+}
+
+function showSuggestions() {
+  const suggestions = document.getElementById('quickSuggestions');
+  if (suggestions) {
+    suggestions.style.display = suggestions.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function applySuggestion(category) {
+  // Set the category filter
+  const categoryFilter = document.getElementById('categoryFilter');
+  if (categoryFilter) {
+    categoryFilter.value = category;
+  }
+  
+  // Clear other filters
+  const searchInput = document.getElementById('productSearch');
+  const brandFilter = document.getElementById('brandFilter');
+  const priceFilter = document.getElementById('priceFilter');
+  
+  if (searchInput) searchInput.value = '';
+  if (brandFilter) brandFilter.value = 'all';
+  if (priceFilter) priceFilter.value = 'all';
+  
+  // Apply the filter
+  applyFilters();
+  
+  // Hide suggestions
+  const suggestions = document.getElementById('quickSuggestions');
+  if (suggestions) {
+    suggestions.style.display = 'none';
+  }
 }
 
 function viewProduct(productId) {
