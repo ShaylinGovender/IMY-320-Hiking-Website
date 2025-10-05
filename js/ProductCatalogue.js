@@ -294,6 +294,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
   initNavbarScroll(); // Add navbar scroll effect
   updateFavoritesCount();
+  updateWishlistButtons();
 });
 
 function updateFavoritesCount() {
@@ -309,6 +310,54 @@ function updateFavoritesCount() {
   } catch (e) {
     console.error('Error updating favorites count:', e);
   }
+}
+
+function toggleWishlist(productId) {
+  const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+  const product = getProducts().find(p => p.id === productId);
+  
+  if (!product) return;
+  
+  const isInWishlist = wishlist.some(item => item.id === productId);
+  
+  if (isInWishlist) {
+    // Remove from wishlist
+    const updatedWishlist = wishlist.filter(item => item.id !== productId);
+    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+    showMessage(`${product.name} removed from favorites`, 'info');
+  } else {
+    // Add to wishlist
+    const wishlistItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      brand: product.brand
+    };
+    wishlist.push(wishlistItem);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    showMessage(`${product.name} added to favorites`, 'success');
+  }
+  
+  updateFavoritesCount();
+  updateWishlistButtons();
+}
+
+function updateWishlistButtons() {
+  const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+  const wishlistIds = wishlist.map(item => item.id);
+  
+  document.querySelectorAll('.btn-favorite').forEach(button => {
+    const productId = parseInt(button.closest('.product-item').dataset.id);
+    const icon = button.querySelector('.heart-icon');
+    if (wishlistIds.includes(productId)) {
+      icon.textContent = '♥';
+      button.classList.add('active');
+    } else {
+      icon.textContent = '♡';
+      button.classList.remove('active');
+    }
+  });
 }
 
 function populateBrandFilter() {
@@ -372,6 +421,9 @@ function displayProducts(productsToDisplay) {
             ${product.inStock ? 'Add to Cart' : 'Out of Stock'}
           </button>
           <button class="btn btn-secondary" onclick="event.stopPropagation(); viewProduct(${product.id})">View Details</button>
+          <button class="btn btn-favorite" onclick="event.stopPropagation(); toggleWishlist(${product.id})" title="Add to Favorites">
+            <span class="heart-icon">♡</span>
+          </button>
         </div>
       </div>
     `;
@@ -472,6 +524,8 @@ function clearAllFilters() {
   filteredProducts = getProducts();
   displayProducts(filteredProducts);
   updateResultsCount(filteredProducts.length);
+  updateWishlistButtons();
+  updateWishlistButtons();
 }
 
 function viewProduct(productId) {

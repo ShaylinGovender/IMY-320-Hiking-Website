@@ -404,12 +404,12 @@ nav {
 
 .btn-danger {
     background: transparent;
-    color: #e74c3c;
-    border: 1px solid #e74c3c;
+    color: #e67e22;
+    border: 1px solid #e67e22;
 }
 
 .btn-danger:hover {
-    background: #e74c3c;
+    background: linear-gradient(135deg, #e67e22, #d35400);
     color: white;
 }
 

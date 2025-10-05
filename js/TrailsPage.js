@@ -246,8 +246,8 @@ class TrailsManager {
                         <button class="btn-primary" onclick="event.stopPropagation(); viewTrailDetails(${trail.id})">
                             View Details
                         </button>
-                        <button class="btn-secondary" onclick="event.stopPropagation(); addToFavorites(${trail.id})">
-                            ❤️
+                        <button class="btn-favorite" onclick="event.stopPropagation(); addToFavorites(${trail.id})">
+                            <span class="heart-icon">♡</span>
                         </button>
                     </div>
                 </div>
@@ -449,7 +449,9 @@ function viewTrailDetails(trailId) {
             </div>
             
             <div class="trail-actions-modal">
-                <button class="btn-secondary" onclick="addToFavorites(${trail.id})">❤️ Add to Favorites</button>
+                <button class="btn-favorite" onclick="addToFavorites(${trail.id})">
+                    <span class="heart-icon">♡</span> Add to Favorites
+                </button>
                 <button class="btn-secondary" onclick="shareTrail(${trail.id})">📤 Share Trail</button>
             </div>
         </div>
@@ -473,12 +475,35 @@ function addToFavorites(trailId) {
         localStorage.setItem('favoriteTrails', JSON.stringify(favorites));
         trailsManager.showMessage(`${trail.name} added to favorites!`, 'success');
         // Refresh the favorites display
+        updateFavoritesButtons();
         trailsManager.displayFeaturedTrails();
         // Update favorites count
         updateFavoritesCount();
     } else {
-        trailsManager.showMessage(`${trail.name} is already in your favorites`, 'info');
+        // Remove from favorites
+        const updatedFavorites = favorites.filter(id => id !== trailId);
+        localStorage.setItem('favoriteTrails', JSON.stringify(updatedFavorites));
+        trailsManager.showMessage(`${trail.name} removed from favorites`, 'info');
+        updateFavoritesButtons();
+        trailsManager.displayFeaturedTrails();
+        updateFavoritesCount();
     }
+}
+
+function updateFavoritesButtons() {
+    const favorites = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+    
+    document.querySelectorAll('.btn-favorite').forEach(button => {
+        const trailId = parseInt(button.getAttribute('onclick').match(/\d+/)[0]);
+        const icon = button.querySelector('.heart-icon');
+        if (favorites.includes(trailId)) {
+            icon.textContent = '♥';
+            button.classList.add('active');
+        } else {
+            icon.textContent = '♡';
+            button.classList.remove('active');
+        }
+    });
 }
 
 function startNavigation(trailId) {
@@ -562,6 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update counts on page load
     updateCartCount();
     updateFavoritesCount();
+    updateFavoritesButtons();
     
     // Close modal when clicking outside
     window.onclick = function(event) {

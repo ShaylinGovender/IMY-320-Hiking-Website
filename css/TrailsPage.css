@@ -201,6 +201,33 @@ nav {
     color: #e67e22;
 }
 
+.btn-favorite {
+    background: transparent;
+    border: 2px solid #e67e22;
+    color: #e67e22;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.btn-favorite:hover,
+.btn-favorite.active {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    color: white;
+    border-color: #e67e22;
+}
+
+.btn-favorite .heart-icon {
+    font-size: 1rem;
+}
+
 /* Hero Section */
 .hero {
     background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
