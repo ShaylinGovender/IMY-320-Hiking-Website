@@ -293,7 +293,23 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   
   initNavbarScroll(); // Add navbar scroll effect
+  updateFavoritesCount();
 });
+
+function updateFavoritesCount() {
+  try {
+    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+    const total = wishlist.length + favoriteTrails.length;
+    
+    const el = document.querySelector('.favorites-count');
+    if (el) {
+      el.textContent = total;
+    }
+  } catch (e) {
+    console.error('Error updating favorites count:', e);
+  }
+}
 
 function populateBrandFilter() {
   const brandFilter = document.getElementById('brandFilter');

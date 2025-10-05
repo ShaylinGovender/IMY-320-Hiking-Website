@@ -893,7 +893,42 @@ function initNavbarScroll() {
     });
 }
 
+// Update favorites count
+function updateFavoritesCount() {
+    try {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        const favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+        const total = wishlist.length + favoriteTrails.length;
+        
+        const el = document.querySelector('.favorites-count');
+        if (el) {
+            el.textContent = total;
+        }
+    } catch (e) {
+        console.error('Error updating favorites count:', e);
+    }
+}
+
+// Update cart count
+function updateCartCount() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        
+        const el = document.querySelector('.cart-count');
+        if (el) {
+            el.textContent = total;
+        }
+    } catch (e) {
+        console.error('Error updating cart count:', e);
+    }
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     initNavbarScroll();
+    
+    // Update counts on page load
+    updateCartCount();
+    updateFavoritesCount();
 });

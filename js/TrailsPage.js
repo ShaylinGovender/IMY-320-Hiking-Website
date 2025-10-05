@@ -474,6 +474,8 @@ function addToFavorites(trailId) {
         trailsManager.showMessage(`${trail.name} added to favorites!`, 'success');
         // Refresh the favorites display
         trailsManager.displayFeaturedTrails();
+        // Update favorites count
+        updateFavoritesCount();
     } else {
         trailsManager.showMessage(`${trail.name} is already in your favorites`, 'info');
     }
@@ -520,11 +522,46 @@ function initNavbarScroll() {
     });
 }
 
+// Update favorites count
+function updateFavoritesCount() {
+    try {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        const favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+        const total = wishlist.length + favoriteTrails.length;
+        
+        const el = document.querySelector('.favorites-count');
+        if (el) {
+            el.textContent = total;
+        }
+    } catch (e) {
+        console.error('Error updating favorites count:', e);
+    }
+}
+
+// Update cart count
+function updateCartCount() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        
+        const el = document.querySelector('.cart-count');
+        if (el) {
+            el.textContent = total;
+        }
+    } catch (e) {
+        console.error('Error updating cart count:', e);
+    }
+}
+
 // Initialize trails manager when DOM is loaded
 let trailsManager;
 document.addEventListener('DOMContentLoaded', () => {
     trailsManager = new TrailsManager();
     initNavbarScroll(); // Add navbar scroll effect
+    
+    // Update counts on page load
+    updateCartCount();
+    updateFavoritesCount();
     
     // Close modal when clicking outside
     window.onclick = function(event) {

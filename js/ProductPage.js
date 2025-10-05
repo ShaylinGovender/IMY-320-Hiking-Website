@@ -339,6 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   updateCartCount();
+  updateFavoritesCount();
   setupEventListeners();
   initNavbarScroll(); // Add navbar scroll effect
 });
@@ -732,6 +733,7 @@ function toggleWishlist() {
     if (btn) { btn.classList.add('active'); btn.querySelector('.heart-icon').textContent = '♥'; }
   }
   localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  updateFavoritesCount();
 }
 
 function updateWishlistButton() {
@@ -746,6 +748,13 @@ function updateCartCount() {
   const el = document.querySelector('.cart-count');
   if (!el) return;
   const total = cart.reduce((s, i) => s + i.quantity, 0);
+  el.textContent = total;
+}
+
+function updateFavoritesCount() {
+  const el = document.querySelector('.favorites-count');
+  if (!el) return;
+  const total = wishlist.length;
   el.textContent = total;
 }
 
