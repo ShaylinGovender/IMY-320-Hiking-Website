@@ -130,7 +130,7 @@ function displayTrailFavorites() {
                         <div class="trail-details">
                             <div class="trail-detail">
                                 <i class="fas fa-route"></i>
-                                <span>${trail.distance}</span>
+                                <span>${trail.distance} <small>(length)</small></span>
                             </div>
                             <div class="trail-detail">
                                 <i class="fas fa-clock"></i>

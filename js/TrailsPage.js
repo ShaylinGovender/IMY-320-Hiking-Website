@@ -239,8 +239,8 @@ class TrailsManager {
                     <div class="trail-details">
                         <span class="trail-detail ${difficultyClass}">🏃 ${this.capitalizeFirst(trail.difficulty)}</span>
                         <span class="trail-detail">⏱️ ${durationText}</span>
-                        <span class="trail-detail">📏 ${trail.distance}</span>
-                        <span class="trail-detail">⛰️ ${trail.elevation}</span>
+                        <span class="trail-detail">📏 ${trail.distance} <small>(length)</small></span>
+                        <span class="trail-detail">⛰️ ${trail.elevation} <small>(height gain)</small></span>
                     </div>
                     <div class="trail-actions">
                         <button class="btn-primary" onclick="event.stopPropagation(); viewTrailDetails(${trail.id})">
@@ -430,10 +430,12 @@ function viewTrailDetails(trailId) {
                 <div class="info-item">
                     <strong>📏 Distance:</strong>
                     <span>${trail.distance}</span>
+                    <div class="info-tooltip">Total trail length from start to finish</div>
                 </div>
                 <div class="info-item">
                     <strong>⛰️ Elevation:</strong>
                     <span>${trail.elevation}</span>
+                    <div class="info-tooltip">Total height gained during the hike</div>
                 </div>
                 <div class="info-item">
                     <strong>🌟 Type:</strong>
