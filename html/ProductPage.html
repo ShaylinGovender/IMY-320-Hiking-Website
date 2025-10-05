@@ -256,6 +256,22 @@
         </div>
     </div>
 
+    <!-- Notification System -->
+    <div id="notification" class="notification" style="display: none;">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-message">
+                <h4>Item Added to Cart!</h4>
+                <p id="notification-text">Product has been added to your cart successfully.</p>
+            </div>
+            <button class="notification-close" onclick="hideNotification()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
@@ -313,6 +329,44 @@ function addToCart(){
   var qEl=document.getElementById('quantity');
   var qty=Math.max(1,parseInt(qEl?qEl.value:1,10)||1);
   Cart.add({id:id,title:title,price:p,image:image,brand:brand,descriptor:t('#productDescription')||'',link:location.href,availability:'in_stock',availabilityDate:new Date().toISOString()},qty);
+  
+  // Show notification and redirect to cart
+  showNotification(title);
+}
+
+function showNotification(productName) {
+  const notification = document.getElementById('notification');
+  const notificationText = document.getElementById('notification-text');
+  
+  if (notification && notificationText) {
+    // Update notification text with product name
+    notificationText.textContent = `"${productName}" has been added to your cart successfully.`;
+    
+    // Show notification
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    // Auto-hide after 1 second and redirect to cart
+    setTimeout(() => {
+      hideNotification();
+      // Redirect to cart page after notification is hidden
+      setTimeout(() => {
+        window.location.href = 'Cart.html';
+      }, 300); // Wait for animation to complete
+    }, 1000);
+  }
+}
+
+function hideNotification() {
+  const notification = document.getElementById('notification');
+  if (notification) {
+    notification.classList.add('hiding');
+    // Hide after animation completes
+    setTimeout(() => {
+      notification.style.display = 'none';
+      notification.classList.remove('hiding');
+    }, 300);
+  }
 }
 </script>
 

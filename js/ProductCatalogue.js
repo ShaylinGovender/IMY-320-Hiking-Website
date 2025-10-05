@@ -468,11 +468,50 @@ function viewProduct(productId) {
 function addToCart(productId) {
   const p = getProducts().find(x => x.id === productId);
   if (!p || !p.inStock) return;
-  alert(`Added "${p.name}" to cart!`);
+  
+  // Show notification instead of alert
+  showNotification(p.name);
+  
+  // Update cart count
   const cartCount = document.querySelector('.cart-count');
   if (cartCount) {
     const n = parseInt(cartCount.textContent || '0', 10);
     cartCount.textContent = n + 1;
+  }
+}
+
+function showNotification(productName) {
+  const notification = document.getElementById('notification');
+  const notificationText = document.getElementById('notification-text');
+  
+  if (notification && notificationText) {
+    // Update notification text with product name
+    notificationText.textContent = `"${productName}" has been added to your cart successfully.`;
+    
+    // Show notification
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    // Auto-hide after 1 second and redirect to cart
+    setTimeout(() => {
+      hideNotification();
+      // Redirect to cart page after notification is hidden
+      setTimeout(() => {
+        window.location.href = 'Cart.html';
+      }, 300); // Wait for animation to complete
+    }, 1000);
+  }
+}
+
+function hideNotification() {
+  const notification = document.getElementById('notification');
+  if (notification) {
+    notification.classList.add('hiding');
+    // Hide after animation completes
+    setTimeout(() => {
+      notification.style.display = 'none';
+      notification.classList.remove('hiding');
+    }, 300);
   }
 }
 

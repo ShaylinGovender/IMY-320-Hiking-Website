@@ -672,7 +672,44 @@ function addToCart() {
   if (idx > -1) cart[idx].quantity += quantity; else cart.push(cartItem);
   localStorage.setItem('cart', JSON.stringify(cart));
   updateCartCount();
-  showAddToCartFeedback();
+  
+  // Show notification instead of button feedback
+  showNotification(currentProduct.name);
+}
+
+function showNotification(productName) {
+  const notification = document.getElementById('notification');
+  const notificationText = document.getElementById('notification-text');
+  
+  if (notification && notificationText) {
+    // Update notification text with product name
+    notificationText.textContent = `"${productName}" has been added to your cart successfully.`;
+    
+    // Show notification
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    // Auto-hide after 1 second and redirect to cart
+    setTimeout(() => {
+      hideNotification();
+      // Redirect to cart page after notification is hidden
+      setTimeout(() => {
+        window.location.href = 'Cart.html';
+      }, 300); // Wait for animation to complete
+    }, 1000);
+  }
+}
+
+function hideNotification() {
+  const notification = document.getElementById('notification');
+  if (notification) {
+    notification.classList.add('hiding');
+    // Hide after animation completes
+    setTimeout(() => {
+      notification.style.display = 'none';
+      notification.classList.remove('hiding');
+    }, 300);
+  }
 }
 
 function showAddToCartFeedback() {
