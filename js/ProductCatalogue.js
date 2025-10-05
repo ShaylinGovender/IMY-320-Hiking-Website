@@ -345,11 +345,10 @@ function displayProducts(productsToDisplay) {
     const categoryBadge = getCategoryBadge(product.category);
 
     return `
-      <div class="product-item ${stockClass}" data-id="${product.id}">
+      <div class="product-item ${stockClass}" data-id="${product.id}" onclick="viewProduct(${product.id})" style="cursor:pointer;">
         <div class="product-info">
           <img src="${product.image}" alt="${product.name}" class="product-image"
-               onerror="this.src='../images/Women-Hiking-Boots.jpg'"
-               onclick="viewProduct(${product.id})" style="cursor:pointer;">
+               onerror="this.src='../images/Women-Hiking-Boots.jpg'">
           <div class="product-details">
             ${categoryBadge}
             <h3>${product.name}${stockStatus}</h3>
@@ -369,10 +368,10 @@ function displayProducts(productsToDisplay) {
         </div>
 
         <div class="product-actions">
-          <button class="btn btn-primary" onclick="addToCart(${product.id})" ${!product.inStock ? 'disabled' : ''}>
+          <button class="btn btn-primary" onclick="event.stopPropagation(); addToCart(${product.id})" ${!product.inStock ? 'disabled' : ''}>
             ${product.inStock ? 'Add to Cart' : 'Out of Stock'}
           </button>
-          <button class="btn btn-secondary" onclick="viewProduct(${product.id})">View Details</button>
+          <button class="btn btn-secondary" onclick="event.stopPropagation(); viewProduct(${product.id})">View Details</button>
         </div>
       </div>
     `;
