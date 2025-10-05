@@ -465,9 +465,10 @@ nav {
 }
 
 .stock-indicator.out-of-stock {
-    background: #f8d7da;
-    color: #e74c3c;
-    border: 1px solid #f5c6cb;
+    background: #e74c3c;
+    color: white;
+    border: 1px solid #c0392b;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
 }
 
 .status-icon {

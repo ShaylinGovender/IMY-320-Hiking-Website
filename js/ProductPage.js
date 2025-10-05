@@ -422,7 +422,7 @@ function updateStockStatus() {
     btn.disabled = false;
   } else {
     stockIndicator.className = 'stock-indicator out-of-stock';
-    stockIndicator.innerHTML = '<span class="status-icon">✗</span><span class="status-text">Currently out of stock</span>';
+    stockIndicator.innerHTML = '<span class="status-icon">✗</span><span class="status-text">OUT OF STOCK</span>';
     btn.disabled = true;
   }
 }

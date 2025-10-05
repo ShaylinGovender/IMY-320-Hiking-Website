@@ -389,7 +389,6 @@ function displayProducts(productsToDisplay) {
 
   productList.innerHTML = productsToDisplay.map(product => {
     const stars = generateStars(product.rating);
-    const stockStatus = product.inStock ? '' : ' (Out of Stock)';
     const stockClass = product.inStock ? '' : 'out-of-stock';
     const categoryBadge = getCategoryBadge(product.category);
 
@@ -400,7 +399,7 @@ function displayProducts(productsToDisplay) {
                onerror="this.src='../images/Women-Hiking-Boots.jpg'">
           <div class="product-details">
             ${categoryBadge}
-            <h3>${product.name}${stockStatus}</h3>
+            <h3>${product.name}</h3>
           </div>
         </div>
 
@@ -418,7 +417,7 @@ function displayProducts(productsToDisplay) {
 
         <div class="product-actions">
           <button class="btn btn-primary" onclick="event.stopPropagation(); addToCart(${product.id})" ${!product.inStock ? 'disabled' : ''}>
-            ${product.inStock ? 'Add to Cart' : 'Out of Stock'}
+            Add to Cart
           </button>
           <button class="btn btn-secondary" onclick="event.stopPropagation(); viewProduct(${product.id})">View Details</button>
           <button class="btn btn-favorite" onclick="event.stopPropagation(); toggleWishlist(${product.id})" title="Add to Favorites">

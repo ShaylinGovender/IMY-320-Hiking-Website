@@ -898,7 +898,7 @@ nav {
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 1);
+    background: #e74c3c;
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 5px;
@@ -907,6 +907,7 @@ nav {
     letter-spacing: 1px;
     z-index: 10;
     pointer-events: none;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
 }
 
 /* Enhanced hover effects */
