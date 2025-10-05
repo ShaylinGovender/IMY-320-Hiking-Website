@@ -7,14 +7,14 @@
     const method=d.shippingMethod||'standard';
     el.innerHTML=`
       ${code}
-      <div class="line"><span>Items</span><strong>${Cart.count()}</strong></div>
-      <div class="line"><span>Shipping</span><strong>${method}</strong></div>
+      <div class="line"><span><strong>Items</strong></span><strong>${Cart.count()}</strong></div>
+      <div class="line shipping"><span><i class="fas fa-shipping-fast"></i> <strong>Shipping</strong> (${method})</span><strong>${'R'+t.shipping.toFixed(2)}</strong></div>
       <hr>
-      <div class="line"><span>Subtotal</span><strong>${'R'+t.subtotal.toFixed(2)}</strong></div>
-      <div class="line"><span>Discount</span><strong>-${'R'+t.discount.toFixed(2)}</strong></div>
-      <div class="line"><span>Shipping</span><strong>${'R'+t.shipping.toFixed(2)}</strong></div>
-      <div class="line"><span>Tax</span><strong>${'R'+t.tax.toFixed(2)}</strong></div>
-      <div class="line total"><span>Total</span><strong>${'R'+t.total.toFixed(2)}</strong></div>`;
+      <div class="line"><span><strong>Subtotal</strong></span><strong>${'R'+t.subtotal.toFixed(2)}</strong></div>
+      <div class="line"><span><strong>Discount</strong></span><strong>-${'R'+t.discount.toFixed(2)}</strong></div>
+      <div class="line"><span><strong>Shipping</strong></span><strong>${'R'+t.shipping.toFixed(2)}</strong></div>
+      <div class="line"><span><strong>Tax</strong></span><strong>${'R'+t.tax.toFixed(2)}</strong></div>
+      <div class="line total"><span><i class="fas fa-calculator"></i> Total</span><strong>${'R'+t.total.toFixed(2)}</strong></div>`;
   }
   function restore(){
     const p=Cart.loadProfile();

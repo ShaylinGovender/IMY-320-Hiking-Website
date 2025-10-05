@@ -14,13 +14,12 @@
     const el = document.getElementById('payment-summary');
     el.innerHTML = `
       <div class="line"><span>Items</span><strong>${cartCount}</strong></div>
-      <div class="line"><span>Shipping</span><strong>standard</strong></div>
+      <div class="line shipping"><span><i class="fas fa-shipping-fast"></i> Shipping (standard)</span><strong>R0.00</strong></div>
       <hr>
       <div class="line"><span>Subtotal</span><strong>R${subtotal.toFixed(2)}</strong></div>
       <div class="line"><span>Discount</span><strong>-R0.00</strong></div>
-      <div class="line"><span>Shipping</span><strong>R0.00</strong></div>
       <div class="line"><span>Tax</span><strong>R${tax.toFixed(2)}</strong></div>
-      <div class="line total"><span>Total</span><strong>R${total.toFixed(2)}</strong></div>`;
+      <div class="line total"><span><i class="fas fa-calculator"></i> Total</span><strong>R${total.toFixed(2)}</strong></div>`;
   }
   
   function toggleCard(){

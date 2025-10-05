@@ -59,12 +59,18 @@
         </div>
       </div>
       <div style="margin-top:10px">
-        <label class="kicker">Shipping method</label>
-        <select id="shipping-method" class="input">
-          <option value="standard">Standard</option>
-          <option value="express">Express</option>
-          <option value="pickup">Pickup</option>
+        <label class="kicker" style="font-weight:600;color:var(--mountain-slate);display:flex;align-items:center;gap:8px">
+          <i class="fas fa-shipping-fast" style="color:var(--sunset-orange)"></i>
+          Shipping method
+        </label>
+        <select id="shipping-method" class="input" style="border:2px solid var(--sunset-orange);font-weight:600;background:linear-gradient(145deg,#fff,#f8f9fa)">
+          <option value="standard">🚚 Standard (3-5 days) - R50.00</option>
+          <option value="express">⚡ Express (1-2 days) - R100.00</option>
+          <option value="pickup">🏪 Pickup (Free) - R0.00</option>
         </select>
+        <div class="small" style="margin-top:4px;color:var(--forest-green);font-weight:500">
+          <i class="fas fa-check-circle"></i> Shipping cost included in total below
+        </div>
       </div>
       <hr>
       <div id="summary-lines"></div>

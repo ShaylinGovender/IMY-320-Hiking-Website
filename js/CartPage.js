@@ -35,9 +35,9 @@
     s.innerHTML=`
       <div class="line"><span>Subtotal</span><strong>${'R'+t.subtotal.toFixed(2)}</strong></div>
       <div class="line"><span>Discount</span><strong>-${'R'+t.discount.toFixed(2)}</strong></div>
-      <div class="line"><span>Shipping</span><strong>${'R'+t.shipping.toFixed(2)}</strong></div>
+      <div class="line shipping"><span><i class="fas fa-shipping-fast"></i> Shipping (${method})</span><strong>${'R'+t.shipping.toFixed(2)}</strong></div>
       <div class="line"><span>Tax</span><strong>${'R'+t.tax.toFixed(2)}</strong></div>
-      <div class="line total"><span>Total</span><strong>${'R'+t.total.toFixed(2)}</strong></div>`;
+      <div class="line total"><span><i class="fas fa-calculator"></i> Total</span><strong>${'R'+t.total.toFixed(2)}</strong></div>`;
     Cart.saveDraft({...Cart.loadDraft(),discountCode:code,shippingMethod:method});
   }
   document.addEventListener('click',e=>{
