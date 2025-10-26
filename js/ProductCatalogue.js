@@ -420,9 +420,6 @@ function displayProducts(productsToDisplay) {
             Add to Cart
           </button>
           <button class="btn btn-secondary" onclick="event.stopPropagation(); viewProduct(${product.id})">View Details</button>
-          <button class="btn btn-favorite" onclick="event.stopPropagation(); toggleWishlist(${product.id})" title="Add to Favorites">
-            <span class="heart-icon">♡</span>
-          </button>
         </div>
       </div>
     `;
