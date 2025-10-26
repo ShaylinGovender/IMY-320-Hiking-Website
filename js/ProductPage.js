@@ -308,7 +308,6 @@ const getProducts = () => window.ProductData.getProducts();
    ========================================================= */
 let currentProduct = null;
 let quantity = 1;
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
 
 /* ---------- Navbar scroll effect function ---------- */
@@ -338,7 +337,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (def) loadProduct(def.id);
   }
 
-  updateCartCount();
   updateFavoritesCount();
   setupEventListeners();
   initNavbarScroll(); // Add navbar scroll effect
@@ -665,16 +663,20 @@ function changeQuantity(d) {
 
 function addToCart() {
   if (!currentProduct || !currentProduct.inStock) return;
-  const cartItem = {
-    id: currentProduct.id, name: currentProduct.name, brand: currentProduct.brand,
-    price: currentProduct.price, image: currentProduct.image, quantity, dateAdded: new Date().toISOString()
-  };
-  const idx = cart.findIndex(i => i.id === cartItem.id);
-  if (idx > -1) cart[idx].quantity += quantity; else cart.push(cartItem);
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartCount();
   
-  // Show notification instead of button feedback
+  const product = {
+    id: currentProduct.id,
+    title: currentProduct.name,
+    brand: currentProduct.brand,
+    price: currentProduct.price,
+    image: currentProduct.image,
+    descriptor: currentProduct.description || '',
+    link: location.href,
+    availability: 'in_stock',
+    availabilityDate: new Date().toISOString()
+  };
+  
+  Cart.add(product, quantity);
   showNotification(currentProduct.name);
 }
 
@@ -744,12 +746,6 @@ function updateWishlistButton() {
   else { btn.classList.remove('active'); btn.querySelector('.heart-icon').textContent = '♡'; }
 }
 
-function updateCartCount() {
-  const el = document.querySelector('.cart-count');
-  if (!el) return;
-  const total = cart.reduce((s, i) => s + i.quantity, 0);
-  el.textContent = total;
-}
 
 function updateFavoritesCount() {
   const el = document.querySelector('.favorites-count');

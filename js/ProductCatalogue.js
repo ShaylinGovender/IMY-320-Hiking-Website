@@ -572,16 +572,22 @@ function addToCart(productId) {
   const p = getProducts().find(x => x.id === productId);
   if (!p || !p.inStock) return;
   
-  // Show notification instead of alert
-  showNotification(p.name);
+  const product = {
+    id: p.id,
+    title: p.name,
+    brand: p.brand,
+    price: p.price,
+    image: p.image,
+    descriptor: p.description || '',
+    link: location.href,
+    availability: 'in_stock',
+    availabilityDate: new Date().toISOString()
+  };
   
-  // Update cart count
-  const cartCount = document.querySelector('.cart-count');
-  if (cartCount) {
-    const n = parseInt(cartCount.textContent || '0', 10);
-    cartCount.textContent = n + 1;
-  }
+  Cart.add(product, 1);
+  showNotification(p.name);
 }
+
 
 function showNotification(productName) {
   const notification = document.getElementById('notification');
