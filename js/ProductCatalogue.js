@@ -595,14 +595,14 @@ function showNotification(productName) {
     notification.style.display = 'block';
     notification.classList.remove('hiding');
     
-    // Auto-hide after 1 second and redirect to cart
+    // Auto-hide after 2 seconds and redirect to cart
     setTimeout(() => {
       hideNotification();
       // Redirect to cart page after notification is hidden
       setTimeout(() => {
         window.location.href = 'Cart.html';
       }, 300); // Wait for animation to complete
-    }, 1000);
+    }, 2000);
   }
 }
 
