@@ -247,7 +247,7 @@ class TrailsManager {
                             View Details
                         </button>
                         <button class="btn-favorite" onclick="event.stopPropagation(); addToFavorites(${trail.id})">
-                            <span class="heart-icon">♡</span>
+                            <i class="heart-icon far fa-heart"></i>
                         </button>
                     </div>
                 </div>
@@ -355,27 +355,7 @@ class TrailsManager {
     }
 
     showMessage(message, type = 'success') {
-        const messageEl = document.createElement('div');
-        messageEl.className = `alert alert-${type}`;
-        messageEl.textContent = message;
-        messageEl.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 1rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            z-index: 1000;
-            max-width: 300px;
-            background: ${type === 'success' ? '#27ae60' : '#e74c3c'};
-        `;
-
-        document.body.appendChild(messageEl);
-
-        setTimeout(() => {
-            messageEl.remove();
-        }, 3000);
+        showTrailNotification(message, type === 'success');
     }
 }
 
@@ -451,9 +431,6 @@ function viewTrailDetails(trailId) {
             </div>
             
             <div class="trail-actions-modal">
-                <button class="btn-favorite" onclick="addToFavorites(${trail.id})">
-                    <span class="heart-icon">♡</span> Add to Favorites
-                </button>
                 <button class="btn-secondary" onclick="shareTrail(${trail.id})">📤 Share Trail</button>
             </div>
         </div>
@@ -499,10 +476,10 @@ function updateFavoritesButtons() {
         const trailId = parseInt(button.getAttribute('onclick').match(/\d+/)[0]);
         const icon = button.querySelector('.heart-icon');
         if (favorites.includes(trailId)) {
-            icon.textContent = '♥';
+            icon.className = 'heart-icon fas fa-heart';
             button.classList.add('active');
         } else {
-            icon.textContent = '♡';
+            icon.className = 'heart-icon far fa-heart';
             button.classList.remove('active');
         }
     });
@@ -599,3 +576,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+function showTrailNotification(message, isAdded) {
+    const notification = document.getElementById('trailNotification');
+    const title = document.getElementById('trail-title');
+    const text = document.getElementById('trail-text');
+    
+    if (notification && title && text) {
+        if (isAdded) {
+            title.textContent = 'Added to Favorites!';
+            text.textContent = message;
+        } else {
+            title.textContent = 'Removed from Favorites';
+            text.textContent = message;
+        }
+        
+        notification.style.display = 'block';
+        notification.classList.remove('hiding');
+        
+        setTimeout(() => {
+            hideTrailNotification();
+        }, 3000);
+    }
+}
+
+function hideTrailNotification() {
+    const notification = document.getElementById('trailNotification');
+    if (notification) {
+        notification.classList.add('hiding');
+        setTimeout(() => {
+            notification.style.display = 'none';
+            notification.classList.remove('hiding');
+        }, 300);
+    }
+}

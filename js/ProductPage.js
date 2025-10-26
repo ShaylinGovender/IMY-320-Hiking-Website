@@ -715,6 +715,40 @@ function hideNotification() {
   }
 }
 
+function showFavoriteNotification(productName, isAdded) {
+  const notification = document.getElementById('favoriteNotification');
+  const title = document.getElementById('favorite-title');
+  const text = document.getElementById('favorite-text');
+  
+  if (notification && title && text) {
+    if (isAdded) {
+      title.textContent = 'Added to Favorites!';
+      text.textContent = `"${productName}" has been added to your favorites.`;
+    } else {
+      title.textContent = 'Removed from Favorites';
+      text.textContent = `"${productName}" has been removed from your favorites.`;
+    }
+    
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    setTimeout(() => {
+      hideFavoriteNotification();
+    }, 3000);
+  }
+}
+
+function hideFavoriteNotification() {
+  const notification = document.getElementById('favoriteNotification');
+  if (notification) {
+    notification.classList.add('hiding');
+    setTimeout(() => {
+      notification.style.display = 'none';
+      notification.classList.remove('hiding');
+    }, 300);
+  }
+}
+
 function showAddToCartFeedback() {
   const btn = document.querySelector('.add-to-cart-btn');
   if (!btn) return;
@@ -729,10 +763,18 @@ function toggleWishlist() {
   const isIn = wishlist.some(i => i.id === currentProduct.id);
   if (isIn) {
     wishlist = wishlist.filter(i => i.id !== currentProduct.id);
-    if (btn) { btn.classList.remove('active'); btn.querySelector('.heart-icon').textContent = '♡'; }
+    if (btn) { 
+      btn.classList.remove('active'); 
+      btn.querySelector('.heart-icon').className = 'heart-icon far fa-heart';
+    }
+    showFavoriteNotification(currentProduct.name, false);
   } else {
     wishlist.push({ id: currentProduct.id, name: currentProduct.name, price: currentProduct.price, image: currentProduct.image, dateAdded: new Date().toISOString() });
-    if (btn) { btn.classList.add('active'); btn.querySelector('.heart-icon').textContent = '♥'; }
+    if (btn) { 
+      btn.classList.add('active'); 
+      btn.querySelector('.heart-icon').className = 'heart-icon fas fa-heart';
+    }
+    showFavoriteNotification(currentProduct.name, true);
   }
   localStorage.setItem('wishlist', JSON.stringify(wishlist));
   updateFavoritesCount();
@@ -742,8 +784,14 @@ function updateWishlistButton() {
   const btn = document.querySelector('.wishlist-btn');
   const isIn = wishlist.some(i => i.id === currentProduct.id);
   if (!btn) return;
-  if (isIn) { btn.classList.add('active'); btn.querySelector('.heart-icon').textContent = '♥'; }
-  else { btn.classList.remove('active'); btn.querySelector('.heart-icon').textContent = '♡'; }
+  if (isIn) { 
+    btn.classList.add('active'); 
+    btn.querySelector('.heart-icon').className = 'heart-icon fas fa-heart';
+  }
+  else { 
+    btn.classList.remove('active'); 
+    btn.querySelector('.heart-icon').className = 'heart-icon far fa-heart';
+  }
 }
 
 

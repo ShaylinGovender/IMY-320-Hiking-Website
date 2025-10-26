@@ -1050,6 +1050,11 @@ nav {
     justify-content: center;
 }
 
+#favoriteNotification .notification-icon {
+    color: #10b981;
+    background: #ecfdf5;
+}
+
 .notification-message {
     flex: 1;
 }
