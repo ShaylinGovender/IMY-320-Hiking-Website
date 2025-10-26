@@ -320,7 +320,7 @@ nav {
 .filter-controls select {
     padding: 0.8rem 1rem;
     font-size: 1rem;
-    border: 2px solid #e9ecef;
+    border: 2px solid #e67e22;
     border-radius: 8px;
     background: linear-gradient(145deg, #ffffff, #f8f9fa);
     cursor: pointer;
