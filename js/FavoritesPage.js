@@ -15,6 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
     updateFavoritesCount();
     updateCartCount();
     initNavbarScroll();
+    
+    const hash = window.location.hash;
+    if (hash === '#products') {
+        showTab('products');
+    } else if (hash === '#trails') {
+        showTab('trails');
+    }
 });
 
 // Load favorites from localStorage
@@ -75,11 +82,8 @@ function displayProductFavorites() {
                     <a href="ProductPage.html?id=${item.id}" class="btn btn-primary">
                         <i class="fas fa-eye"></i> View Details
                     </a>
-                    <button class="btn btn-secondary" onclick="addToCartFromFavorites('${item.id}')">
-                        <i class="fas fa-shopping-cart"></i> Add to Cart
-                    </button>
                     <button class="btn btn-danger" onclick="removeFromWishlist('${item.id}')">
-                        <i class="fas fa-heart-broken"></i> Remove
+                        <i class="fas fa-trash"></i> Remove
                     </button>
                 </div>
             </div>
@@ -144,11 +148,8 @@ function displayTrailFavorites() {
                     </div>
                 </div>
                 <div class="favorite-item-actions">
-                    <button class="btn btn-primary" onclick="viewTrailDetails(${trailId})">
-                        <i class="fas fa-eye"></i> View Details
-                    </button>
                     <button class="btn btn-danger" onclick="removeFromTrailFavorites(${trailId})">
-                        <i class="fas fa-heart-broken"></i> Remove
+                        <i class="fas fa-trash"></i> Remove
                     </button>
                 </div>
             </div>
@@ -355,7 +356,7 @@ function removeFromWishlist(productId) {
     updateFavoritesCount();
     
     // Show success message
-    showMessage('Item removed from favorites', 'success');
+    showFavoriteNotification('Item removed from favorites');
 }
 
 // Remove trail from favorites
@@ -367,7 +368,7 @@ function removeFromTrailFavorites(trailId) {
     updateFavoritesCount();
     
     // Show success message
-    showMessage('Trail removed from favorites', 'success');
+    showFavoriteNotification('Trail removed from favorites');
 }
 
 // Add to cart from favorites
@@ -418,37 +419,33 @@ function updateCartCount() {
     }
 }
 
-// Show message to user
-function showMessage(message, type = 'info') {
-    // Create a simple notification
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.style.cssText = `
-        position: fixed;
-        top: 120px;
-        right: 20px;
-        background: ${type === 'success' ? '#27ae60' : type === 'error' ? '#e74c3c' : '#3498db'};
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        z-index: 3000;
-        font-weight: 500;
-        animation: slideInRight 0.3s ease-out;
-    `;
-    notification.textContent = message;
+function showFavoriteNotification(message) {
+    const notification = document.getElementById('favoriteNotification');
+    const title = document.getElementById('favorite-title');
+    const text = document.getElementById('favorite-text');
     
-    document.body.appendChild(notification);
-    
-    // Remove after 3 seconds
-    setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease-in forwards';
+    if (notification && title && text) {
+        title.textContent = 'Removed from Favorites';
+        text.textContent = message;
+        
+        notification.style.display = 'block';
+        notification.classList.remove('hiding');
+        
         setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
+            hideFavoriteNotification();
+        }, 3000);
+    }
+}
+
+function hideFavoriteNotification() {
+    const notification = document.getElementById('favoriteNotification');
+    if (notification) {
+        notification.classList.add('hiding');
+        setTimeout(() => {
+            notification.style.display = 'none';
+            notification.classList.remove('hiding');
         }, 300);
-    }, 3000);
+    }
 }
 
 // Navbar scroll effect
@@ -467,29 +464,3 @@ function initNavbarScroll() {
     });
 }
 
-// Add CSS animations for notifications
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);

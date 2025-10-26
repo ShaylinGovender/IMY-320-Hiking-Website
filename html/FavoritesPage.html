@@ -40,7 +40,7 @@
                         <span class="cart-count" id="cart-count" data-cart-count>0</span>
                     </a>
                     <a href="FavoritesPage.html" class="favorites-icon" aria-label="Favorites">
-                        ♥
+                        <i class="fas fa-heart"></i>
                         <span class="favorites-count" id="favorites-count">0</span>
                     </a>
                 </div>
@@ -142,6 +142,22 @@
             <p>&copy; 2025 TrailBlazer. All rights reserved. Adventure awaits! 🏔️</p>
         </div>
     </footer>
+
+    <!-- Professional Notification System -->
+    <div id="favoriteNotification" class="notification" style="display: none;">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-message">
+                <h4 id="favorite-title">Removed from Favorites</h4>
+                <p id="favorite-text">Item has been removed from your favorites.</p>
+            </div>
+            <button class="notification-close" onclick="hideFavoriteNotification()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
 
     <script src="../js/FavoritesPage.js"></script>
     <script src="../js/Cart.js"></script>

@@ -734,6 +734,9 @@ function showFavoriteNotification(productName, isAdded) {
     
     setTimeout(() => {
       hideFavoriteNotification();
+      if (isAdded) {
+        window.location.href = 'FavoritesPage.html#products';
+      }
     }, 3000);
   }
 }

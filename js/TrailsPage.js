@@ -596,6 +596,9 @@ function showTrailNotification(message, isAdded) {
         
         setTimeout(() => {
             hideTrailNotification();
+            if (isAdded) {
+                window.location.href = 'FavoritesPage.html#trails';
+            }
         }, 3000);
     }
 }
