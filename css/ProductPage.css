@@ -1016,29 +1016,38 @@ nav {
 /* Notification System */
 .notification {
     position: fixed;
-    top: 120px;
-    right: 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    top: 100px;
+    right: 24px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
     z-index: 3000;
-    max-width: 400px;
-    min-width: 350px;
-    animation: slideInRight 0.3s ease-out;
-    border-left: 4px solid #27ae60;
+    max-width: 380px;
+    min-width: 320px;
+    animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid #e1e5e9;
+    backdrop-filter: blur(10px);
 }
 
 .notification-content {
     display: flex;
-    align-items: center;
-    padding: 1.5rem;
-    gap: 1rem;
+    align-items: flex-start;
+    padding: 16px 20px;
+    gap: 12px;
 }
 
 .notification-icon {
-    color: #27ae60;
-    font-size: 2rem;
+    color: #10b981;
+    font-size: 20px;
     flex-shrink: 0;
+    margin-top: 2px;
+    background: #ecfdf5;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .notification-message {
@@ -1046,61 +1055,63 @@ nav {
 }
 
 .notification-message h4 {
-    margin: 0 0 0.3rem 0;
-    color: #2c3e50;
-    font-size: 1.1rem;
+    margin: 0 0 4px 0;
+    color: #111827;
+    font-size: 14px;
     font-weight: 600;
+    line-height: 1.4;
 }
 
 .notification-message p {
     margin: 0;
-    color: #7f8c8d;
-    font-size: 0.9rem;
+    color: #6b7280;
+    font-size: 13px;
     line-height: 1.4;
 }
 
 .notification-close {
     background: none;
     border: none;
-    color: #95a5a6;
-    font-size: 1.2rem;
+    color: #9ca3af;
+    font-size: 16px;
     cursor: pointer;
-    padding: 0.3rem;
-    border-radius: 50%;
+    padding: 4px;
+    border-radius: 4px;
     transition: all 0.2s ease;
     flex-shrink: 0;
+    margin-top: -2px;
 }
 
 .notification-close:hover {
-    background: #f8f9fa;
-    color: #7f8c8d;
+    background: #f3f4f6;
+    color: #6b7280;
 }
 
 /* Notification Animation */
 @keyframes slideInRight {
     from {
-        transform: translateX(100%);
+        transform: translateX(100%) scale(0.95);
         opacity: 0;
     }
     to {
-        transform: translateX(0);
+        transform: translateX(0) scale(1);
         opacity: 1;
     }
 }
 
 @keyframes slideOutRight {
     from {
-        transform: translateX(0);
+        transform: translateX(0) scale(1);
         opacity: 1;
     }
     to {
-        transform: translateX(100%);
+        transform: translateX(100%) scale(0.95);
         opacity: 0;
     }
 }
 
 .notification.hiding {
-    animation: slideOutRight 0.3s ease-in forwards;
+    animation: slideOutRight 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 /* Responsive notification */
