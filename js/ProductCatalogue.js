@@ -483,7 +483,26 @@ function applyFiltersInternal() {
       matchesFavorite = wishlist.some(item => item.id === product.id);
     }
 
-    return matchesSearch && matchesCategory && matchesBrand && matchesPrice && matchesFavorite;
+    const hasActiveFilters = currentFilters.search !== '' || 
+      currentFilters.category !== 'all' || 
+      currentFilters.brand !== 'all' || 
+      currentFilters.price !== 'all' || 
+      currentFilters.favorite !== 'all';
+
+    if (!hasActiveFilters) {
+      return true;
+    }
+
+    const filterMatches = [matchesSearch, matchesCategory, matchesBrand, matchesPrice, matchesFavorite];
+    const activeFilterMatches = [];
+    
+    if (currentFilters.search !== '') activeFilterMatches.push(matchesSearch);
+    if (currentFilters.category !== 'all') activeFilterMatches.push(matchesCategory);
+    if (currentFilters.brand !== 'all') activeFilterMatches.push(matchesBrand);
+    if (currentFilters.price !== 'all') activeFilterMatches.push(matchesPrice);
+    if (currentFilters.favorite !== 'all') activeFilterMatches.push(matchesFavorite);
+
+    return activeFilterMatches.some(match => match);
   });
 
   sortProducts();

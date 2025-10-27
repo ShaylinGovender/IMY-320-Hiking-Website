@@ -268,7 +268,20 @@ class TrailsManager {
                 matchesFavorite = favoriteTrails.includes(trail.id);
             }
 
-            return matchesLocation && matchesDifficulty && matchesDuration && matchesType && matchesFavorite;
+            const hasActiveFilters = location || difficulty || duration || type || (favorite && favorite !== 'all');
+
+            if (!hasActiveFilters) {
+                return true;
+            }
+
+            const activeFilterMatches = [];
+            if (location) activeFilterMatches.push(matchesLocation);
+            if (difficulty) activeFilterMatches.push(matchesDifficulty);
+            if (duration) activeFilterMatches.push(matchesDuration);
+            if (type) activeFilterMatches.push(matchesType);
+            if (favorite && favorite !== 'all') activeFilterMatches.push(matchesFavorite);
+
+            return activeFilterMatches.some(match => match);
         });
 
         this.displayAllTrails();
