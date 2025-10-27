@@ -124,7 +124,9 @@
   function handleRemoveClick(e) {
     e.preventDefault();
     var id = e.target.getAttribute("data-id");
-    Cart.remove(id);
+    if (id) {
+      Cart.remove(parseInt(id, 10));
+    }
   }
 
   function handleCheckoutClick(e) {
