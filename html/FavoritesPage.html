@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrailBlazer - My Favorites</title>
+    <link rel="stylesheet" href="../css/FavoritesPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">🏔️ TrailBlazer</div>
+                <ul class="nav-links">
+                    <li><a href="landingPage.html">Home</a></li>
+                    <li><a href="ProductCatalogue.html">Gear</a></li>
+                    <li><a href="TrailsPage.html">Trails</a></li>
+                    <li><a href="GroupHikes.html">Community</a></li>
+                    <li><a href="AboutUsPage.html">About Us</a></li>
+                </ul>
+            </div>
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search gear, trails...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="account-section">
+                    <a href="AdminPanel.html" class="account-btn">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                        </svg>
+                        Admin
+                    </a>
+                    <a href="LoginPage.html" class="account-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    <a href="Cart.html" class="cart-icon" aria-label="Cart">
+                        🛒
+                        <span class="cart-count" id="cart-count" data-cart-count>0</span>
+                    </a>
+                    <a href="FavoritesPage.html" class="favorites-icon" aria-label="Favorites">
+                        <i class="fas fa-heart"></i>
+                        <span class="favorites-count" id="favorites-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>My Favorites</h1>
+                <p>Your saved products and trails</p>
+            </div>
+
+            <!-- Tabs for different favorite types -->
+            <div class="favorites-tabs">
+                <button class="tab-button active" onclick="showTab('products', this)">Products</button>
+                <button class="tab-button" onclick="showTab('trails', this)">Trails</button>
+            </div>
+
+            <!-- Products Favorites Section -->
+            <div id="products" class="tab-content active">
+                <div class="favorites-section">
+                    <div class="section-header">
+                        <h2>Favorite Products</h2>
+                        <span class="item-count" id="products-count">0 items</span>
+                    </div>
+                    
+                    <div id="products-favorites" class="favorites-grid">
+                        <!-- Products will be dynamically loaded here -->
+                    </div>
+                    
+                    <div id="no-products" class="empty-state" style="display: none;">
+                        <div class="empty-icon">♡</div>
+                        <h3>No favorite products yet</h3>
+                        <p>Start browsing our gear and tap the heart icon to add products to your favorites!</p>
+                        <a href="ProductCatalogue.html" class="btn btn-primary">Browse Products</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trails Favorites Section -->
+            <div id="trails" class="tab-content">
+                <div class="favorites-section">
+                    <div class="section-header">
+                        <h2>Favorite Trails</h2>
+                        <span class="item-count" id="trails-count">0 items</span>
+                    </div>
+                    
+                    <div id="trails-favorites" class="favorites-grid">
+                        <!-- Trails will be dynamically loaded here -->
+                    </div>
+                    
+                    <div id="no-trails" class="empty-state" style="display: none;">
+                        <div class="empty-icon">🏔️</div>
+                        <h3>No favorite trails yet</h3>
+                        <p>Explore our trails and tap the heart icon to add them to your favorites!</p>
+                        <a href="TrailsPage.html" class="btn btn-primary">Explore Trails</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="ProductCatalogue.html">Shop Gear</a></li>
+                        <li><a href="TrailsPage.html">Find Trails</a></li>
+                        <li><a href="GroupHikes.html">Join Community</a></li>
+                        <li><a href="AboutUsPage.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Newsletter</a></li>
+                        <li><a href="#">Social Media</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p>&copy; 2025 TrailBlazer. All rights reserved. Adventure awaits! 🏔️</p>
+        </div>
+    </footer>
+
+    <!-- Professional Notification System -->
+    <div id="favoriteNotification" class="notification" style="display: none;">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-message">
+                <h4 id="favorite-title">Removed from Favorites</h4>
+                <p id="favorite-text">Item has been removed from your favorites.</p>
+            </div>
+            <button class="notification-close" onclick="hideFavoriteNotification()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="../js/FavoritesPage.js"></script>
+    <script src="../js/Cart.js"></script>
+</body>
+</html>

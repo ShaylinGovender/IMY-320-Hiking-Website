@@ -241,7 +241,7 @@ const getProducts = () => window.ProductData.getProducts();
 
 /* ---------- Catalogue UI logic (uses getProducts everywhere) ---------- */
 let filteredProducts = getProducts();
-let currentFilters = { search: '', category: 'all', brand: 'all', price: 'all' };
+let currentFilters = { search: '', category: 'all', brand: 'all', price: 'all', favorite: 'all' };
 let currentSort = 'name';
 
 /* ---------- Navbar scroll effect function ---------- */
@@ -293,7 +293,72 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   
   initNavbarScroll(); // Add navbar scroll effect
+  updateFavoritesCount();
+  updateWishlistButtons();
 });
+
+function updateFavoritesCount() {
+  try {
+    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+    const total = wishlist.length + favoriteTrails.length;
+    
+    const el = document.querySelector('.favorites-count');
+    if (el) {
+      el.textContent = total;
+    }
+  } catch (e) {
+    console.error('Error updating favorites count:', e);
+  }
+}
+
+function toggleWishlist(productId) {
+  const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+  const product = getProducts().find(p => p.id === productId);
+  
+  if (!product) return;
+  
+  const isInWishlist = wishlist.some(item => item.id === productId);
+  
+  if (isInWishlist) {
+    // Remove from wishlist
+    const updatedWishlist = wishlist.filter(item => item.id !== productId);
+    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+    showMessage(`${product.name} removed from favorites`, 'info');
+  } else {
+    // Add to wishlist
+    const wishlistItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      brand: product.brand
+    };
+    wishlist.push(wishlistItem);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    showMessage(`${product.name} added to favorites`, 'success');
+  }
+  
+  updateFavoritesCount();
+  updateWishlistButtons();
+}
+
+function updateWishlistButtons() {
+  const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+  const wishlistIds = wishlist.map(item => item.id);
+  
+  document.querySelectorAll('.btn-favorite').forEach(button => {
+    const productId = parseInt(button.closest('.product-item').dataset.id);
+    const icon = button.querySelector('.heart-icon');
+    if (wishlistIds.includes(productId)) {
+      icon.textContent = '♥';
+      button.classList.add('active');
+    } else {
+      icon.textContent = '♡';
+      button.classList.remove('active');
+    }
+  });
+}
 
 function populateBrandFilter() {
   const brandFilter = document.getElementById('brandFilter');
@@ -324,19 +389,17 @@ function displayProducts(productsToDisplay) {
 
   productList.innerHTML = productsToDisplay.map(product => {
     const stars = generateStars(product.rating);
-    const stockStatus = product.inStock ? '' : ' (Out of Stock)';
     const stockClass = product.inStock ? '' : 'out-of-stock';
     const categoryBadge = getCategoryBadge(product.category);
 
     return `
-      <div class="product-item ${stockClass}" data-id="${product.id}">
+      <div class="product-item ${stockClass}" data-id="${product.id}" onclick="viewProduct(${product.id})" style="cursor:pointer;">
         <div class="product-info">
           <img src="${product.image}" alt="${product.name}" class="product-image"
-               onerror="this.src='../images/Women-Hiking-Boots.jpg'"
-               onclick="viewProduct(${product.id})" style="cursor:pointer;">
+               onerror="this.src='../images/Women-Hiking-Boots.jpg'">
           <div class="product-details">
             ${categoryBadge}
-            <h3>${product.name}${stockStatus}</h3>
+            <h3>${product.name}</h3>
           </div>
         </div>
 
@@ -353,10 +416,10 @@ function displayProducts(productsToDisplay) {
         </div>
 
         <div class="product-actions">
-          <button class="btn btn-primary" onclick="addToCart(${product.id})" ${!product.inStock ? 'disabled' : ''}>
-            ${product.inStock ? 'Add to Cart' : 'Out of Stock'}
+          <button class="btn btn-primary" onclick="event.stopPropagation(); addToCart(${product.id})" ${!product.inStock ? 'disabled' : ''}>
+            Add to Cart
           </button>
-          <button class="btn btn-secondary" onclick="viewProduct(${product.id})">View Details</button>
+          <button class="btn btn-secondary" onclick="event.stopPropagation(); viewProduct(${product.id})">View Details</button>
         </div>
       </div>
     `;
@@ -388,6 +451,7 @@ function applyFilters() {
   currentFilters.category = document.getElementById('categoryFilter')?.value || 'all';
   currentFilters.brand    = document.getElementById('brandFilter')?.value || 'all';
   currentFilters.price    = document.getElementById('priceFilter')?.value || 'all';
+  currentFilters.favorite = document.getElementById('favoriteFilter')?.value || 'all';
   applyFiltersInternal();
 }
 
@@ -412,7 +476,33 @@ function applyFiltersInternal() {
       const maxP = max ? parseInt(max, 10) : Infinity;
       matchesPrice = product.price >= minP && product.price <= maxP;
     }
-    return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
+
+    let matchesFavorite = true;
+    if (currentFilters.favorite === 'favorites') {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      matchesFavorite = wishlist.some(item => item.id === product.id);
+    }
+
+    const hasActiveFilters = currentFilters.search !== '' || 
+      currentFilters.category !== 'all' || 
+      currentFilters.brand !== 'all' || 
+      currentFilters.price !== 'all' || 
+      currentFilters.favorite !== 'all';
+
+    if (!hasActiveFilters) {
+      return true;
+    }
+
+    const filterMatches = [matchesSearch, matchesCategory, matchesBrand, matchesPrice, matchesFavorite];
+    const activeFilterMatches = [];
+    
+    if (currentFilters.search !== '') activeFilterMatches.push(matchesSearch);
+    if (currentFilters.category !== 'all') activeFilterMatches.push(matchesCategory);
+    if (currentFilters.brand !== 'all') activeFilterMatches.push(matchesBrand);
+    if (currentFilters.price !== 'all') activeFilterMatches.push(matchesPrice);
+    if (currentFilters.favorite !== 'all') activeFilterMatches.push(matchesFavorite);
+
+    return activeFilterMatches.some(match => match);
   });
 
   sortProducts();
@@ -442,7 +532,7 @@ function updateResultsCount(count) {
 }
 
 function clearAllFilters() {
-  const ids = ['productSearch','categoryFilter','brandFilter','priceFilter','sortBy'];
+  const ids = ['productSearch','categoryFilter','brandFilter','priceFilter','favoriteFilter','sortBy'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -451,12 +541,52 @@ function clearAllFilters() {
     else el.value = 'all';
   });
 
-  currentFilters = { search: '', category: 'all', brand: 'all', price: 'all' };
+  currentFilters = { search: '', category: 'all', brand: 'all', price: 'all', favorite: 'all' };
   currentSort = 'name';
 
   filteredProducts = getProducts();
   displayProducts(filteredProducts);
   updateResultsCount(filteredProducts.length);
+  updateWishlistButtons();
+  
+  // Hide suggestions if they were shown
+  const suggestions = document.getElementById('quickSuggestions');
+  if (suggestions) {
+    suggestions.style.display = 'none';
+  }
+}
+
+function showSuggestions() {
+  const suggestions = document.getElementById('quickSuggestions');
+  if (suggestions) {
+    suggestions.style.display = suggestions.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function applySuggestion(category) {
+  // Set the category filter
+  const categoryFilter = document.getElementById('categoryFilter');
+  if (categoryFilter) {
+    categoryFilter.value = category;
+  }
+  
+  // Clear other filters
+  const searchInput = document.getElementById('productSearch');
+  const brandFilter = document.getElementById('brandFilter');
+  const priceFilter = document.getElementById('priceFilter');
+  
+  if (searchInput) searchInput.value = '';
+  if (brandFilter) brandFilter.value = 'all';
+  if (priceFilter) priceFilter.value = 'all';
+  
+  // Apply the filter
+  applyFilters();
+  
+  // Hide suggestions
+  const suggestions = document.getElementById('quickSuggestions');
+  if (suggestions) {
+    suggestions.style.display = 'none';
+  }
 }
 
 function viewProduct(productId) {
@@ -468,11 +598,56 @@ function viewProduct(productId) {
 function addToCart(productId) {
   const p = getProducts().find(x => x.id === productId);
   if (!p || !p.inStock) return;
-  alert(`Added "${p.name}" to cart!`);
-  const cartCount = document.querySelector('.cart-count');
-  if (cartCount) {
-    const n = parseInt(cartCount.textContent || '0', 10);
-    cartCount.textContent = n + 1;
+  
+  const product = {
+    id: p.id,
+    title: p.name,
+    brand: p.brand,
+    price: p.price,
+    image: p.image,
+    descriptor: p.description || '',
+    link: location.href,
+    availability: 'in_stock',
+    availabilityDate: new Date().toISOString()
+  };
+  
+  Cart.add(product, 1);
+  showNotification(p.name);
+}
+
+
+function showNotification(productName) {
+  const notification = document.getElementById('notification');
+  const notificationText = document.getElementById('notification-text');
+  
+  if (notification && notificationText) {
+    // Update notification text with product name
+    notificationText.textContent = `"${productName}" has been added to your cart successfully.`;
+    
+    // Show notification
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    // Auto-hide after 2 seconds and redirect to cart
+    setTimeout(() => {
+      hideNotification();
+      // Redirect to cart page after notification is hidden
+      setTimeout(() => {
+        window.location.href = 'Cart.html';
+      }, 300); // Wait for animation to complete
+    }, 2000);
+  }
+}
+
+function hideNotification() {
+  const notification = document.getElementById('notification');
+  if (notification) {
+    notification.classList.add('hiding');
+    // Hide after animation completes
+    setTimeout(() => {
+      notification.style.display = 'none';
+      notification.classList.remove('hiding');
+    }, 300);
   }
 }
 

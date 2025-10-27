@@ -9,7 +9,6 @@ class TrailsManager {
 
     init() {
         this.loadTrails();
-        this.displayFeaturedTrails();
         this.displayAllTrails();
         this.setupEventListeners();
     }
@@ -17,22 +16,6 @@ class TrailsManager {
     loadTrails() {
         // Sample trails data for South Africa
         this.trails = [
-            {
-                id: 1,
-                name: "Table Mountain - Platteklip Gorge",
-                location: "Western Cape",
-                province: "western-cape",
-                difficulty: "challenging",
-                duration: "half-day",
-                type: "mountain",
-                distance: "5.5 km",
-                elevation: "1084m",
-                rating: 4.8,
-                description: "The classic route up Table Mountain via Platteklip Gorge. A challenging but rewarding hike with spectacular views of Cape Town.",
-                image: "https://images.unsplash.com/photo-1624209808748-5dd13edf5eb6?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                features: ["Scenic Views", "Rock Formations", "Cable Car Option"],
-                isFeatured: true
-            },
             {
                 id: 2,
                 name: "Drakensberg Amphitheatre",
@@ -192,25 +175,6 @@ class TrailsManager {
         }
     }
 
-    displayFeaturedTrails() {
-        const featuredContainer = document.getElementById('featuredTrails');
-        if (!featuredContainer) return;
-
-        // Get favorite trails from localStorage
-        const favorites = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
-        const favoriteTrails = this.trails.filter(trail => favorites.includes(trail.id));
-        
-        if (favoriteTrails.length === 0) {
-            featuredContainer.innerHTML = `
-                <div class="no-favorites">
-                    <h3>No favorite trails yet</h3>
-                    <p>Start exploring trails and tap the ❤️ button to add them to your favorites!</p>
-                </div>
-            `;
-        } else {
-            featuredContainer.innerHTML = favoriteTrails.map(trail => this.createTrailCard(trail, true)).join('');
-        }
-    }
 
     displayAllTrails() {
         const allContainer = document.getElementById('allTrails');
@@ -239,15 +203,15 @@ class TrailsManager {
                     <div class="trail-details">
                         <span class="trail-detail ${difficultyClass}">🏃 ${this.capitalizeFirst(trail.difficulty)}</span>
                         <span class="trail-detail">⏱️ ${durationText}</span>
-                        <span class="trail-detail">📏 ${trail.distance}</span>
-                        <span class="trail-detail">⛰️ ${trail.elevation}</span>
+                        <span class="trail-detail">📏 ${trail.distance} <small>(length)</small></span>
+                        <span class="trail-detail">⛰️ ${trail.elevation} <small>(height gain)</small></span>
                     </div>
                     <div class="trail-actions">
                         <button class="btn-primary" onclick="event.stopPropagation(); viewTrailDetails(${trail.id})">
                             View Details
                         </button>
-                        <button class="btn-secondary" onclick="event.stopPropagation(); addToFavorites(${trail.id})">
-                            ❤️
+                        <button class="btn-favorite" onclick="event.stopPropagation(); addToFavorites(${trail.id})">
+                            <i class="heart-icon far fa-heart"></i>
                         </button>
                     </div>
                 </div>
@@ -288,18 +252,39 @@ class TrailsManager {
         const difficulty = document.getElementById('difficultyFilter').value;
         const duration = document.getElementById('durationFilter').value;
         const type = document.getElementById('typeFilter').value;
+        const favorite = document.getElementById('favoriteFilter').value;
 
-        this.currentFilters = { location, difficulty, duration, type };
+        this.currentFilters = { location, difficulty, duration, type, favorite };
 
         this.filteredTrails = this.trails.filter(trail => {
-            return (!location || trail.province === location) &&
-                   (!difficulty || trail.difficulty === difficulty) &&
-                   (!duration || trail.duration === duration) &&
-                   (!type || trail.type === type);
+            const matchesLocation = !location || trail.province === location;
+            const matchesDifficulty = !difficulty || trail.difficulty === difficulty;
+            const matchesDuration = !duration || trail.duration === duration;
+            const matchesType = !type || trail.type === type;
+            
+            let matchesFavorite = true;
+            if (favorite === 'favorites') {
+                const favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+                matchesFavorite = favoriteTrails.includes(trail.id);
+            }
+
+            const hasActiveFilters = location || difficulty || duration || type || (favorite && favorite !== 'all');
+
+            if (!hasActiveFilters) {
+                return true;
+            }
+
+            const activeFilterMatches = [];
+            if (location) activeFilterMatches.push(matchesLocation);
+            if (difficulty) activeFilterMatches.push(matchesDifficulty);
+            if (duration) activeFilterMatches.push(matchesDuration);
+            if (type) activeFilterMatches.push(matchesType);
+            if (favorite && favorite !== 'all') activeFilterMatches.push(matchesFavorite);
+
+            return activeFilterMatches.some(match => match);
         });
 
         this.displayAllTrails();
-        this.showMessage(`Found ${this.filteredTrails.length} trails matching your criteria`, 'success');
     }
 
     clearFilters() {
@@ -307,6 +292,7 @@ class TrailsManager {
         document.getElementById('difficultyFilter').value = '';
         document.getElementById('durationFilter').value = '';
         document.getElementById('typeFilter').value = '';
+        document.getElementById('favoriteFilter').value = 'all';
         
         this.currentFilters = {};
         this.filteredTrails = [...this.trails];
@@ -355,27 +341,7 @@ class TrailsManager {
     }
 
     showMessage(message, type = 'success') {
-        const messageEl = document.createElement('div');
-        messageEl.className = `alert alert-${type}`;
-        messageEl.textContent = message;
-        messageEl.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 1rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            z-index: 1000;
-            max-width: 300px;
-            background: ${type === 'success' ? '#27ae60' : '#e74c3c'};
-        `;
-
-        document.body.appendChild(messageEl);
-
-        setTimeout(() => {
-            messageEl.remove();
-        }, 3000);
+        showTrailNotification(message, type === 'success');
     }
 }
 
@@ -430,10 +396,12 @@ function viewTrailDetails(trailId) {
                 <div class="info-item">
                     <strong>📏 Distance:</strong>
                     <span>${trail.distance}</span>
+                    <div class="info-tooltip">Total trail length from start to finish</div>
                 </div>
                 <div class="info-item">
                     <strong>⛰️ Elevation:</strong>
                     <span>${trail.elevation}</span>
+                    <div class="info-tooltip">Total height gained during the hike</div>
                 </div>
                 <div class="info-item">
                     <strong>🌟 Type:</strong>
@@ -449,7 +417,6 @@ function viewTrailDetails(trailId) {
             </div>
             
             <div class="trail-actions-modal">
-                <button class="btn-secondary" onclick="addToFavorites(${trail.id})">❤️ Add to Favorites</button>
                 <button class="btn-secondary" onclick="shareTrail(${trail.id})">📤 Share Trail</button>
             </div>
         </div>
@@ -473,10 +440,33 @@ function addToFavorites(trailId) {
         localStorage.setItem('favoriteTrails', JSON.stringify(favorites));
         trailsManager.showMessage(`${trail.name} added to favorites!`, 'success');
         // Refresh the favorites display
-        trailsManager.displayFeaturedTrails();
+        updateFavoritesButtons();
+        // Update favorites count
+        updateFavoritesCount();
     } else {
-        trailsManager.showMessage(`${trail.name} is already in your favorites`, 'info');
+        // Remove from favorites
+        const updatedFavorites = favorites.filter(id => id !== trailId);
+        localStorage.setItem('favoriteTrails', JSON.stringify(updatedFavorites));
+        trailsManager.showMessage(`${trail.name} removed from favorites`, 'info');
+        updateFavoritesButtons();
+        updateFavoritesCount();
     }
+}
+
+function updateFavoritesButtons() {
+    const favorites = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+    
+    document.querySelectorAll('.btn-favorite').forEach(button => {
+        const trailId = parseInt(button.getAttribute('onclick').match(/\d+/)[0]);
+        const icon = button.querySelector('.heart-icon');
+        if (favorites.includes(trailId)) {
+            icon.className = 'heart-icon fas fa-heart';
+            button.classList.add('active');
+        } else {
+            icon.className = 'heart-icon far fa-heart';
+            button.classList.remove('active');
+        }
+    });
 }
 
 function startNavigation(trailId) {
@@ -520,11 +510,47 @@ function initNavbarScroll() {
     });
 }
 
+// Update favorites count
+function updateFavoritesCount() {
+    try {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        const favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+        const total = wishlist.length + favoriteTrails.length;
+        
+        const el = document.querySelector('.favorites-count');
+        if (el) {
+            el.textContent = total;
+        }
+    } catch (e) {
+        console.error('Error updating favorites count:', e);
+    }
+}
+
+// Update cart count
+function updateCartCount() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        
+        const el = document.querySelector('.cart-count');
+        if (el) {
+            el.textContent = total;
+        }
+    } catch (e) {
+        console.error('Error updating cart count:', e);
+    }
+}
+
 // Initialize trails manager when DOM is loaded
 let trailsManager;
 document.addEventListener('DOMContentLoaded', () => {
     trailsManager = new TrailsManager();
     initNavbarScroll(); // Add navbar scroll effect
+    
+    // Update counts on page load
+    updateCartCount();
+    updateFavoritesCount();
+    updateFavoritesButtons();
     
     // Close modal when clicking outside
     window.onclick = function(event) {
@@ -534,3 +560,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+function showTrailNotification(message, isAdded) {
+    const notification = document.getElementById('trailNotification');
+    const title = document.getElementById('trail-title');
+    const text = document.getElementById('trail-text');
+    
+    if (notification && title && text) {
+        if (isAdded) {
+            title.textContent = 'Added to Favorites!';
+            text.textContent = message;
+        } else {
+            title.textContent = 'Removed from Favorites';
+            text.textContent = message;
+        }
+        
+        notification.style.display = 'block';
+        notification.classList.remove('hiding');
+        
+        setTimeout(() => {
+            hideTrailNotification();
+            if (isAdded) {
+                window.location.href = 'FavoritesPage.html#trails';
+            }
+        }, 3000);
+    }
+}
+
+function hideTrailNotification() {
+    const notification = document.getElementById('trailNotification');
+    if (notification) {
+        notification.classList.add('hiding');
+        setTimeout(() => {
+            notification.style.display = 'none';
+            notification.classList.remove('hiding');
+        }, 300);
+    }
+}

@@ -46,6 +46,10 @@
           🛒
           <span class="cart-count" id="cart-count" data-cart-count>0</span>
         </a>
+        <a href="FavoritesPage.html" class="favorites-icon" aria-label="Favorites">
+          <i class="fas fa-heart"></i>
+          <span class="favorites-count" id="favorites-count">0</span>
+        </a>
       </div>
     </div>
   </div>
@@ -115,14 +119,15 @@
                             <button class="quantity-btn plus" onclick="changeQuantity(1)">+</button>
                         </div>
 
-                        <button class="add-to-cart-btn" onclick="addToCart()">
-                            <span class="cart-icon">🛒</span>
-                            Add To Cart
-                        </button>
-
-                        <button class="wishlist-btn" onclick="toggleWishlist()">
-                            <span class="heart-icon">♡</span>
-                        </button>
+                        <div class="product-actions">
+                            <button class="add-to-cart-btn" onclick="addToCart()">
+                                <span class="cart-icon">🛒</span>
+                                Add To Cart
+                            </button>
+                            <button class="wishlist-btn" onclick="toggleWishlist()">
+                                <i class="heart-icon far fa-heart"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="delivery-info">
@@ -256,6 +261,38 @@
         </div>
     </div>
 
+    <!-- Notification System -->
+    <div id="notification" class="notification" style="display: none;">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-message">
+                <h4>Item Added to Cart!</h4>
+                <p id="notification-text">Product has been added to your cart successfully.</p>
+            </div>
+            <button class="notification-close" onclick="hideNotification()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Favorite Notification System -->
+    <div id="favoriteNotification" class="notification" style="display: none;">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-message">
+                <h4 id="favorite-title">Added to Favorites!</h4>
+                <p id="favorite-text">Product has been added to your favorites.</p>
+            </div>
+            <button class="notification-close" onclick="hideFavoriteNotification()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
@@ -313,6 +350,44 @@ function addToCart(){
   var qEl=document.getElementById('quantity');
   var qty=Math.max(1,parseInt(qEl?qEl.value:1,10)||1);
   Cart.add({id:id,title:title,price:p,image:image,brand:brand,descriptor:t('#productDescription')||'',link:location.href,availability:'in_stock',availabilityDate:new Date().toISOString()},qty);
+  
+  // Show notification and redirect to cart
+  showNotification(title);
+}
+
+function showNotification(productName) {
+  const notification = document.getElementById('notification');
+  const notificationText = document.getElementById('notification-text');
+  
+  if (notification && notificationText) {
+    // Update notification text with product name
+    notificationText.textContent = `"${productName}" has been added to your cart successfully.`;
+    
+    // Show notification
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    // Auto-hide after 2 seconds and redirect to cart
+    setTimeout(() => {
+      hideNotification();
+      // Redirect to cart page after notification is hidden
+      setTimeout(() => {
+        window.location.href = 'Cart.html';
+      }, 300); // Wait for animation to complete
+    }, 2000);
+  }
+}
+
+function hideNotification() {
+  const notification = document.getElementById('notification');
+  if (notification) {
+    notification.classList.add('hiding');
+    // Hide after animation completes
+    setTimeout(() => {
+      notification.style.display = 'none';
+      notification.classList.remove('hiding');
+    }, 300);
+  }
 }
 </script>
 

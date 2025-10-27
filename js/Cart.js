@@ -124,7 +124,9 @@
   function handleRemoveClick(e) {
     e.preventDefault();
     var id = e.target.getAttribute("data-id");
-    Cart.remove(id);
+    if (id) {
+      Cart.remove(parseInt(id, 10));
+    }
   }
 
   function handleCheckoutClick(e) {
@@ -278,8 +280,24 @@
 
   window.Cart = Cart;
 
+  function updateFavoritesCount() {
+    try {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      const favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+      const total = wishlist.length + favoriteTrails.length;
+      
+      const el = document.querySelector('.favorites-count');
+      if (el) {
+        el.textContent = total;
+      }
+    } catch (e) {
+      console.error('Error updating favorites count:', e);
+    }
+  }
+
   function render() {
     renderBadge();
+    updateFavoritesCount();
     renderCartPage();
     renderCheckoutSummary();
     renderPaymentSummary();

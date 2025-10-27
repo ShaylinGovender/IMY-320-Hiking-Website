@@ -308,7 +308,6 @@ const getProducts = () => window.ProductData.getProducts();
    ========================================================= */
 let currentProduct = null;
 let quantity = 1;
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
 
 /* ---------- Navbar scroll effect function ---------- */
@@ -338,7 +337,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (def) loadProduct(def.id);
   }
 
-  updateCartCount();
+  updateFavoritesCount();
   setupEventListeners();
   initNavbarScroll(); // Add navbar scroll effect
 });
@@ -421,7 +420,7 @@ function updateStockStatus() {
     btn.disabled = false;
   } else {
     stockIndicator.className = 'stock-indicator out-of-stock';
-    stockIndicator.innerHTML = '<span class="status-icon">✗</span><span class="status-text">Currently out of stock</span>';
+    stockIndicator.innerHTML = '<span class="status-icon">✗</span><span class="status-text">OUT OF STOCK</span>';
     btn.disabled = true;
   }
 }
@@ -664,15 +663,93 @@ function changeQuantity(d) {
 
 function addToCart() {
   if (!currentProduct || !currentProduct.inStock) return;
-  const cartItem = {
-    id: currentProduct.id, name: currentProduct.name, brand: currentProduct.brand,
-    price: currentProduct.price, image: currentProduct.image, quantity, dateAdded: new Date().toISOString()
+  
+  const product = {
+    id: currentProduct.id,
+    title: currentProduct.name,
+    brand: currentProduct.brand,
+    price: currentProduct.price,
+    image: currentProduct.image,
+    descriptor: currentProduct.description || '',
+    link: location.href,
+    availability: 'in_stock',
+    availabilityDate: new Date().toISOString()
   };
-  const idx = cart.findIndex(i => i.id === cartItem.id);
-  if (idx > -1) cart[idx].quantity += quantity; else cart.push(cartItem);
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartCount();
-  showAddToCartFeedback();
+  
+  Cart.add(product, quantity);
+  showNotification(currentProduct.name);
+}
+
+function showNotification(productName) {
+  const notification = document.getElementById('notification');
+  const notificationText = document.getElementById('notification-text');
+  
+  if (notification && notificationText) {
+    // Update notification text with product name
+    notificationText.textContent = `"${productName}" has been added to your cart successfully.`;
+    
+    // Show notification
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    // Auto-hide after 2 seconds and redirect to cart
+    setTimeout(() => {
+      hideNotification();
+      // Redirect to cart page after notification is hidden
+      setTimeout(() => {
+        window.location.href = 'Cart.html';
+      }, 300); // Wait for animation to complete
+    }, 2000);
+  }
+}
+
+function hideNotification() {
+  const notification = document.getElementById('notification');
+  if (notification) {
+    notification.classList.add('hiding');
+    // Hide after animation completes
+    setTimeout(() => {
+      notification.style.display = 'none';
+      notification.classList.remove('hiding');
+    }, 300);
+  }
+}
+
+function showFavoriteNotification(productName, isAdded) {
+  const notification = document.getElementById('favoriteNotification');
+  const title = document.getElementById('favorite-title');
+  const text = document.getElementById('favorite-text');
+  
+  if (notification && title && text) {
+    if (isAdded) {
+      title.textContent = 'Added to Favorites!';
+      text.textContent = `"${productName}" has been added to your favorites.`;
+    } else {
+      title.textContent = 'Removed from Favorites';
+      text.textContent = `"${productName}" has been removed from your favorites.`;
+    }
+    
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    setTimeout(() => {
+      hideFavoriteNotification();
+      if (isAdded) {
+        window.location.href = 'FavoritesPage.html#products';
+      }
+    }, 3000);
+  }
+}
+
+function hideFavoriteNotification() {
+  const notification = document.getElementById('favoriteNotification');
+  if (notification) {
+    notification.classList.add('hiding');
+    setTimeout(() => {
+      notification.style.display = 'none';
+      notification.classList.remove('hiding');
+    }, 300);
+  }
 }
 
 function showAddToCartFeedback() {
@@ -689,26 +766,42 @@ function toggleWishlist() {
   const isIn = wishlist.some(i => i.id === currentProduct.id);
   if (isIn) {
     wishlist = wishlist.filter(i => i.id !== currentProduct.id);
-    if (btn) { btn.classList.remove('active'); btn.querySelector('.heart-icon').textContent = '♡'; }
+    if (btn) { 
+      btn.classList.remove('active'); 
+      btn.querySelector('.heart-icon').className = 'heart-icon far fa-heart';
+    }
+    showFavoriteNotification(currentProduct.name, false);
   } else {
     wishlist.push({ id: currentProduct.id, name: currentProduct.name, price: currentProduct.price, image: currentProduct.image, dateAdded: new Date().toISOString() });
-    if (btn) { btn.classList.add('active'); btn.querySelector('.heart-icon').textContent = '♥'; }
+    if (btn) { 
+      btn.classList.add('active'); 
+      btn.querySelector('.heart-icon').className = 'heart-icon fas fa-heart';
+    }
+    showFavoriteNotification(currentProduct.name, true);
   }
   localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  updateFavoritesCount();
 }
 
 function updateWishlistButton() {
   const btn = document.querySelector('.wishlist-btn');
   const isIn = wishlist.some(i => i.id === currentProduct.id);
   if (!btn) return;
-  if (isIn) { btn.classList.add('active'); btn.querySelector('.heart-icon').textContent = '♥'; }
-  else { btn.classList.remove('active'); btn.querySelector('.heart-icon').textContent = '♡'; }
+  if (isIn) { 
+    btn.classList.add('active'); 
+    btn.querySelector('.heart-icon').className = 'heart-icon fas fa-heart';
+  }
+  else { 
+    btn.classList.remove('active'); 
+    btn.querySelector('.heart-icon').className = 'heart-icon far fa-heart';
+  }
 }
 
-function updateCartCount() {
-  const el = document.querySelector('.cart-count');
+
+function updateFavoritesCount() {
+  const el = document.querySelector('.favorites-count');
   if (!el) return;
-  const total = cart.reduce((s, i) => s + i.quantity, 0);
+  const total = wishlist.length;
   el.textContent = total;
 }
 

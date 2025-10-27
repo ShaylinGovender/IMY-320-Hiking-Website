@@ -77,7 +77,20 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
 #apply-discount{font-size:.9rem;padding:.6rem .9rem;margin-left:8px}
 
 .line{display:flex;justify-content:space-between;align-items:center;margin:.5rem 0}
-.line.total{font-weight:700;font-size:1.1rem;color:var(--deep-forest)}
+.line span strong{font-weight:700 !important}
+.line.total{
+  font-weight:700;font-size:1.2rem;color:var(--deep-forest);
+  background:linear-gradient(135deg,var(--forest-green),#1f8f4e);
+  color:#fff;padding:.8rem 1rem;border-radius:10px;
+  box-shadow:0 3px 15px rgba(39,174,96,.3);
+  margin:1rem 0
+}
+.line.shipping{
+  background:linear-gradient(135deg,#f8f9fa,#e9ecef);
+  padding:.6rem .8rem;border-radius:8px;
+  border-left:4px solid var(--sunset-orange);
+  font-weight:600;color:var(--mountain-slate)
+}
 
 #cart-items,#success-items{display:grid;gap:20px}
 .item{

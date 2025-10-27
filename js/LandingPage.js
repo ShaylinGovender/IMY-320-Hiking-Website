@@ -131,15 +131,42 @@ document.querySelector('.cart-icon').addEventListener('click', function() {
     // You can redirect to cart page or show cart modal
 });
 
+// Update favorites count
+function updateFavoritesCount() {
+    try {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        const favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+        const total = wishlist.length + favoriteTrails.length;
+        
+        const el = document.querySelector('.favorites-count');
+        if (el) {
+            el.textContent = total;
+        }
+    } catch (e) {
+        console.error('Error updating favorites count:', e);
+    }
+}
+
+// Update cart count
+function updateCartCount() {
+    try {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        
+        const el = document.querySelector('.cart-count');
+        if (el) {
+            el.textContent = total;
+        }
+    } catch (e) {
+        console.error('Error updating cart count:', e);
+    }
+}
+
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
     console.log('TrailBlazer Landing Page Loaded');
     
-    // Add any initialization code here
-    // For example, load cart count from localStorage
-    const cartCount = localStorage.getItem('cartCount') || '0';
-    const cartCountElement = document.querySelector('.cart-count');
-    if (cartCountElement) {
-        cartCountElement.textContent = cartCount;
-    }
+    // Update counts on page load
+    updateCartCount();
+    updateFavoritesCount();
 });

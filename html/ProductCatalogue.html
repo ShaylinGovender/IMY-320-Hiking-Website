@@ -39,6 +39,10 @@
           🛒
           <span class="cart-count" id="cart-count" data-cart-count>0</span>
         </a>
+        <a href="FavoritesPage.html" class="favorites-icon" aria-label="Favorites">
+          <i class="fas fa-heart"></i>
+          <span class="favorites-count" id="favorites-count">0</span>
+        </a>
       </div>
     </div>
   </div>
@@ -59,7 +63,7 @@
                     <div class="search-box">
                         <input type="text" id="productSearch" placeholder="Search products by name, brand, category, or features...">
                         <button class="search-button" onclick="searchProducts()">
-                            <span class="search-icon">🔍</span>
+                            <i class="fas fa-search"></i>
                         </button>
                     </div>
                     
@@ -84,6 +88,11 @@
                             <option value="500-1000">R500 - R1,000</option>
                             <option value="1000-2000">R1,000 - R2,000</option>
                             <option value="2000+">R2,000+</option>
+                        </select>
+
+                        <select id="favoriteFilter">
+                            <option value="all">All Products</option>
+                            <option value="favorites">Favorites Only</option>
                         </select>
 
                         <select id="sortBy" onchange="sortProducts()">
@@ -122,9 +131,32 @@
             <!-- No Results Message -->
             <div id="noResults" class="no-results" style="display: none;">
                 <div class="no-results-content">
+                    <div class="no-results-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
                     <h3>No products found</h3>
-                    <p>Try adjusting your search criteria or filters</p>
-                    <button onclick="clearAllFilters()" class="clear-btn">Clear All Filters</button>
+                    <p>We couldn't find any products matching your criteria</p>
+                    
+                    <div class="recovery-actions">
+                        <button onclick="clearAllFilters()" class="recovery-btn primary">
+                            <span class="btn-icon">🔄</span>
+                            Reset All Filters
+                        </button>
+                        <button onclick="showSuggestions()" class="recovery-btn secondary">
+                            <span class="btn-icon">💡</span>
+                            Show Suggestions
+                        </button>
+                    </div>
+                    
+                    <div class="quick-suggestions" id="quickSuggestions" style="display: none;">
+                        <h4>Try these popular categories:</h4>
+                        <div class="suggestion-tags">
+                            <button class="suggestion-tag" onclick="applySuggestion('footwear')">Footwear</button>
+                            <button class="suggestion-tag" onclick="applySuggestion('clothing')">Clothing</button>
+                            <button class="suggestion-tag" onclick="applySuggestion('gear')">Gear</button>
+                            <button class="suggestion-tag" onclick="applySuggestion('accessories')">Accessories</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,6 +169,22 @@
             <div class="modal-body" id="modalBody">
                 <!-- Product details will be inserted here -->
             </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notification" class="notification" style="display: none;">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-message">
+                <h4>Item Added to Cart!</h4>
+                <p id="notification-text">Product has been added to your cart successfully.</p>
+            </div>
+            <button class="notification-close" onclick="hideNotification()">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
     </div>
 
