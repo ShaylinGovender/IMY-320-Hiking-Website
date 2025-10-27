@@ -9,7 +9,6 @@ class TrailsManager {
 
     init() {
         this.loadTrails();
-        this.displayFeaturedTrails();
         this.displayAllTrails();
         this.setupEventListeners();
     }
@@ -17,22 +16,6 @@ class TrailsManager {
     loadTrails() {
         // Sample trails data for South Africa
         this.trails = [
-            {
-                id: 1,
-                name: "Table Mountain - Platteklip Gorge",
-                location: "Western Cape",
-                province: "western-cape",
-                difficulty: "challenging",
-                duration: "half-day",
-                type: "mountain",
-                distance: "5.5 km",
-                elevation: "1084m",
-                rating: 4.8,
-                description: "The classic route up Table Mountain via Platteklip Gorge. A challenging but rewarding hike with spectacular views of Cape Town.",
-                image: "https://images.unsplash.com/photo-1624209808748-5dd13edf5eb6?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                features: ["Scenic Views", "Rock Formations", "Cable Car Option"],
-                isFeatured: true
-            },
             {
                 id: 2,
                 name: "Drakensberg Amphitheatre",
@@ -192,25 +175,6 @@ class TrailsManager {
         }
     }
 
-    displayFeaturedTrails() {
-        const featuredContainer = document.getElementById('featuredTrails');
-        if (!featuredContainer) return;
-
-        // Get favorite trails from localStorage
-        const favorites = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
-        const favoriteTrails = this.trails.filter(trail => favorites.includes(trail.id));
-        
-        if (favoriteTrails.length === 0) {
-            featuredContainer.innerHTML = `
-                <div class="no-favorites">
-                    <h3>No favorite trails yet</h3>
-                    <p>Start exploring trails and tap the ❤️ button to add them to your favorites!</p>
-                </div>
-            `;
-        } else {
-            featuredContainer.innerHTML = favoriteTrails.map(trail => this.createTrailCard(trail, true)).join('');
-        }
-    }
 
     displayAllTrails() {
         const allContainer = document.getElementById('allTrails');
@@ -464,7 +428,6 @@ function addToFavorites(trailId) {
         trailsManager.showMessage(`${trail.name} added to favorites!`, 'success');
         // Refresh the favorites display
         updateFavoritesButtons();
-        trailsManager.displayFeaturedTrails();
         // Update favorites count
         updateFavoritesCount();
     } else {
@@ -473,7 +436,6 @@ function addToFavorites(trailId) {
         localStorage.setItem('favoriteTrails', JSON.stringify(updatedFavorites));
         trailsManager.showMessage(`${trail.name} removed from favorites`, 'info');
         updateFavoritesButtons();
-        trailsManager.displayFeaturedTrails();
         updateFavoritesCount();
     }
 }
