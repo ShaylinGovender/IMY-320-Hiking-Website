@@ -241,7 +241,7 @@ const getProducts = () => window.ProductData.getProducts();
 
 /* ---------- Catalogue UI logic (uses getProducts everywhere) ---------- */
 let filteredProducts = getProducts();
-let currentFilters = { search: '', category: 'all', brand: 'all', price: 'all' };
+let currentFilters = { search: '', category: 'all', brand: 'all', price: 'all', favorite: 'all' };
 let currentSort = 'name';
 
 /* ---------- Navbar scroll effect function ---------- */
@@ -451,6 +451,7 @@ function applyFilters() {
   currentFilters.category = document.getElementById('categoryFilter')?.value || 'all';
   currentFilters.brand    = document.getElementById('brandFilter')?.value || 'all';
   currentFilters.price    = document.getElementById('priceFilter')?.value || 'all';
+  currentFilters.favorite = document.getElementById('favoriteFilter')?.value || 'all';
   applyFiltersInternal();
 }
 
@@ -475,7 +476,14 @@ function applyFiltersInternal() {
       const maxP = max ? parseInt(max, 10) : Infinity;
       matchesPrice = product.price >= minP && product.price <= maxP;
     }
-    return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
+
+    let matchesFavorite = true;
+    if (currentFilters.favorite === 'favorites') {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      matchesFavorite = wishlist.some(item => item.id === product.id);
+    }
+
+    return matchesSearch && matchesCategory && matchesBrand && matchesPrice && matchesFavorite;
   });
 
   sortProducts();
@@ -505,7 +513,7 @@ function updateResultsCount(count) {
 }
 
 function clearAllFilters() {
-  const ids = ['productSearch','categoryFilter','brandFilter','priceFilter','sortBy'];
+  const ids = ['productSearch','categoryFilter','brandFilter','priceFilter','favoriteFilter','sortBy'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -514,7 +522,7 @@ function clearAllFilters() {
     else el.value = 'all';
   });
 
-  currentFilters = { search: '', category: 'all', brand: 'all', price: 'all' };
+  currentFilters = { search: '', category: 'all', brand: 'all', price: 'all', favorite: 'all' };
   currentSort = 'name';
 
   filteredProducts = getProducts();

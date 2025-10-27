@@ -288,18 +288,26 @@ class TrailsManager {
         const difficulty = document.getElementById('difficultyFilter').value;
         const duration = document.getElementById('durationFilter').value;
         const type = document.getElementById('typeFilter').value;
+        const favorite = document.getElementById('favoriteFilter').value;
 
-        this.currentFilters = { location, difficulty, duration, type };
+        this.currentFilters = { location, difficulty, duration, type, favorite };
 
         this.filteredTrails = this.trails.filter(trail => {
-            return (!location || trail.province === location) &&
-                   (!difficulty || trail.difficulty === difficulty) &&
-                   (!duration || trail.duration === duration) &&
-                   (!type || trail.type === type);
+            const matchesLocation = !location || trail.province === location;
+            const matchesDifficulty = !difficulty || trail.difficulty === difficulty;
+            const matchesDuration = !duration || trail.duration === duration;
+            const matchesType = !type || trail.type === type;
+            
+            let matchesFavorite = true;
+            if (favorite === 'favorites') {
+                const favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+                matchesFavorite = favoriteTrails.includes(trail.id);
+            }
+
+            return matchesLocation && matchesDifficulty && matchesDuration && matchesType && matchesFavorite;
         });
 
         this.displayAllTrails();
-        this.showMessage(`Found ${this.filteredTrails.length} trails matching your criteria`, 'success');
     }
 
     clearFilters() {
@@ -307,6 +315,7 @@ class TrailsManager {
         document.getElementById('difficultyFilter').value = '';
         document.getElementById('durationFilter').value = '';
         document.getElementById('typeFilter').value = '';
+        document.getElementById('favoriteFilter').value = 'all';
         
         this.currentFilters = {};
         this.filteredTrails = [...this.trails];
