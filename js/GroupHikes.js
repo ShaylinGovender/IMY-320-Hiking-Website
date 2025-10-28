@@ -254,6 +254,7 @@ class GroupHikesManager {
                                 ${isFull || isJoined ? 'disabled' : ''}>
                             ${isFull ? '❌ Full' : isJoined ? '✅ Joined' : 'Join Hike'}
                         </button>
+                        ${isJoined ? `<button class="btn-secondary" onclick="cancelJoin(${hike.id})">❌ Cancel</button>` : ''}
                         <button class="btn-secondary" onclick="viewHikeDetails(${hike.id})">
                             📋 Details
                         </button>
@@ -671,6 +672,13 @@ function leaveHike(hikeId) {
         groupHikesManager.showMessage(`You have left "${hike.name}"`, 'success');
         try { updateJoinedCount(); } catch(e) {}
     }
+}
+
+// Alias for user-facing "Cancel" action on a joined hike (participant)
+function cancelJoin(hikeId) {
+    // reuse existing leaveHike behaviour so we keep a single implementation point
+    // leaveHike already asks for confirmation and updates localStorage and UI
+    leaveHike(hikeId);
 }
 
 function editHike(hikeId) {
