@@ -12,7 +12,7 @@
     <nav id="navbar">
         <div class="nav-container">
             <div class="nav-left">
-                <div class="logo">🏔️ TrailBlazer Admin</div>
+                <a href="landingPage.html" class="logo">🏔️ TrailBlazer Admin</a>
                 <ul class="nav-links">
                     <li><a href="landingPage.html">Back to Site</a></li>
                     <li><a href="#products">Products</a></li>
@@ -20,7 +20,8 @@
             </div>
             <div class="nav-actions">
                 <div class="admin-info">
-                    <span>👤 Admin User</span>
+                    <span class="admin-user-icon"><i class="fas fa-user-shield"></i></span>
+                    <span class="admin-user-text">Admin User</span>
                     <a href="LoginPage.html" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </div>
@@ -41,12 +42,13 @@
                 <!-- Quality Assurance Checklist -->
                 <div class="qa-checklist-container" id="qaChecklist" style="display: none;">
                     <div class="qa-header">
-                        <h2>🔍 Quality Assurance Checklist</h2>
+                        <h2>Quality Assurance Checklist</h2>
                         <p class="qa-description">Complete all Google Merchant specification checks before logging product to system</p>
-                        <div class="qa-progress-bar">
-                            <div class="progress-fill" id="qaProgress"></div>
-                            <span class="progress-text">0% Complete</span>
-                        </div>
+                    </div>
+                    
+                    <div class="qa-progress-bar">
+                        <div class="progress-fill" id="qaProgress"></div>
+                        <span class="progress-text">0% Complete</span>
                     </div>
                     
                     <form id="qaForm" class="qa-form">
@@ -199,13 +201,15 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="productLink">Product Link</label>
-                                <input type="url" id="productLink" name="link" placeholder="https://example.com/product">
+                                <label for="productLink">Product Link*</label>
+                                <input type="url" id="productLink" name="link" required placeholder="https://example.com/product">
+                                <small class="field-help">External link to product details page (e.g., manufacturer's website or online store)</small>
                             </div>
 
                             <div class="form-group">
                                 <label for="productImage">Product Image URL*</label>
-                                <input type="url" id="productImage" name="image" required placeholder="../images/product.jpg">
+                                <input type="text" id="productImage" name="image" required placeholder="https://example.com/image.jpg">
+                                <small class="field-help">Full URL to an online image</small>
                             </div>
 
                             <div class="form-group">
@@ -226,7 +230,8 @@
 
                             <div class="form-group">
                                 <label for="productPrice">Price (R)*</label>
-                                <input type="number" id="productPrice" name="price" step="0.01" required placeholder="0.00">
+                                <input type="number" id="productPrice" name="price" step="0.01" min="0" required placeholder="0.00">
+                                <!-- <small class="field-help">Price must be a positive value (0 or greater)</small> -->
                             </div>
 
                             <div class="form-group">

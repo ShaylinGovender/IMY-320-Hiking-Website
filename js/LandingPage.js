@@ -65,6 +65,11 @@ function showSlide(index) {
     });
 }
 
+function changeSlide(direction) {
+    currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+    showSlide(currentSlide);
+}
+
 // Auto-advance carousel
 setInterval(() => {
     currentSlide = (currentSlide + 1) % totalSlides;
