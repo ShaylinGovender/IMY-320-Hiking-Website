@@ -173,7 +173,7 @@ nav {
     color: #e67e22;
 }
 
-.cart-count, .favorites-count {
+    .cart-count, .favorites-count, .joined-count {
     position: absolute;
     top: -8px;
     right: -8px;
@@ -186,6 +186,23 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* Joined icon in navbar */
+.joined-icon {
+    position: relative;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #ecf0f1;
+    transition: color 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.joined-icon:hover {
+    color: #e67e22;
 }
 
 .favorites-icon {
