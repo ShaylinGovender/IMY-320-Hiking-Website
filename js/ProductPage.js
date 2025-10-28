@@ -135,7 +135,61 @@ if (!window.ProductData) {
         price: 299.82, originalPrice: null, rating: 4.4,
         description: "Emergency water purification tablets for treating questionable water sources. Essential for backcountry safety.",
         image: "../images/waterPure.jpg",
-        features: ["Water Purification","Emergency Use","Lightweight","Long Shelf Life"], inStock: true, dateAdded: "2024-01-18" }
+        features: ["Water Purification","Emergency Use","Lightweight","Long Shelf Life"], inStock: true, dateAdded: "2024-01-18" },
+
+      { id: 4, name: "All-Season Hiking Socks (2-Pack)", brand: "TrailComfort", category: "clothing",
+        price: 249.82, originalPrice: 319.82, rating: 4.6,
+        description: "Cushioned, moisture-wicking socks with reinforced heel and toe—built for long trail days in any season.",
+        image: "../images/hikingsocks.jpg",
+        features: ["Moisture Wicking","Cushioned","Reinforced Heel/Toe","Breathable"], inStock: true, dateAdded: "2024-02-22" },
+
+      { id: 14, name: "Compact Water Filter", brand: "PureTrail", category: "gear",
+        price: 999.82, originalPrice: 1249.82, rating: 4.7,
+        description: "Pump-free microfilter that attaches inline or to bottles—fast, reliable water treatment on the move.",
+        image: "../images/waterfilter.jpg",
+        features: ["0.1µ Filter","Inline/Bottle Use","Fast Flow","Backflushable"], inStock: true, dateAdded: "2024-02-25" },
+
+      { id: 18, name: "Lightweight 2-Person Tent", brand: "SummitShelter", category: "gear",
+        price: 6249.82, originalPrice: 7299.82, rating: 4.6,
+        description: "Freestanding 2P with double doors, vestibules and aluminum poles—great balance of space and pack weight.",
+        image: "../images/tent.jpg",
+        features: ["2 Doors","2 Vestibules","Aluminum Poles","Footprint-Compatible"], inStock: true, dateAdded: "2024-03-01" },
+
+      { id: 19, name: "Thermal Base Layer Top", brand: "HeatCore", category: "clothing",
+        price: 1039.82, originalPrice: 1299.82, rating: 4.4,
+        description: "Warm, quick-dry knit with flatlock seams—ideal first layer for cold starts and summit pushes.",
+        image: "../images/baselayer.jpg",
+        features: ["Thermal Knit","Quick Dry","Flatlock Seams","Stretch"], inStock: true, dateAdded: "2024-02-27" },
+
+      { id: 26, name: "Portable Solar Charger (21W)", brand: "SunTrail", category: "gear",
+        price: 1899.82, originalPrice: 2299.82, rating: 4.3,
+        description: "Foldable solar panel with dual USB outputs—clip to your pack and top up devices on sunny trails.",
+        image: "../images/solarcharger.jpg",
+        features: ["21W Output","Dual USB","Foldable","Weather Resistant"], inStock: true, dateAdded: "2024-03-05" },
+
+      { id: 27, name: "Microspikes Traction", brand: "GripClaw", category: "accessories",
+        price: 1199.82, originalPrice: null, rating: 4.6,
+        description: "Stainless steel microspikes for icy paths and hardpack—secure footing without full crampons.",
+        image: "../images/microspikes.jpg",
+        features: ["Stainless Chains","12 Spikes/Foot","Elastic Harness","Storage Pouch"], inStock: true, dateAdded: "2024-02-18" },
+
+      { id: 28, name: "Insulated Stainless Bottle 1L", brand: "ColdKeep", category: "accessories",
+        price: 599.82, originalPrice: 749.82, rating: 4.5,
+        description: "Double-wall insulated bottle keeps drinks cold or hot for hours—durable powder coat finish.",
+        image: "../images/bottle.jpg",
+        features: ["1L Capacity","Double Wall","Leakproof Lid","Powder Coat"], inStock: true, dateAdded: "2024-01-22" },
+
+      { id: 29, name: "Packable Down Vest", brand: "FeatherLite", category: "clothing",
+        price: 2579.82, originalPrice: 3099.82, rating: 4.4,
+        description: "Ultralight core warmth with 800-fill down and DWR—packs into its own pocket for quick layering.",
+        image: "../images/downvest.jpg",
+        features: ["800-Fill Down","DWR Shell","Packable","Zippered Pockets"], inStock: true, dateAdded: "2024-03-07" },
+
+      { id: 30, name: "Head Net & Bug Repellent Kit", brand: "TrailShield", category: "safety",
+        price: 329.82, originalPrice: 429.82, rating: 4.1,
+        description: "Ultrafine head net plus DEET-free spray—lightweight protection for mozzie-heavy valleys.",
+        image: "../images/bugkit.jpg",
+        features: ["Ultrafine Mesh","DEET-Free","Compact","Easy Apply"], inStock: true, dateAdded: "2024-02-11" }
     ];
 
     // Your richer Gear/Safety overrides (images + reviews)
@@ -282,7 +336,102 @@ if (!window.ProductData) {
               { user: "Anna M.", rating: 5, date: "2025-06-25", title: "Perfect sun protection", text: "This cap is fantastic! The UPF 50+ protection really works - no sunburn on my face or neck during a full day hike in the Karoo." },
               { user: "Peter J.", rating: 4, date: "2025-05-18", title: "Comfortable and practical", text: "Really comfortable cap with excellent ventilation. The moisture-wicking band works great during sweaty climbs. Packable design is perfect for travel. Highly recommended." },
               { user: "Sue L.", rating: 5, date: "2025-04-12", title: "Great hiking essential", text: "Love this cap! Lightweight but provides excellent coverage. The quick-dry fabric is amazing - dries in minutes after getting wet. Perfect for multi-day hikes." }
-            ] }
+            ] },
+            4:{
+  image: "../images/hikingsocks.jpg",
+  images: ["../images/hikingsocks.jpg"],
+  description: "Moisture-wicking socks with targeted cushioning and reinforced high-wear zones—built for long days on mixed terrain.",
+  features: ["Moisture Wicking","Cushioned Zones","Reinforced Heel/Toe","Breathable Knit"],
+  reviews: [
+    { user: "Noluthando P.", rating: 5, date: "2025-06-10", title: "No hotspots", text: "Did a 20km loop—feet felt great." },
+    { user: "Ruan S.",       rating: 4, date: "2025-03-04", title: "Comfy pair",   text: "Cushion is spot on; dries fast." }
+  ]
+},
+14:{image: "../images/waterfilter.jpg",
+  images: ["../images/waterfilter.jpg"],
+  description: "Inline/bottle-mount microfilter with fast flow and backflush cleaning—quick, reliable water treatment on the move.",
+  features: ["0.1µ Hollow Fiber","Fast Flow","Backflush Clean","Inline/Bottle Compatible","Field-Serviceable"],
+  reviews: [
+    { user: "Keagan D.", rating: 5, date: "2025-05-21", title: "Quick fill", text: "Flow rate is excellent at streams." },
+    { user: "Thuli Z.",  rating: 4, date: "2025-02-02", title: "Light & simple", text: "Easy to use; packs tiny." }
+  ]
+},
+18:{image: "../images/tent.jpg",
+  images: ["../images/tent.jpg"],
+  description: "Freestanding 2-person tent with two doors/vestibules and aluminum poles—great space-to-weight for weekend trips.",
+  features: ["2 Doors","2 Vestibules","Aluminum Poles","Freestanding","Seam-Taped Fly"],
+  reviews: [
+    { user: "Ayesha M.", rating: 5, date: "2025-07-03", title: "Solid in wind", text: "Held up on a blustery Drakensberg ridge." },
+    { user: "Jonas K.",  rating: 4, date: "2025-04-26", title: "Easy pitch",   text: "Up in minutes; roomy for 2." }
+  ]
+},
+
+19: {
+  image: "../images/baselayer.jpg",
+  images: ["../images/baselayer.jpg"],
+  description: "Warm, quick-dry base layer with stretchy knit and flatlock seams—ideal next-to-skin for cold starts.",
+  features: ["Thermal Knit","Quick Dry","4-Way Stretch","Flatlock Seams"],
+  reviews: [
+    { user: "Carla J.", rating: 5, date: "2025-06-12", title: "Great warmth", text: "Toasty on early winter hikes." },
+    { user: "Sam P.",   rating: 4, date: "2025-03-15", title: "Layers well",  text: "Breathes nicely under a shell." }
+  ]
+},
+
+26:{
+  image: "../images/solarcharger.jpg",
+  images: ["../images/solarcharger.jpg"],
+  description: "21W foldable solar panel with dual USB—clip to your pack and top up phones, beacons, or headlamps in sun.",
+  features: ["21W Output","Dual USB","Foldable Panels","Weather Resistant","Attachment Loops"],
+  reviews: [
+    { user: "Neo R.",  rating: 4, date: "2025-05-10", title: "Works on trail", text: "Charged phone during lunch stops." },
+    { user: "Dineo K.",rating: 5, date: "2025-02-20", title: "Compact power",  text: "Folds flat, easy to pack." }
+  ]
+},
+
+27: {
+  image: "../images/microspikes.jpg",
+  images: ["../images/microspikes.jpg"],
+  description: "Stainless microspikes for icy paths and hardpack—secure traction without the bulk of crampons.",
+  features: ["Stainless Chains","12 Spikes/Foot","Stretch Harness","Carry Pouch"],
+  reviews: [
+    { user: "Imraan A.", rating: 5, date: "2025-07-01", title: "Great grip", text: "No slips on frosty switchbacks." },
+    { user: "Lerato V.", rating: 4, date: "2025-06-03", title: "Quick on/off", text: "Elastic harness is sturdy." }
+  ]
+},
+28:{
+  image: "../images/bottle.jpg",
+  images: ["../images/bottle.jpg"],
+  description: "Double-wall insulated 1L bottle keeps drinks cold or hot for hours—durable powder-coat finish.",
+  features: ["1L Capacity","Double-Wall Vacuum","Leakproof Lid","Powder-Coat"],
+  reviews: [
+    { user: "Nadia H.",  rating: 5, date: "2025-05-05", title: "Ice all day", text: "Still had ice after 8 hours." },
+    { user: "Grant C.",  rating: 4, date: "2025-03-09", title: "Tough paint", text: "Finish survives scrapes." }
+  ]
+},
+
+29:{
+  image: "../images/downvest.jpg",
+  images: ["../images/downvest.jpg"],
+  description: "Ultralight packable down vest for core warmth—packs into its own pocket for quick layering.",
+  features: ["800-Fill Down","DWR Shell","Packable Pocket","Zippered Hand Pockets"],
+  reviews: [
+    { user: "Theo Z.",  rating: 5, date: "2025-06-22", title: "Always in pack", text: "Warmth bump with no bulk." },
+    { user: "Amina B.", rating: 4, date: "2025-04-02", title: "Great fit",     text: "Slim cut layers neatly." }
+  ]
+},
+
+30:{
+  image: "../images/bugkit.jpg",
+  images: ["../images/bugkit.jpg"],
+  description: "Ultrafine head net plus DEET-free spray—lightweight protection for mozzie-heavy valleys.",
+  features: ["Ultrafine Mesh","DEET-Free Spray","Compact","Easy Apply"],
+  reviews: [
+    { user: "Kgomotso F.", rating: 4, date: "2025-05-18", title: "No bites",    text: "Net + spray combo works." },
+    { user: "Brent W.",    rating: 4, date: "2025-02-27", title: "Packs tiny",  text: "Lives in hip belt pocket." }
+  ]
+}
+
+
     };
 
     function applyProductOverrides(list) {

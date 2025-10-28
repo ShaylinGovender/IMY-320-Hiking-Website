@@ -10,11 +10,24 @@ let wishlist = [];
 let favoriteTrails = [];
 
 // Initialize page
+function addFilterTag(text, removeCallback) {
+    const activeFiltersContainer = document.querySelector('.active-filters');
+    const tag = document.createElement('span');
+    tag.className = 'filter-tag';
+    tag.innerHTML = `
+        ${text}
+        <span class="remove-filter" onclick="event.stopPropagation();">×</span>
+    `;
+    tag.querySelector('.remove-filter').addEventListener('click', removeCallback);
+    activeFiltersContainer.appendChild(tag);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     loadFavorites();
     updateFavoritesCount();
     updateCartCount();
     initNavbarScroll();
+    initializeFilters();
     
     const hash = window.location.hash;
     if (hash === '#products') {
@@ -29,6 +42,20 @@ function loadFavorites() {
     try {
         wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
         favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+        
+        // Add Trail-of-the-Month favorite functionality
+        const trailOfMonth = document.querySelector('.trail-of-month');
+        if (trailOfMonth) {
+            const trailId = trailOfMonth.getAttribute('data-trail-id');
+            const heartIcon = document.createElement('i');
+            heartIcon.className = `favorite-icon fas fa-heart ${favoriteTrails.includes(trailId) ? 'active' : ''}`;
+            heartIcon.setAttribute('data-trail-id', trailId);
+            heartIcon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleTrailFavorite(trailId);
+            });
+            trailOfMonth.appendChild(heartIcon);
+        }
     } catch (e) {
         console.error('Error loading favorites:', e);
         wishlist = [];
@@ -37,6 +64,7 @@ function loadFavorites() {
     
     displayProductFavorites();
     displayTrailFavorites();
+    setupFavoriteFilters();
 }
 
 // Display product favorites
@@ -401,12 +429,209 @@ function viewTrailDetails(trailId) {
     window.location.href = `TrailsPage.html?trail=${trailId}`;
 }
 
+// Toggle trail favorite status
+function toggleTrailFavorite(trailId) {
+    const index = favoriteTrails.indexOf(trailId);
+    if (index === -1) {
+        favoriteTrails.push(trailId);
+        showFavoriteNotification('Trail added to favorites');
+    } else {
+        favoriteTrails.splice(index, 1);
+        showFavoriteNotification('Trail removed from favorites');
+    }
+    
+    localStorage.setItem('favoriteTrails', JSON.stringify(favoriteTrails));
+    updateFavoriteUI(trailId);
+    updateFavoritesCount();
+}
+
+// Update favorite UI elements
+function updateFavoriteUI(trailId) {
+    const heartIcons = document.querySelectorAll(`[data-trail-id="${trailId}"] .favorite-icon`);
+    heartIcons.forEach(icon => {
+        icon.classList.toggle('active', favoriteTrails.includes(trailId));
+    });
+}
+
+// Setup favorite filters
+function setupFavoriteFilters() {
+    const filterContainer = document.querySelector('.filter-section');
+    if (filterContainer && !document.getElementById('favoritesOnly')) {
+        const filterGroup = document.createElement('div');
+        filterGroup.className = 'filter-group favorites-filter';
+        filterGroup.innerHTML = `
+            <label>
+                <input type="checkbox" id="favoritesOnly" class="filter-checkbox">
+                <span>Show Favorites Only</span>
+            </label>
+        `;
+        filterContainer.appendChild(filterGroup);
+
+        document.getElementById('favoritesOnly').addEventListener('change', filterTrails);
+    }
+}
+
+// Initialize filters
+function initializeFilters() {
+    // Duration slider initialization
+    if (document.getElementById('duration-slider')) {
+        noUiSlider.create(document.getElementById('duration-slider'), {
+            start: [0, 8],
+            connect: true,
+            range: {
+                'min': 0,
+                'max': 8
+            },
+            format: {
+                to: value => Math.round(value),
+                from: value => Math.round(value)
+            }
+        });
+
+        // Update duration labels
+        const durationSlider = document.getElementById('duration-slider');
+        const minDuration = document.getElementById('min-duration');
+        const maxDuration = document.getElementById('max-duration');
+
+        durationSlider.noUiSlider.on('update', (values, handle) => {
+            const hours = values.map(val => Math.round(val));
+            minDuration.textContent = `${hours[0]}h`;
+            maxDuration.textContent = `${hours[1]}h`;
+            filterTrails();
+        });
+    }
+
+    // Initialize other filter event listeners
+    document.querySelectorAll('.filter-select, .filter-checkbox').forEach(filter => {
+        filter.addEventListener('change', filterTrails);
+    });
+
+    document.getElementById('searchInput').addEventListener('input', filterTrails);
+}
+
+// Filter trails based on all criteria
+function filterTrails() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const selectedDifficulty = document.getElementById('difficultyFilter').value;
+    const selectedProvince = document.getElementById('provinceFilter').value;
+    const showFavoritesOnly = document.getElementById('favoritesOnly')?.checked;
+    const durationSlider = document.getElementById('duration-slider');
+    const trails = document.querySelectorAll('.trail-card');
+    let visibleCount = 0;
+
+    // Get duration range if slider exists
+    let durationRange = [0, 24];
+    if (durationSlider) {
+        durationRange = durationSlider.noUiSlider.get().map(Number);
+    }
+
+    trails.forEach(trail => {
+        const trailId = trail.getAttribute('data-trail-id');
+        const trailName = trail.querySelector('.trail-name')?.textContent.toLowerCase() || '';
+        const trailDifficulty = trail.querySelector('.trail-difficulty')?.textContent.toLowerCase() || '';
+        const trailProvince = trail.getAttribute('data-province')?.toLowerCase() || '';
+        const trailDuration = parseFloat(trail.getAttribute('data-duration') || '0');
+        
+        const matchesSearch = trailName.includes(searchTerm);
+        const matchesDifficulty = selectedDifficulty === 'all' || trailDifficulty === selectedDifficulty;
+        const matchesProvince = selectedProvince === 'all' || trailProvince === selectedProvince;
+        const matchesDuration = trailDuration >= durationRange[0] && trailDuration <= durationRange[1];
+        const matchesFavorites = !showFavoritesOnly || favoriteTrails.includes(trailId);
+
+        const isVisible = matchesSearch && matchesDifficulty && matchesProvince && 
+                         matchesDuration && matchesFavorites;
+
+        trail.style.display = isVisible ? 'block' : 'none';
+        if (isVisible) visibleCount++;
+    });
+
+    // Handle zero results state
+    const noResultsElement = document.getElementById('no-results');
+    if (visibleCount === 0) {
+        if (!noResultsElement) {
+            const noResults = document.createElement('div');
+            noResults.id = 'no-results';
+            noResults.className = 'no-results';
+            noResults.innerHTML = `
+                <div class="no-results-icon">🔍</div>
+                <h3>No trails found</h3>
+                <p>Try adjusting your filters or search terms</p>
+                <button class="reset-filters-btn" onclick="resetFilters()">Reset Filters</button>
+            `;
+            document.querySelector('.trails-grid').appendChild(noResults);
+        } else {
+            noResultsElement.style.display = 'block';
+        }
+    } else if (noResultsElement) {
+        noResultsElement.style.display = 'none';
+    }
+
+    updateActiveFilters();
+}
+
+function resetFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('difficultyFilter').value = 'all';
+    document.getElementById('provinceFilter').value = 'all';
+    document.getElementById('favoritesOnly').checked = false;
+    
+    if (document.getElementById('duration-slider')) {
+        document.getElementById('duration-slider').noUiSlider.reset();
+    }
+    
+    filterTrails();
+}
+
+function updateActiveFilters() {
+    const activeFiltersContainer = document.querySelector('.active-filters');
+    activeFiltersContainer.innerHTML = '';
+    
+    const searchTerm = document.getElementById('searchInput').value;
+    const difficulty = document.getElementById('difficultyFilter').value;
+    const province = document.getElementById('provinceFilter').value;
+    const favorites = document.getElementById('favoritesOnly').checked;
+    
+    if (searchTerm) {
+        addFilterTag('Search: ' + searchTerm, () => {
+            document.getElementById('searchInput').value = '';
+            filterTrails();
+        });
+    }
+    
+    if (difficulty !== 'all') {
+        addFilterTag('Difficulty: ' + difficulty, () => {
+            document.getElementById('difficultyFilter').value = 'all';
+            filterTrails();
+        });
+    }
+    
+    if (province !== 'all') {
+        addFilterTag('Province: ' + province, () => {
+            document.getElementById('provinceFilter').value = 'all';
+            filterTrails();
+        });
+    }
+    
+    if (favorites) {
+        addFilterTag('Favorites Only', () => {
+            document.getElementById('favoritesOnly').checked = false;
+            filterTrails();
+        });
+    }
+}
+
 // Update favorites count in navigation
 function updateFavoritesCount() {
     const countElement = document.getElementById('favorites-count');
     if (countElement) {
         const totalFavorites = wishlist.length + favoriteTrails.length;
         countElement.textContent = totalFavorites;
+        
+        // Update the filter count if it exists
+        const filterCountElement = document.querySelector('.favorites-count');
+        if (filterCountElement) {
+            filterCountElement.textContent = totalFavorites;
+        }
     }
 }
 

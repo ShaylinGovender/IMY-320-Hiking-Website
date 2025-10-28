@@ -186,6 +186,33 @@ nav {
     justify-content: center;
 }
 
+/* Joined hikes badge in navbar (catalogue) */
+.joined-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #e67e22;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.joined-icon {
+    position: relative;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #ecf0f1;
+    transition: color 0.3s ease;
+    text-decoration: none;
+}
+
+.joined-icon:hover { color: #e67e22; }
+
 .favorites-icon {
     position: relative;
     font-size: 1.2rem;
@@ -430,8 +457,9 @@ nav {
 
 .list-header {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr;
-    gap: 1rem;
+    /* Keep the product column as-is, make the next 4 columns equal-width */
+    grid-template-columns: 2.2fr repeat(4, 1fr);
+    gap: 1.5rem;
     padding: 1.5rem 2rem;
     background: #2c3e50;
     color: white;
@@ -449,13 +477,28 @@ nav {
 
 .product-item {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr;
-    gap: 0.8rem;
+    /* Product (image+title) remains larger, other 4 columns equal width */
+    grid-template-columns: 2.2fr repeat(4, 1fr);
+    gap: 1.5rem;
     padding: 1rem 1.5rem;
     border-bottom: 1px solid #e9ecef;
     transition: all 0.3s ease;
     align-items: center;
 }
+
+/* Force each cell to the correct grid column to avoid wrapping/overflow shifting layout */
+.product-info { grid-column: 1 / 2; justify-self: start; }
+.product-brand-main { grid-column: 2 / 3; justify-self: center; align-self: center; }
+.product-price { grid-column: 3 / 4; justify-self: center; align-self: center; }
+.product-rating { grid-column: 4 / 5; justify-self: center; align-self: center; }
+.product-actions { grid-column: 5 / 6; justify-self: center; align-self: center; }
+
+/* Align content inside each grid column to sit under the header */
+.product-info { justify-self: start; }
+.product-brand-main { justify-self: center; }
+.product-price { justify-self: center; }
+.product-rating { justify-self: center; }
+.product-actions { justify-self: center; }
 
 .product-item:hover {
     background: #f8f9fa;
@@ -473,8 +516,8 @@ nav {
 }
 
 .product-image {
-    width: 180px;
-    height: 180px;
+    width: 190px;
+    height: 190px;
     border-radius: 8px;
     object-fit: cover;
     border: 2px solid #e9ecef;
@@ -951,23 +994,20 @@ nav {
     position: relative;
 }
 
-.product-item.out-of-stock::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(128, 128, 128, 0.4);
-    z-index: 5;
-    pointer-events: none;
+.product-item.out-of-stock .product-info {
+    position: relative;
 }
 
-.product-item.out-of-stock::after {
+.product-item.out-of-stock .product-image {
+    opacity: 0.6;
+    filter: grayscale(50%);
+}
+
+.product-item.out-of-stock .product-info::after {
     content: "OUT OF STOCK";
     position: absolute;
-    top: 40%;
-    left: 50%;
+    top: 50%;
+    left: 95px;
     transform: translate(-50%, -50%);
     background: #e74c3c;
     color: white;

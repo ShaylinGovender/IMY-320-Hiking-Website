@@ -137,7 +137,62 @@ if (!window.ProductData) {
         price: 299.82, originalPrice: null, rating: 4.4,
         description: "Emergency water purification tablets for treating questionable water sources. Essential for backcountry safety.",
         image: "../images/waterPure.jpg", // your improved asset
-        features: ["Water Purification","Emergency Use","Lightweight","Long Shelf Life"], inStock: true, dateAdded: "2024-01-18" }
+        features: ["Water Purification","Emergency Use","Lightweight","Long Shelf Life"], inStock: true, dateAdded: "2024-01-18" },
+
+              { id: 4,  name: "All-Season Hiking Socks (2-Pack)", brand: "TrailComfort", category: "clothing",
+        price: 249.82, originalPrice: 319.82, rating: 4.6,
+        description: "Cushioned, moisture-wicking socks with reinforced heel and toe—built for long trail days in any season.",
+        image: "../images/hikingsocks.jpg",
+        features: ["Moisture Wicking","Cushioned","Reinforced Heel/Toe","Breathable"], inStock: true, dateAdded: "2024-02-22" },
+
+      { id: 14, name: "Compact Water Filter", brand: "PureTrail", category: "gear",
+        price: 999.82, originalPrice: 1249.82, rating: 4.7,
+        description: "Pump-free microfilter that attaches inline or to bottles—fast, reliable water treatment on the move.",
+        image: "../images/waterfilter.jpg",
+        features: ["0.1µ Filter","Inline/Bottle Use","Fast Flow","Backflushable"], inStock: true, dateAdded: "2024-02-25" },
+
+      { id: 18, name: "Lightweight 2-Person Tent", brand: "SummitShelter", category: "gear",
+        price: 6249.82, originalPrice: 7299.82, rating: 4.6,
+        description: "Freestanding 2P with double doors, vestibules and aluminum poles—great balance of space and pack weight.",
+        image: "../images/tent.jpg",
+        features: ["2 Doors","2 Vestibules","Aluminum Poles","Footprint-Compatible"], inStock: true, dateAdded: "2024-03-01" },
+
+      { id: 19, name: "Thermal Base Layer Top", brand: "HeatCore", category: "clothing",
+        price: 1039.82, originalPrice: 1299.82, rating: 4.4,
+        description: "Warm, quick-dry knit with flatlock seams—ideal first layer for cold starts and summit pushes.",
+        image: "../images/baselayer.jpg",
+        features: ["Thermal Knit","Quick Dry","Flatlock Seams","Stretch"], inStock: true, dateAdded: "2024-02-27" },
+
+      { id: 26, name: "Portable Solar Charger (21W)", brand: "SunTrail", category: "gear",
+        price: 1899.82, originalPrice: 2299.82, rating: 4.3,
+        description: "Foldable solar panel with dual USB outputs—clip to your pack and top up devices on sunny trails.",
+        image: "../images/solarcharger.jpg",
+        features: ["21W Output","Dual USB","Foldable","Weather Resistant"], inStock: true, dateAdded: "2024-03-05" },
+
+      { id: 27, name: "Microspikes Traction", brand: "GripClaw", category: "accessories",
+        price: 1199.82, originalPrice: null, rating: 4.6,
+        description: "Stainless steel microspikes for icy paths and hardpack—secure footing without full crampons.",
+        image: "../images/microspikes.jpg",
+        features: ["Stainless Chains","12 Spikes/Foot","Elastic Harness","Storage Pouch"], inStock: true, dateAdded: "2024-02-18" },
+
+      { id: 28, name: "Insulated Stainless Bottle 1L", brand: "ColdKeep", category: "accessories",
+        price: 599.82, originalPrice: 749.82, rating: 4.5,
+        description: "Double-wall insulated bottle keeps drinks cold or hot for hours—durable powder coat finish.",
+        image: "../images/bottle.jpg",
+        features: ["1L Capacity","Double Wall","Leakproof Lid","Powder Coat"], inStock: true, dateAdded: "2024-01-22" },
+
+      { id: 29, name: "Packable Down Vest", brand: "FeatherLite", category: "clothing",
+        price: 2579.82, originalPrice: 3099.82, rating: 4.4,
+        description: "Ultralight core warmth with 800-fill down and DWR—packs into its own pocket for quick layering.",
+        image: "../images/downvest.jpg",
+        features: ["800-Fill Down","DWR Shell","Packable","Zippered Pockets"], inStock: true, dateAdded: "2024-03-07" },
+
+      { id: 30, name: "Head Net & Bug Repellent Kit", brand: "TrailShield", category: "safety",
+        price: 329.82, originalPrice: 429.82, rating: 4.1,
+        description: "Ultrafine head net plus DEET-free spray—lightweight protection for mozzie-heavy valleys.",
+        image: "../images/bugkit.jpg",
+        features: ["Ultrafine Mesh","DEET-Free","Compact","Easy Apply"], inStock: true, dateAdded: "2024-02-11" },
+
     ];
 
     // Your richer Gear/Safety overrides (images arrays, descriptions, reviews)
@@ -483,26 +538,12 @@ function applyFiltersInternal() {
       matchesFavorite = wishlist.some(item => item.id === product.id);
     }
 
-    const hasActiveFilters = currentFilters.search !== '' || 
-      currentFilters.category !== 'all' || 
-      currentFilters.brand !== 'all' || 
-      currentFilters.price !== 'all' || 
-      currentFilters.favorite !== 'all';
-
-    if (!hasActiveFilters) {
-      return true;
-    }
-
-    const filterMatches = [matchesSearch, matchesCategory, matchesBrand, matchesPrice, matchesFavorite];
-    const activeFilterMatches = [];
-    
-    if (currentFilters.search !== '') activeFilterMatches.push(matchesSearch);
-    if (currentFilters.category !== 'all') activeFilterMatches.push(matchesCategory);
-    if (currentFilters.brand !== 'all') activeFilterMatches.push(matchesBrand);
-    if (currentFilters.price !== 'all') activeFilterMatches.push(matchesPrice);
-    if (currentFilters.favorite !== 'all') activeFilterMatches.push(matchesFavorite);
-
-    return activeFilterMatches.some(match => match);
+    // A product must match ALL active filters
+    return matchesSearch && 
+           matchesCategory && 
+           matchesBrand && 
+           matchesPrice && 
+           matchesFavorite;
   });
 
   sortProducts();
