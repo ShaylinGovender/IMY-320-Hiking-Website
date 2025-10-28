@@ -457,8 +457,9 @@ nav {
 
 .list-header {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr;
-    gap: 1rem;
+    /* Keep the product column as-is, make the next 4 columns equal-width */
+    grid-template-columns: 2.2fr repeat(4, 1fr);
+    gap: 1.5rem;
     padding: 1.5rem 2rem;
     background: #2c3e50;
     color: white;
@@ -476,13 +477,28 @@ nav {
 
 .product-item {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr;
-    gap: 0.8rem;
+    /* Product (image+title) remains larger, other 4 columns equal width */
+    grid-template-columns: 2.2fr repeat(4, 1fr);
+    gap: 1.5rem;
     padding: 1rem 1.5rem;
     border-bottom: 1px solid #e9ecef;
     transition: all 0.3s ease;
     align-items: center;
 }
+
+/* Force each cell to the correct grid column to avoid wrapping/overflow shifting layout */
+.product-info { grid-column: 1 / 2; justify-self: start; }
+.product-brand-main { grid-column: 2 / 3; justify-self: center; align-self: center; }
+.product-price { grid-column: 3 / 4; justify-self: center; align-self: center; }
+.product-rating { grid-column: 4 / 5; justify-self: center; align-self: center; }
+.product-actions { grid-column: 5 / 6; justify-self: center; align-self: center; }
+
+/* Align content inside each grid column to sit under the header */
+.product-info { justify-self: start; }
+.product-brand-main { justify-self: center; }
+.product-price { justify-self: center; }
+.product-rating { justify-self: center; }
+.product-actions { justify-self: center; }
 
 .product-item:hover {
     background: #f8f9fa;
