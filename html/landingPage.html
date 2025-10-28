@@ -43,6 +43,11 @@
           <i class="fas fa-heart"></i>
           <span class="favorites-count" id="favorites-count">0</span>
         </a>
+                <!-- Joined hikes quick-access -->
+                <a href="../html/GroupHikes.html#yourHikes" class="joined-icon" aria-label="Joined Hikes">
+                    🥾
+                    <span class="joined-count" id="joined-count">0</span>
+                </a>
       </div>
     </div>
   </div>
@@ -216,5 +221,15 @@
 
     <script src="../js/LandingPage.js"></script>
     <script src="../js/Cart.js"></script>
+        <script>
+            // Update joined count in navbar on landing page
+            (function updateLandingJoined(){
+                try {
+                    const joined = JSON.parse(localStorage.getItem('joinedHikes') || '[]');
+                    const el = document.getElementById('joined-count');
+                    if (el) el.textContent = joined.length;
+                } catch (e) { console.error(e); }
+            })();
+        </script>
 </body>
 </html>

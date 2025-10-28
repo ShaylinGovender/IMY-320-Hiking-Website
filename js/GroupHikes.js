@@ -191,6 +191,9 @@ class GroupHikesManager {
         const spotsRemaining = hike.maxParticipants - hike.currentParticipants;
         const isAlmostFull = spotsRemaining <= 3;
         const isFull = spotsRemaining <= 0;
+        // Determine if the current user already joined this hike
+        const joinedHikesLocal = JSON.parse(localStorage.getItem('joinedHikes') || '[]');
+        const isJoined = joinedHikesLocal.includes(hike.id);
         
         const participantAvatars = hike.participants.slice(0, 4).map(participant => 
             `<div class="participant-avatar">${participant.avatar}</div>`
@@ -203,6 +206,7 @@ class GroupHikesManager {
             <div class="hike-card" data-id="${hike.id}">
                 <div class="hike-header">
                     <div class="hike-title">${hike.name}</div>
+                    ${isJoined ? '<div class="joined-badge">Joined</div>' : ''}
                     <div class="hike-date-time">
                         📅 ${this.formatDate(hike.date)} at ${hike.time}
                     </div>
@@ -245,10 +249,10 @@ class GroupHikesManager {
                     </div>
                     
                     <div class="hike-actions">
-                        <button class="btn-primary ${isFull ? 'disabled' : ''}" 
+                        <button class="btn-primary ${isFull || isJoined ? 'disabled' : ''}" 
                                 onclick="joinHike(${hike.id})" 
-                                ${isFull ? 'disabled' : ''}>
-                            ${isFull ? '❌ Full' : 'Join Hike'}
+                                ${isFull || isJoined ? 'disabled' : ''}>
+                            ${isFull ? '❌ Full' : isJoined ? '✅ Joined' : 'Join Hike'}
                         </button>
                         <button class="btn-secondary" onclick="viewHikeDetails(${hike.id})">
                             📋 Details
@@ -404,27 +408,61 @@ class GroupHikesManager {
     }
 
     showMessage(message, type = 'success') {
+        // New improved toast that supports custom duration and optional action
+        // Usage: showMessage(msg, 'success', { duration: 5000, actionLabel: 'View', action: () => {...} })
+        const args = Array.from(arguments);
+        const opts = (args[2] && typeof args[2] === 'object') ? args[2] : {};
+        const duration = opts.duration || (type === 'success' ? 6000 : 4000);
+
         const messageEl = document.createElement('div');
         messageEl.className = `alert alert-${type}`;
-        messageEl.textContent = message;
         messageEl.style.cssText = `
             position: fixed;
             top: 100px;
             right: 20px;
-            padding: 1rem;
-            border-radius: 8px;
+            padding: 14px 18px;
+            border-radius: 10px;
             color: white;
-            font-weight: bold;
-            z-index: 1000;
-            max-width: 300px;
-            background: ${type === 'success' ? '#27ae60' : '#e74c3c'};
+            font-weight: 700;
+            z-index: 1100;
+            max-width: 360px;
+            background: ${type === 'success' ? '#16a34a' : type === 'info' ? '#0ea5e9' : '#e11d48'};
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            display: flex;
+            gap: 12px;
+            align-items: center;
         `;
+
+        const textSpan = document.createElement('div');
+        textSpan.style.flex = '1';
+        textSpan.style.fontSize = '0.95rem';
+        textSpan.textContent = message;
+        messageEl.appendChild(textSpan);
+
+        // Optional action button (e.g., 'View your hikes')
+        if (opts.actionLabel && typeof opts.action === 'function') {
+            const actionBtn = document.createElement('button');
+            actionBtn.textContent = opts.actionLabel;
+            actionBtn.style.cssText = `
+                background: rgba(255,255,255,0.12);
+                color: white;
+                border: none;
+                padding: 8px 10px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 700;
+            `;
+            actionBtn.onclick = (e) => { e.stopPropagation(); opts.action(); };
+            messageEl.appendChild(actionBtn);
+        }
 
         document.body.appendChild(messageEl);
 
         setTimeout(() => {
-            messageEl.remove();
-        }, 4000);
+            messageEl.classList.add('hiding');
+            // small fade out then remove
+            setTimeout(() => messageEl.remove(), 300);
+        }, duration);
     }
 
     addToYourHikes(hike) {
@@ -439,6 +477,8 @@ class GroupHikesManager {
         
         // Update the Your Hikes display
         this.displayYourHikes();
+        // Update top-bar joined count
+        try { updateJoinedCount(); } catch(e) { /* ignore if not available */ }
     }
 
     addToYourGroups(hike) {
@@ -629,6 +669,7 @@ function leaveHike(hikeId) {
         groupHikesManager.displayGroupHikes();
         groupHikesManager.displayYourHikes();
         groupHikesManager.showMessage(`You have left "${hike.name}"`, 'success');
+        try { updateJoinedCount(); } catch(e) {}
     }
 }
 
@@ -654,6 +695,7 @@ function cancelHike(hikeId) {
         groupHikesManager.displayGroupHikes();
         groupHikesManager.displayYourGroups();
         groupHikesManager.showMessage(`"${hike.name}" has been cancelled`, 'success');
+        try { updateJoinedCount(); } catch(e) {}
     }
 }
 
@@ -679,17 +721,26 @@ function joinHike(hikeId) {
     
     // Update display
     groupHikesManager.displayGroupHikes();
-    groupHikesManager.showMessage(`Successfully joined "${hike.name}"!`, 'success');
-    
-    // Add to user's hikes
+    // Add to user's hikes and persist
     groupHikesManager.addToYourHikes(hike);
-    
+
     // Save to localStorage for persistence - get existing hikes first
     const existingJoinedHikes = JSON.parse(localStorage.getItem('joinedHikes') || '[]');
     if (!existingJoinedHikes.includes(hikeId)) {
         existingJoinedHikes.push(hikeId);
         localStorage.setItem('joinedHikes', JSON.stringify(existingJoinedHikes));
     }
+
+    // Update top-bar joined count and give a clearer handoff (longer toast + quick action)
+    try { updateJoinedCount(); } catch (e) { /* ignore */ }
+    groupHikesManager.showMessage(`You joined "${hike.name}" — it's in Your Hikes.`, 'success', {
+        duration: 7000,
+        actionLabel: 'View your hikes',
+        action: () => scrollToYourHikes()
+    });
+
+    // Smoothly scroll the Your Hikes section into view after a short delay
+    setTimeout(() => scrollToYourHikes(), 600);
 }
 
 function viewHikeDetails(hikeId) {
@@ -769,6 +820,28 @@ function viewHikeDetails(hikeId) {
     `;
     
     document.getElementById('hikeDetailsModal').style.display = 'block';
+}
+
+// Scroll to Your Hikes section and briefly highlight it
+function scrollToYourHikes() {
+    const yourHikesSection = document.getElementById('yourHikes');
+    if (!yourHikesSection) return;
+    yourHikesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Add a short highlight
+    yourHikesSection.style.transition = 'box-shadow 0.4s ease';
+    yourHikesSection.style.boxShadow = '0 6px 30px rgba(230,126,34,0.25)';
+    setTimeout(() => { yourHikesSection.style.boxShadow = ''; }, 1800);
+}
+
+// Update the joined hikes count in the navbar
+function updateJoinedCount() {
+    try {
+        const joined = JSON.parse(localStorage.getItem('joinedHikes') || '[]');
+        const el = document.getElementById('joined-count') || document.querySelector('.joined-count');
+        if (el) el.textContent = joined.length;
+    } catch (e) {
+        console.error('Error updating joined count:', e);
+    }
 }
 
 function closeHikeDetailsModal() {
@@ -942,4 +1015,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update counts on page load
     updateCartCount();
     updateFavoritesCount();
+    // Update joined hikes count on load
+    try { updateJoinedCount(); } catch(e) { /* ignore */ }
 });

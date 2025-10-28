@@ -174,7 +174,7 @@ nav {
     color: #e67e22;
 }
 
-.cart-count, .favorites-count {
+.cart-count, .favorites-count, .joined-count {
     position: absolute;
     top: -8px;
     right: -8px;
@@ -187,6 +187,23 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* Joined icon in navbar */
+.joined-icon {
+    position: relative;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #ecf0f1;
+    transition: color 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.joined-icon:hover {
+    color: #e67e22;
 }
 
 .favorites-icon {
@@ -699,6 +716,27 @@ nav {
     color: white;
 }
 
+/* Joined badge for hikes */
+.joined-badge {
+    position: absolute;
+    top: 12px;
+    right: 70px;
+    background: #16a34a;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(22,163,74,0.18);
+}
+
+/* Joined state for join button (disabled appearance) */
+.btn-primary.disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    opacity: 0.9;
+}
+
 .your-card-body {
     padding: 1.5rem;
 }
@@ -1187,7 +1225,8 @@ nav {
 .modal-content {
     background-color: white;
     margin: 5% auto;
-    padding: 0;
+    /* Make room at the top so the close button doesn't overlap content */
+    padding-top: 2.5rem;
     border-radius: 20px;
     width: 90%;
     max-width: 600px;
