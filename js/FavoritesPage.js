@@ -29,6 +29,20 @@ function loadFavorites() {
     try {
         wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
         favoriteTrails = JSON.parse(localStorage.getItem('favoriteTrails') || '[]');
+        
+        // Add Trail-of-the-Month favorite functionality
+        const trailOfMonth = document.querySelector('.trail-of-month');
+        if (trailOfMonth) {
+            const trailId = trailOfMonth.getAttribute('data-trail-id');
+            const heartIcon = document.createElement('i');
+            heartIcon.className = `favorite-icon fas fa-heart ${favoriteTrails.includes(trailId) ? 'active' : ''}`;
+            heartIcon.setAttribute('data-trail-id', trailId);
+            heartIcon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleTrailFavorite(trailId);
+            });
+            trailOfMonth.appendChild(heartIcon);
+        }
     } catch (e) {
         console.error('Error loading favorites:', e);
         wishlist = [];
@@ -37,6 +51,7 @@ function loadFavorites() {
     
     displayProductFavorites();
     displayTrailFavorites();
+    setupFavoriteFilters();
 }
 
 // Display product favorites
@@ -401,12 +416,72 @@ function viewTrailDetails(trailId) {
     window.location.href = `TrailsPage.html?trail=${trailId}`;
 }
 
+// Toggle trail favorite status
+function toggleTrailFavorite(trailId) {
+    const index = favoriteTrails.indexOf(trailId);
+    if (index === -1) {
+        favoriteTrails.push(trailId);
+        showFavoriteNotification('Trail added to favorites');
+    } else {
+        favoriteTrails.splice(index, 1);
+        showFavoriteNotification('Trail removed from favorites');
+    }
+    
+    localStorage.setItem('favoriteTrails', JSON.stringify(favoriteTrails));
+    updateFavoriteUI(trailId);
+    updateFavoritesCount();
+}
+
+// Update favorite UI elements
+function updateFavoriteUI(trailId) {
+    const heartIcons = document.querySelectorAll(`[data-trail-id="${trailId}"] .favorite-icon`);
+    heartIcons.forEach(icon => {
+        icon.classList.toggle('active', favoriteTrails.includes(trailId));
+    });
+}
+
+// Setup favorite filters
+function setupFavoriteFilters() {
+    const filterContainer = document.querySelector('.filter-section');
+    if (filterContainer && !document.getElementById('favoritesOnly')) {
+        const filterGroup = document.createElement('div');
+        filterGroup.className = 'filter-group favorites-filter';
+        filterGroup.innerHTML = `
+            <label>
+                <input type="checkbox" id="favoritesOnly" class="filter-checkbox">
+                <span>Show Favorites Only</span>
+            </label>
+        `;
+        filterContainer.appendChild(filterGroup);
+
+        document.getElementById('favoritesOnly').addEventListener('change', filterTrails);
+    }
+}
+
+// Filter trails based on favorites
+function filterTrails() {
+    const showFavoritesOnly = document.getElementById('favoritesOnly')?.checked;
+    const trails = document.querySelectorAll('.trail-card');
+    
+    trails.forEach(trail => {
+        const trailId = trail.getAttribute('data-trail-id');
+        const shouldShow = !showFavoritesOnly || favoriteTrails.includes(trailId);
+        trail.style.display = shouldShow ? 'block' : 'none';
+    });
+}
+
 // Update favorites count in navigation
 function updateFavoritesCount() {
     const countElement = document.getElementById('favorites-count');
     if (countElement) {
         const totalFavorites = wishlist.length + favoriteTrails.length;
         countElement.textContent = totalFavorites;
+        
+        // Update the filter count if it exists
+        const filterCountElement = document.querySelector('.favorites-count');
+        if (filterCountElement) {
+            filterCountElement.textContent = totalFavorites;
+        }
     }
 }
 

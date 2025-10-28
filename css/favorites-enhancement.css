@@ -1,0 +1,67 @@
+/* Favorite Icon Enhancements */
+.favorite-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #ccc;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.9);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.favorite-icon:hover {
+    transform: scale(1.1);
+    color: #ff4444;
+}
+
+.favorite-icon.active {
+    color: #ff4444;
+    animation: heartPulse 0.3s ease;
+}
+
+@keyframes heartPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.favorites-filter {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(230, 126, 34, 0.1);
+    border-radius: 8px;
+}
+
+.filter-checkbox {
+    margin-right: 0.5rem;
+}
+
+/* Favorite Button States */
+.trail-card .favorite-icon,
+.trail-of-month .favorite-icon {
+    opacity: 0.7;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+}
+
+.trail-card:hover .favorite-icon,
+.trail-of-month:hover .favorite-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.favorite-icon.active {
+    opacity: 1;
+    transform: scale(1);
+    color: #ff4444;
+}
