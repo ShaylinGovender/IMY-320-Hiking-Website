@@ -54,6 +54,13 @@ class AdminPanel {
         if (productForm) {
             productForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                
+                // Check if form is valid using HTML5 validation
+                if (!productForm.checkValidity()) {
+                    productForm.reportValidity();
+                    return;
+                }
+                
                 this.handleProductFormSubmit();
             });
         }
@@ -133,7 +140,7 @@ class AdminPanel {
         const formData = new FormData(document.getElementById('productForm'));
         
         // Validate required fields
-        const requiredFields = ['id', 'title', 'description', 'image', 'availability', 'price', 'brand', 'category'];
+        const requiredFields = ['id', 'title', 'description', 'link', 'image', 'availability', 'price', 'brand', 'category'];
         let isValid = true;
         
         for (let field of requiredFields) {
@@ -152,12 +159,19 @@ class AdminPanel {
             return;
         }
 
+        // Validate price is not negative
+        const price = parseFloat(formData.get('price'));
+        if (price < 0) {
+            this.showMessage('Price cannot be negative. Please enter a valid price.', 'error');
+            return;
+        }
+
         // Store temporary product data
         this.tempProductData = {
             id: parseInt(formData.get('id')) || formData.get('id'),
             title: formData.get('title'),
             description: formData.get('description'),
-            link: formData.get('link') || '#',
+            link: formData.get('link'),
             image: formData.get('image'),
             availability: formData.get('availability'),
             availability_date: formData.get('availability_date') || new Date().toISOString().split('T')[0],
@@ -248,6 +262,16 @@ class AdminPanel {
         // Update progress bar
         if (progressBar) {
             progressBar.style.width = `${percentage}%`;
+            
+            // Change color from red to green based on percentage
+            const redValue = Math.round(231 - (percentage * 1.31)); // From 231 (red) to 100
+            const greenValue = Math.round(76 + (percentage * 0.98)); // From 76 to 174
+            const blueValue = Math.round(60 + (percentage * 0.36)); // From 60 to 96
+            
+            progressBar.style.background = `linear-gradient(90deg, 
+                rgb(${redValue}, ${greenValue}, ${blueValue}), 
+                rgb(${Math.max(redValue - 20, 39)}, ${Math.min(greenValue + 20, 174)}, ${blueValue})
+            )`;
         }
 
         // Update progress text
@@ -275,7 +299,8 @@ class AdminPanel {
 
     hideQAChecklist() {
         document.getElementById('qaChecklist').style.display = 'none';
-        this.tempProductData = null;
+        document.getElementById('addProductForm').style.display = 'block';
+        // Keep tempProductData so user can continue editing
     }
 
     handleQASubmit() {
@@ -303,8 +328,10 @@ class AdminPanel {
         // Add the product
         this.addProduct(this.tempProductData);
         
-        // Hide QA checklist
-        this.hideQAChecklist();
+        // Hide QA checklist and product form, show product list
+        document.getElementById('qaChecklist').style.display = 'none';
+        document.getElementById('addProductForm').style.display = 'none';
+        this.tempProductData = null;
         
         this.showMessage('Product successfully added to the system!', 'success');
     }
@@ -345,7 +372,7 @@ class AdminPanel {
 
         container.innerHTML = this.products.map(product => `
             <div class="admin-product-card" data-id="${product.id}">
-                <img src="${product.image}" alt="${product.title || product.name}" class="admin-product-image" onerror="this.src='../images/placeholder.jpg'">
+                <img src="${product.image}" alt="${product.title || product.name}" class="admin-product-image" onerror="handleImageError(this)">
                 <div class="admin-product-info">
                     <div class="admin-product-name">${product.title || product.name}</div>
                     <div class="admin-product-brand">${product.brand}</div>
@@ -405,7 +432,7 @@ class AdminPanel {
 
         container.innerHTML = products.map(product => `
             <div class="admin-product-card" data-id="${product.id}">
-                <img src="${product.image}" alt="${product.title || product.name}" class="admin-product-image" onerror="this.src='../images/placeholder.jpg'">
+                <img src="${product.image}" alt="${product.title || product.name}" class="admin-product-image" onerror="handleImageError(this)">
                 <div class="admin-product-info">
                     <div class="admin-product-name">${product.title || product.name}</div>
                     <div class="admin-product-brand">${product.brand}</div>
@@ -429,16 +456,29 @@ class AdminPanel {
         // Create new message
         const messageEl = document.createElement('div');
         messageEl.className = `message ${type}`;
-        messageEl.textContent = message;
+        
+        // Add close button
+        const closeBtn = document.createElement('span');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.className = 'message-close';
+        closeBtn.onclick = () => messageEl.remove();
+        
+        // Add message text
+        const messageText = document.createElement('span');
+        messageText.textContent = message;
+        
+        messageEl.appendChild(messageText);
+        messageEl.appendChild(closeBtn);
         messageEl.style.display = 'block';
 
-        // Insert at top of main content
-        const container = document.querySelector('.container');
-        container.insertBefore(messageEl, container.firstChild);
+        // Insert into body for fixed positioning
+        document.body.appendChild(messageEl);
 
         // Auto-hide after 5 seconds
         setTimeout(() => {
-            messageEl.remove();
+            if (messageEl.parentNode) {
+                messageEl.remove();
+            }
         }, 5000);
     }
 }
@@ -458,6 +498,19 @@ function hideQAChecklist() {
 
 function filterAdminProducts() {
     adminPanel.filterAdminProducts();
+}
+
+// Handle image loading errors
+function handleImageError(img) {
+    // Prevent infinite loop by checking if already handled
+    if (img.classList.contains('image-error')) {
+        return;
+    }
+    
+    // Add error class and remove src to show CSS placeholder
+    img.classList.add('image-error');
+    img.removeAttribute('src');
+    img.alt = 'Image not available';
 }
 
 // Initialize admin panel when DOM is loaded

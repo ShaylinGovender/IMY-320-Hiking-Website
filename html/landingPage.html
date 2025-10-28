@@ -106,33 +106,42 @@
     <section class="section trails-section" id="trails">
         <div class="container">
             <h2 class="section-title">Top Trails Near You</h2>
-            <div class="carousel-container">
-                <div class="carousel" id="trailsCarousel">
+            <div class="carousel-wrapper">
+                <button class="carousel-arrow carousel-arrow-left" onclick="changeSlide(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel-container">
+                    <div class="carousel" id="trailsCarousel">
                     <div class="carousel-item">
                         <div class="trail-image" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                        <h3>🏔️ Mountain Ridge Trail</h3>
+                        <h3>Mountain Ridge Trail</h3>
                         <p>A challenging 8-mile trail with breathtaking views of the surrounding peaks. Perfect for experienced hikers looking for their next adventure.</p>
                         <p><strong>Difficulty:</strong> Hard | <strong>Distance:</strong> 8 miles</p>
                     </div>
                     <div class="carousel-item">
                         <div class="trail-image" style="background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                        <h3>🌲 Forest Loop Path</h3>
+                        <h3>Forest Loop Path</h3>
                         <p>A family-friendly 3-mile loop through ancient forests. Great for beginners and families with children.</p>
                         <p><strong>Difficulty:</strong> Easy | <strong>Distance:</strong> 3 miles</p>
                     </div>
                     <div class="carousel-item">
                         <div class="trail-image" style="background-image: url('https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
-                        <h3>🏞️ Lakeside Adventure</h3>
+                        <h3>Lakeside Adventure</h3>
                         <p>A moderate 5-mile trail leading to a pristine alpine lake. Perfect for photography and peaceful reflection.</p>
                         <p><strong>Difficulty:</strong> Moderate | <strong>Distance:</strong> 5 miles</p>
                     </div>
                 </div>
+                </div>
+                <button class="carousel-arrow carousel-arrow-right" onclick="changeSlide(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
                 <div class="carousel-nav">
                     <div class="carousel-dot active" onclick="showSlide(0)"></div>
                     <div class="carousel-dot" onclick="showSlide(1)"></div>
                     <div class="carousel-dot" onclick="showSlide(2)"></div>
                 </div>
             </div>
+            <a href="./TrailsPage.html" class="cta-button">See All Trails</a>
         </div>
     </section>
 
@@ -150,7 +159,7 @@
                         <li>Safety training sessions</li>
                         <li>Seasonal adventure challenges</li>
                     </ul>
-                    <a href="#" class="cta-button">Find Local Groups</a>
+                    <a href="./GroupHikes.html" class="cta-button">Find Local Groups</a>
                 </div>
                 <div class="club-image">
                     

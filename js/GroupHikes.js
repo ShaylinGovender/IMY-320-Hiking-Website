@@ -252,14 +252,14 @@ class GroupHikesManager {
                         <button class="btn-primary ${isFull || isJoined ? 'disabled' : ''}" 
                                 onclick="joinHike(${hike.id})" 
                                 ${isFull || isJoined ? 'disabled' : ''}>
-                            ${isFull ? '❌ Full' : isJoined ? '✅ Joined' : 'Join Hike'}
+                            ${isFull ? 'Full' : isJoined ? 'Joined' : 'Join Hike'}
                         </button>
-                        ${isJoined ? `<button class="btn-secondary" onclick="cancelJoin(${hike.id})">❌ Cancel</button>` : ''}
+                        ${isJoined ? `<button class="btn-secondary" onclick="cancelJoin(${hike.id})">Leave</button>` : ''}
                         <button class="btn-secondary" onclick="viewHikeDetails(${hike.id})">
-                            📋 Details
+                            Details
                         </button>
                         <button class="btn-secondary" onclick="contactOrganizer(${hike.organizerId})">
-                            💬 Contact
+                            Contact
                         </button>
                     </div>
                 </div>
@@ -519,7 +519,7 @@ class GroupHikesManager {
 
             // Check if user is the organizer
             const isOrganizer = hike.organizerId === 999;
-            const roleLabel = isOrganizer ? '👑 Organizer' : '👤 Participant';
+            const roleLabel = isOrganizer ? '👑 Organizer' : 'Participant';
             const roleClass = isOrganizer ? 'organizer' : 'participant';
 
             return `
@@ -531,9 +531,9 @@ class GroupHikesManager {
                     </div>
                     <div class="your-card-body">
                         <div class="your-card-meta">
-                            <span>📍 ${hike.location}</span>
-                            <span>⚡ ${this.capitalizeFirst(hike.difficulty)}</span>
-                            <span>⏱️ ${hike.duration}</span>
+                            <span><div></div><div>${hike.location}</div></span>
+                            <span><div></div><div>${this.capitalizeFirst(hike.difficulty)}</div></span>
+                            <span><div></div><div>${hike.duration}</div></span>
                         </div>
                         <p style="color: #6c757d; margin: 1rem 0;">${hike.description.substring(0, 100)}...</p>
                         <div class="your-card-actions">
