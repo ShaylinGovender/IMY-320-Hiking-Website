@@ -71,6 +71,18 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
 
 .kicker{font-size:.9rem;color:#7f8c8d}
 
+/* Center the empty cart message specifically */
+#cart-empty.kicker {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 290px;
+    font-size: 1.1rem;
+    color: #95a5a6;
+    font-weight: 500;
+}
+
 .summary{position:sticky;top:90px;height:max-content}
 .summary .row{display:flex;gap:12px;align-items:flex-end}
 .summary .row>div:first-child{flex:1}

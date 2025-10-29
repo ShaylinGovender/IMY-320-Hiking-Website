@@ -60,17 +60,27 @@
 
   function renderCartPage() {
     var wrap = document.getElementById("cart-items");
+    var emptyMsg = document.getElementById("cart-empty");
     if (!wrap) return;
 
     var cart = load();
     
     if (!cart.length) {
-      wrap.innerHTML = '<div class="kicker">Your cart is empty.</div>';
+      wrap.innerHTML = '';
+      if (emptyMsg) {
+        emptyMsg.classList.remove("hidden");
+        emptyMsg.style.display = "flex"; // Ensure it's visible
+      }
       var summaryLines = document.getElementById("summary-lines");
       if (summaryLines) summaryLines.innerHTML = '';
       return;
     }
 
+    // Hide empty message when there are items
+    if (emptyMsg) {
+      emptyMsg.classList.add("hidden");
+      emptyMsg.style.display = "none"; // Force hide
+    }
     wrap.innerHTML = cart.map(cartItemHTML).join("");
 
     var sub = subtotal(cart);
