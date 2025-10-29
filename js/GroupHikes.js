@@ -636,7 +636,7 @@ class GroupHikesManager {
         
         const arrow = document.createElement('div');
         arrow.className = 'custom-dropdown-arrow';
-        arrow.innerHTML = '▼';
+        arrow.innerHTML = '&#9662;';
         
         selected.appendChild(selectedText);
         selected.appendChild(arrow);

@@ -952,6 +952,10 @@ nav {
     height: 16px;
     transition: transform 0.3s ease;
     color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .custom-dropdown-selected.open .custom-dropdown-arrow {
@@ -984,7 +988,7 @@ nav {
 }
 
 .custom-dropdown-option:hover {
-    background-color: #f8f9fa;
+    background-color: #cbd1d7;
 }
 
 .custom-dropdown-option:last-child {
