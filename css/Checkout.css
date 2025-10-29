@@ -123,7 +123,6 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
 .price{white-space:nowrap;font-weight:600}
 
 .qty{display:flex;gap:8px;align-items:center}
-.qty button:first-child,.qty button:last-child{display:none !important}
 .qty input{width:72px;text-align:center}
 
 .item .btn.danger{padding:.55rem .9rem;font-size:.9rem;border-radius:8px}
@@ -144,11 +143,3 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:780px){.form-grid{grid-template-columns:1fr}}
 .form-grid .col-span-2{grid-column:1/-1}
-
-#cart-items .item button.plus,
-#cart-items .item [aria-label*="increase" i],
-#cart-items .item [class*="increase" i],
-#cart-items .item [id*="increase" i]{display:none!important}
-
-#cart-items .item .qty+.remove-item{margin-left:8px}
-#cart-items .item .remove-item{margin-left:8px}

@@ -12,7 +12,7 @@
 <nav id="navbar">
   <div class="nav-container">
     <div class="nav-left">
-      <div class="logo">🏔️ TrailBlazer</div>
+      <a href="landingPage.html" class="logo" style="text-decoration: none; color: inherit;">🏔️ TrailBlazer</a>
       <ul class="nav-links">
         <li><a href="landingPage.html">Home</a></li>
         <li><a href="ProductCatalogue.html">Gear</a></li>
@@ -144,11 +144,12 @@ function forceRender() {
   
   if (summaryEl && order.totals) {
     summaryEl.innerHTML = `
-      <div class="line"><span>Subtotal</span><strong>R${order.totals.subtotal.toFixed(2)}</strong></div>
-      <div class="line"><span>Discount</span><strong>-R${order.totals.discount.toFixed(2)}</strong></div>
-      <div class="line"><span>Shipping</span><strong>R${order.totals.shipping.toFixed(2)}</strong></div>
-      <div class="line"><span>Tax</span><strong>R${order.totals.tax.toFixed(2)}</strong></div>
-      <div class="line total"><span>Total</span><strong>R${order.totals.total.toFixed(2)}</strong></div>
+      <div class="line"><span>Subtotal</span><span class="amount">R${order.totals.subtotal.toFixed(2)}</span></div>
+      ${order.totals.discount > 0 ? `<div class="line"><span>Discount</span><span class="discount-amount">-R${order.totals.discount.toFixed(2)}</span></div>` : ''}
+      <div class="line shipping"><span><i class="fas fa-shipping-fast"></i> Shipping</span><span class="shipping-amount">R${order.totals.shipping.toFixed(2)}</span></div>
+      <div class="line"><span>Tax (15%)</span><span class="tax-amount">R${order.totals.tax.toFixed(2)}</span></div>
+      <hr>
+      <div class="line total"><span>Total</span><span class="total-amount">R${order.totals.total.toFixed(2)}</span></div>
     `;
     console.log('Summary updated');
   }
