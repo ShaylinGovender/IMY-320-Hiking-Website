@@ -365,6 +365,36 @@
         </div>
     </div>
 
+    <!-- Contact Organizer Modal -->
+    <div class="modal" id="contactOrganizerModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeContactModal()">&times;</span>
+            <div class="modal-body">
+                <h2>Contact Organizer</h2>
+                <form id="contactOrganizerForm">
+                    <div class="organizer-info" id="organizerInfo">
+                        <!-- Organizer details will be loaded here -->
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="messageSubject">Subject</label>
+                        <input type="text" id="messageSubject" name="messageSubject" placeholder="Enter subject line" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="messageContent">Your Message</label>
+                        <textarea id="messageContent" name="messageContent" rows="5" placeholder="Type your message to the organizer here..." required></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="closeContactModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
