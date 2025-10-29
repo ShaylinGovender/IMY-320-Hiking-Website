@@ -1,6 +1,11 @@
 (function () {
   var KEY = "tb_cart_v1";
   var TAX_RATE = 0.15;
+  var SHIPPING_RATES = {
+    standard: 50.00,
+    express: 100.00,
+    pickup: 0.00
+  };
 
   function money(n) {
     n = Math.max(0, Number(n) || 0);
@@ -24,12 +29,31 @@
     return cart.reduce(function (s, i) { return s + i.price * i.qty; }, 0);
   }
 
-  function tax(cart) {
-    return subtotal(cart) * TAX_RATE;
+  function getShippingCost(method) {
+    return SHIPPING_RATES[method] || SHIPPING_RATES.standard;
   }
 
-  function total(cart) {
-    return subtotal(cart) + tax(cart);
+  function getDiscount(code, subtotal) {
+    // Add discount codes here
+    var discounts = {
+      'SAVE10': subtotal * 0.10,
+      'SAVE20': subtotal * 0.20,
+      'WELCOME': 50.00
+    };
+    return discounts[code.toUpperCase()] || 0;
+  }
+
+  function tax(subtotalAmount, shippingCost) {
+    return (subtotalAmount + shippingCost) * TAX_RATE;
+  }
+
+  function total(cart, options) {
+    options = options || {};
+    var sub = subtotal(cart);
+    var shipping = getShippingCost(options.shippingMethod || 'standard');
+    var discount = getDiscount(options.discountCode || '', sub);
+    var taxAmount = (sub + shipping - discount) * TAX_RATE;
+    return sub + shipping + taxAmount - discount;
   }
 
   function renderBadge() {
@@ -49,7 +73,11 @@
       '<div class="kicker">' + money(item.price) + "</div>" +
       "</div>" +
       '<div style="display:flex;gap:8px;align-items:center">' +
-      '<div class="qty"><input type="number" min="1" value="' + item.qty + '" data-id="' + item.id + '"></div>' +
+      '<div class="qty">' +
+      '<button class="qty-btn qty-decrease" data-id="' + item.id + '" aria-label="Decrease quantity">-</button>' +
+      '<input type="number" min="1" value="' + item.qty + '" data-id="' + item.id + '">' +
+      '<button class="qty-btn qty-increase" data-id="' + item.id + '" aria-label="Increase quantity">+</button>' +
+      '</div>' +
       '<button class="btn danger remove-item" data-id="' + item.id + '">Remove</button>' +
       "</div>" +
       "</div>"
@@ -61,51 +89,100 @@
     if (!wrap) return;
 
     var cart = load();
+    var emptyMsg = document.getElementById("cart-empty");
     
     if (!cart.length) {
-      wrap.innerHTML = '<div class="kicker">Your cart is empty.</div>';
+      if (emptyMsg) emptyMsg.classList.remove('hidden');
+      wrap.innerHTML = '';
       var summaryLines = document.getElementById("summary-lines");
       if (summaryLines) summaryLines.innerHTML = '';
+      var checkoutBtn = document.getElementById("checkout-btn");
+      if (checkoutBtn) checkoutBtn.disabled = true;
       return;
     }
 
+    if (emptyMsg) emptyMsg.classList.add('hidden');
     wrap.innerHTML = cart.map(cartItemHTML).join("");
 
+    updateCartSummary();
+    attachEventListeners();
+  }
+
+  function updateCartSummary() {
+    var cart = load();
+    var discountCode = (document.getElementById('discount-code') && document.getElementById('discount-code').value) || '';
+    var shippingMethod = (document.getElementById('shipping-method') && document.getElementById('shipping-method').value) || 'standard';
+    
     var sub = subtotal(cart);
-    var tx = tax(cart);
-    var tot = total(cart);
+    var shipping = getShippingCost(shippingMethod);
+    var discount = getDiscount(discountCode, sub);
+    var taxAmount = (sub + shipping - discount) * TAX_RATE;
+    var tot = sub + shipping + taxAmount - discount;
 
     var summaryLines = document.getElementById("summary-lines");
     if (summaryLines) {
       summaryLines.innerHTML =
-        '<div class="line"><span>Subtotal</span><span>' + money(sub) + '</span></div>' +
-        '<div class="line"><span>Discount</span><span>-R0.00</span></div>' +
-        '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
-        '<div class="line"><span>Tax</span><span>' + money(tx) + '</span></div>' +
-        '<div class="line total"><span>Total</span><span>' + money(tot) + '</span></div>';
+        '<div class="line"><span>Subtotal</span><span class="amount">' + money(sub) + '</span></div>' +
+        '<div class="line"><span>Discount</span><span class="amount discount-amount">-' + money(discount) + '</span></div>' +
+        '<div class="line shipping"><span><i class="fas fa-shipping-fast"></i> Shipping (' + shippingMethod + ')</span><span class="amount shipping-amount">' + money(shipping) + '</span></div>' +
+        '<div class="line"><span>Tax (15%)</span><span class="amount tax-amount">' + money(taxAmount) + '</span></div>' +
+        '<div class="line total"><span><i class="fas fa-calculator"></i> <strong>Total</strong></span><span class="amount total-amount"><strong>' + money(tot) + '</strong></span></div>';
     }
 
-    attachEventListeners();
+    // Save current selections
+    Cart.saveDraft({
+      discountCode: discountCode,
+      shippingMethod: shippingMethod
+    });
   }
 
   function attachEventListeners() {
     var wrap = document.getElementById("cart-items");
     if (!wrap) return;
 
+    // Quantity input changes
     wrap.querySelectorAll(".item .qty input").forEach(function (inp) {
       inp.removeEventListener("input", handleQuantityChange);
       inp.addEventListener("input", handleQuantityChange);
     });
 
+    // Quantity decrease buttons
+    wrap.querySelectorAll(".qty-decrease").forEach(function (btn) {
+      btn.removeEventListener("click", handleDecreaseClick);
+      btn.addEventListener("click", handleDecreaseClick);
+    });
+
+    // Quantity increase buttons
+    wrap.querySelectorAll(".qty-increase").forEach(function (btn) {
+      btn.removeEventListener("click", handleIncreaseClick);
+      btn.addEventListener("click", handleIncreaseClick);
+    });
+
+    // Remove buttons
     wrap.querySelectorAll(".item .remove-item").forEach(function (btn) {
       btn.removeEventListener("click", handleRemoveClick);
       btn.addEventListener("click", handleRemoveClick);
     });
 
+    // Checkout button
     var checkoutBtn = document.getElementById("checkout-btn");
     if (checkoutBtn) {
+      checkoutBtn.disabled = false;
       checkoutBtn.removeEventListener("click", handleCheckoutClick);
       checkoutBtn.addEventListener("click", handleCheckoutClick);
+    }
+
+    // Discount and shipping change
+    var discountBtn = document.getElementById("apply-discount");
+    if (discountBtn) {
+      discountBtn.removeEventListener("click", updateCartSummary);
+      discountBtn.addEventListener("click", updateCartSummary);
+    }
+
+    var shippingSelect = document.getElementById("shipping-method");
+    if (shippingSelect) {
+      shippingSelect.removeEventListener("change", updateCartSummary);
+      shippingSelect.addEventListener("change", updateCartSummary);
     }
   }
 
@@ -117,6 +194,30 @@
       var v = Math.max(1, parseInt(e.target.value || "1", 10));
       cart[idx].qty = v;
       save(cart);
+      updateCartSummary();
+    }
+  }
+
+  function handleDecreaseClick(e) {
+    e.preventDefault();
+    var id = e.target.getAttribute("data-id");
+    var cart = load();
+    var idx = findIndex(cart, id);
+    if (idx >= 0) {
+      cart[idx].qty = Math.max(1, cart[idx].qty - 1);
+      save(cart);
+      renderCartPage();
+    }
+  }
+
+  function handleIncreaseClick(e) {
+    e.preventDefault();
+    var id = e.target.getAttribute("data-id");
+    var cart = load();
+    var idx = findIndex(cart, id);
+    if (idx >= 0) {
+      cart[idx].qty += 1;
+      save(cart);
       renderCartPage();
     }
   }
@@ -125,7 +226,7 @@
     e.preventDefault();
     var id = e.target.getAttribute("data-id");
     if (id) {
-      Cart.remove(parseInt(id, 10));
+      Cart.remove(id);
     }
   }
 
@@ -138,52 +239,75 @@
   function renderCheckoutSummary() {
     var box = document.getElementById("checkout-summary");
     if (!box) return;
+    
     var cart = load();
+    var draft = Cart.loadDraft();
+    var shippingMethod = draft.shippingMethod || 'standard';
+    var discountCode = draft.discountCode || '';
+    
+    var sub = subtotal(cart);
+    var shipping = getShippingCost(shippingMethod);
+    var discount = getDiscount(discountCode, sub);
+    var taxAmount = (sub + shipping - discount) * TAX_RATE;
+    var tot = sub + shipping + taxAmount - discount;
+    
     box.innerHTML =
-      '<div class="line"><span>Items</span><span>' + cart.reduce(function (s, i) { return s + i.qty; }, 0) + "</span></div>" +
-      '<div class="line"><span>Shipping</span><span>standard</span></div>' +
-      '<div class="line"><span>Subtotal</span><span>' + money(subtotal(cart)) + "</span></div>" +
-      '<div class="line"><span>Discount</span><span>-R0.00</span></div>' +
-      '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
-      '<div class="line"><span>Tax</span><span>' + money(tax(cart)) + "</span></div>" +
-      '<div class="line total"><span>Total</span><span>' + money(total(cart)) + "</span></div>";
+      (discountCode ? '<div class="badge" style="margin-bottom:6px">Code: ' + discountCode.toUpperCase() + "</div>" : "") +
+      '<div class="line"><span><strong>Items</strong></span><strong>' + cart.reduce(function (s, i) { return s + i.qty; }, 0) + "</strong></div>" +
+      '<div class="line shipping"><span><i class="fas fa-shipping-fast"></i> <strong>Shipping</strong> (' + shippingMethod + ')</span><strong class="shipping-amount">' + money(shipping) + "</strong></div>" +
+      '<hr>' +
+      '<div class="line"><span>Subtotal</span><span class="amount">' + money(sub) + "</span></div>" +
+      '<div class="line"><span>Discount</span><span class="amount discount-amount">-' + money(discount) + "</span></div>" +
+      '<div class="line"><span>Shipping</span><span class="amount shipping-amount">' + money(shipping) + "</span></div>" +
+      '<div class="line"><span>Tax (15%)</span><span class="amount tax-amount">' + money(taxAmount) + "</span></div>" +
+      '<div class="line total"><span><i class="fas fa-calculator"></i> <strong>Total</strong></span><span class="amount total-amount"><strong>' + money(tot) + "</strong></span></div>";
   }
 
   function renderPaymentSummary() {
-    var box = document.querySelector(".summary");
+    var box = document.getElementById("payment-summary");
     if (!box || document.getElementById("cart-items")) return;
+    
     var cart = load();
+    var draft = Cart.loadDraft();
+    var shippingMethod = draft.shippingMethod || 'standard';
+    var discountCode = draft.discountCode || '';
+    
+    var sub = subtotal(cart);
+    var shipping = getShippingCost(shippingMethod);
+    var discount = getDiscount(discountCode, sub);
+    var taxAmount = (sub + shipping - discount) * TAX_RATE;
+    var tot = sub + shipping + taxAmount - discount;
+    
     box.innerHTML =
-      '<div class="line"><span>Items</span><span>' + cart.reduce(function (s, i) { return s + i.qty; }, 0) + "</span></div>" +
-      '<div class="line"><span>Shipping</span><span>standard</span></div>' +
-      '<div class="line"><span>Subtotal</span><span>' + money(subtotal(cart)) + "</span></div>" +
-      '<div class="line"><span>Discount</span><span>-R0.00</span></div>' +
-      '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
-      '<div class="line"><span>Tax</span><span>' + money(tax(cart)) + "</span></div>" +
-      '<div class="line total"><span>Total</span><span>' + money(total(cart)) + "</span></div>";
+      '<div class="line"><span>Items</span><strong>' + cart.reduce(function (s, i) { return s + i.qty; }, 0) + "</strong></div>" +
+      '<div class="line shipping"><span><i class="fas fa-shipping-fast"></i> Shipping (' + shippingMethod + ')</span><strong class="shipping-amount">' + money(shipping) + "</strong></div>" +
+      '<hr>' +
+      '<div class="line"><span>Subtotal</span><span class="amount">' + money(sub) + "</span></div>" +
+      '<div class="line"><span>Discount</span><span class="amount discount-amount">-' + money(discount) + "</span></div>" +
+      '<div class="line"><span>Tax (15%)</span><span class="amount tax-amount">' + money(taxAmount) + "</span></div>" +
+      '<div class="line total"><span><i class="fas fa-calculator"></i> <strong>Total</strong></span><span class="amount total-amount"><strong>' + money(tot) + "</strong></span></div>";
   }
 
   function renderSuccess() {
     var order = null;
     try { order = JSON.parse(localStorage.getItem("tb_last_order") || "null"); } catch (e) {}
     if (!order) return;
+    
     var t = document.getElementById("success-total");
     var id = document.getElementById("order-id");
-    if (t) t.textContent = "Total " + money(order.total);
-    if (id) id.textContent = "Order ID " + order.id;
+    if (t && order.totals) t.textContent = "Total " + money(order.totals.total);
+    if (id && order.id) id.textContent = "Order ID " + order.id;
 
     var itemsBox = document.getElementById("success-items");
     var sumBox = document.getElementById("success-summary");
-    if (itemsBox) itemsBox.innerHTML = order.items.map(cartItemHTML).join("");
-    if (sumBox) {
-      var sub = order.items.reduce(function (s, i) { return s + i.price * i.qty; }, 0);
-      var tx = sub * TAX_RATE;
+    if (itemsBox && order.items) itemsBox.innerHTML = order.items.map(cartItemHTML).join("");
+    if (sumBox && order.totals) {
       sumBox.innerHTML =
-        '<div class="line"><span>Subtotal</span><span>' + money(sub) + '</span></div>' +
-        '<div class="line"><span>Discount</span><span>-R0.00</span></div>' +
-        '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
-        '<div class="line"><span>Tax</span><span>' + money(tx) + '</span></div>' +
-        '<div class="line total"><span>Total</span><span>' + money(sub + tx) + '</span></div>';
+        '<div class="line"><span>Subtotal</span><span class="amount">' + money(order.totals.subtotal) + '</span></div>' +
+        '<div class="line"><span>Discount</span><span class="amount discount-amount">-' + money(order.totals.discount) + '</span></div>' +
+        '<div class="line"><span>Shipping</span><span class="amount shipping-amount">' + money(order.totals.shipping) + '</span></div>' +
+        '<div class="line"><span>Tax</span><span class="amount tax-amount">' + money(order.totals.tax) + '</span></div>' +
+        '<div class="line total"><span><strong>Total</strong></span><span class="amount total-amount"><strong>' + money(order.totals.total) + '</strong></span></div>';
     }
   }
 
@@ -235,15 +359,17 @@
       options = options || {};
       var cart = load();
       var sub = subtotal(cart);
-      var discount = 0;
-      var shipping = 0;
-      var tx = tax(cart);
+      var shippingMethod = options.shippingMethod || 'standard';
+      var discountCode = options.discountCode || '';
+      var shipping = getShippingCost(shippingMethod);
+      var discount = getDiscount(discountCode, sub);
+      var taxAmount = (sub + shipping - discount) * TAX_RATE;
       return {
         subtotal: sub,
         discount: discount,
         shipping: shipping,
-        tax: tx,
-        total: sub + shipping + tx - discount
+        tax: taxAmount,
+        total: sub + shipping + taxAmount - discount
       };
     },
     loadDraft: function () {
