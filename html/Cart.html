@@ -86,7 +86,20 @@
     </div>
   </div>
 </div>
+
+<!-- Load Cart.js -->
 <script src="../js/Cart.js"></script>
-<script>document.getElementById('continue-shopping').onclick=()=>location.href='ProductCatalogue.html'</script>
+
+<!-- Continue shopping button -->
+<script>
+(function() {
+  var continueBtn = document.getElementById('continue-shopping');
+  if (continueBtn) {
+    continueBtn.onclick = function() {
+      location.href = 'ProductCatalogue.html';
+    };
+  }
+})();
+</script>
 </body>
 </html>

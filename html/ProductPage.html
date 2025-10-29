@@ -8,6 +8,8 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏔️</text></svg>">
     
     <link rel="stylesheet" href="../css/ProductPage.css">
+    <!-- Enhanced notification styles -->
+    <link rel="stylesheet" href="../css/notification-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body
@@ -166,9 +168,9 @@
                                 <h4>Perfect For:</h4>
                                 <ul>
                                     <li>Day hiking and trekking</li>
-                                    <li>Trail running</li>
-                                    <li>Mountain climbing</li>
-                                    <li>Cold weather activities</li>
+                                    <li>Trail navigation</li>
+                                    <li>Cold weather protection</li>
+                                    <li>Touchscreen device use</li>
                                 </ul>
                             </div>
                         </div>
@@ -177,39 +179,54 @@
                     <div id="features" class="tab-panel">
                         <div class="features-content">
                             <h3>Key Features</h3>
-                            <ul class="features-list">
-                                <li><strong>Enhanced Grip:</strong> Non-slip palm and finger design</li>
-                                <li><strong>Touchscreen Compatible:</strong> Use your devices without removing gloves</li>
-                                <li><strong>Breathable Material:</strong> Moisture-wicking fabric keeps hands dry</li>
-                                <li><strong>Reinforced Stitching:</strong> Extra durability for long-lasting use</li>
-                                <li><strong>Adjustable Wrist Strap:</strong> Secure fit for all hand sizes</li>
-                            </ul>
+                            <div id="productFeatures" class="features-grid">
+                                <div class="feature-item">
+                                    <i class="fas fa-hand-paper"></i>
+                                    <h4>Enhanced Grip</h4>
+                                    <p>Superior grip technology for better control</p>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <h4>Touchscreen Compatible</h4>
+                                    <p>Use devices without removing gloves</p>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-wind"></i>
+                                    <h4>Breathable</h4>
+                                    <p>Keeps hands comfortable in all conditions</p>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-feather-alt"></i>
+                                    <h4>Lightweight</h4>
+                                    <p>Won't weigh you down on the trail</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div id="specifications" class="tab-panel">
                         <div class="specifications-content">
-                            <h3>Technical Specifications</h3>
+                            <h3>Specifications</h3>
                             <table class="specs-table">
                                 <tr>
-                                    <td class="spec-label">Material:</td>
-                                    <td class="spec-value">Synthetic leather, mesh, fleece</td>
+                                    <td>Material</td>
+                                    <td>Synthetic blend with reinforced palm</td>
                                 </tr>
                                 <tr>
-                                    <td class="spec-label">Weight:</td>
-                                    <td class="spec-value">85g (per pair)</td>
+                                    <td>Sizes Available</td>
+                                    <td>S, M, L, XL</td>
                                 </tr>
                                 <tr>
-                                    <td class="spec-label">Available Sizes:</td>
-                                    <td class="spec-value">S, M, L, XL</td>
+                                    <td>Weight</td>
+                                    <td>85g per pair</td>
                                 </tr>
                                 <tr>
-                                    <td class="spec-label">Color Options:</td>
-                                    <td class="spec-value">Black, Grey, Blue</td>
+                                    <td>Care Instructions</td>
+                                    <td>Hand wash cold, air dry</td>
                                 </tr>
                                 <tr>
-                                    <td class="spec-label">Care Instructions:</td>
-                                    <td class="spec-value">Hand wash cold, air dry</td>
+                                    <td>Warranty</td>
+                                    <td>1 year manufacturer warranty</td>
                                 </tr>
                             </table>
                         </div>
@@ -217,26 +234,13 @@
 
                     <div id="reviews" class="tab-panel">
                         <div class="reviews-content">
-                            <div class="reviews-summary">
-                                <div class="rating-breakdown">
-                                    <div class="overall-rating">
-                                        <span class="big-rating">4.2</span>
-                                        <div class="stars">★★★★☆</div>
-                                        <span class="review-count">Based on 128 reviews</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="reviews-list">
-                              <div id="reviewsList" class="reviews-list"></div>
+                            <h3>Customer Reviews</h3>
+                            <div id="reviewsContainer" class="reviews-container">
+                                <!-- Reviews will be loaded dynamically -->
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="related-products-section">
-                <h2>Related Products</h2>
-                <div class="related-products-grid" id="relatedProductsGrid"></div>
             </div>
         </div>
     </main>
@@ -248,36 +252,22 @@
         </div>
     </div>
 
-    <!-- Notification System -->
-    <div id="notification" class="notification" style="display: none;">
+    <!-- Enhanced Notification System (matching ProductCatalogue style) -->
+    <div id="notification" class="notification">
         <div class="notification-content">
-            <div class="notification-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="notification-message">
-                <h4>Item Added to Cart!</h4>
-                <p id="notification-text">Product has been added to your cart successfully.</p>
-            </div>
-            <button class="notification-close" onclick="hideNotification()">
-                <i class="fas fa-times"></i>
-            </button>
+            <i class="fas fa-check-circle"></i>
+            <span class="notification-text" id="notification-text">Product has been added to your cart!</span>
         </div>
+        <button class="notification-close" aria-label="Close notification" onclick="hideNotification()">×</button>
     </div>
 
     <!-- Favorite Notification System -->
-    <div id="favoriteNotification" class="notification" style="display: none;">
+    <div id="favoriteNotification" class="notification">
         <div class="notification-content">
-            <div class="notification-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="notification-message">
-                <h4 id="favorite-title">Added to Favorites!</h4>
-                <p id="favorite-text">Product has been added to your favorites.</p>
-            </div>
-            <button class="notification-close" onclick="hideFavoriteNotification()">
-                <i class="fas fa-times"></i>
-            </button>
+            <i class="fas fa-heart"></i>
+            <span class="notification-text" id="favorite-text">Product has been added to your favorites!</span>
         </div>
+        <button class="notification-close" aria-label="Close notification" onclick="hideFavoriteNotification()">×</button>
     </div>
 
     <!-- Back to Top Button -->
@@ -321,11 +311,16 @@
         </div>
     </footer>
 
+    <!-- Load Cart.js FIRST so Cart API is available -->
+    <script src="../js/Cart.js"></script>
     <script src="../js/ProductPage.js"></script>
     <script src="../js/ProductPageReviews.js"></script>
-    <script src="../js/Cart.js"></script>
     <script src="../js/GlobalNav.js"></script>
+    
     <script>
+// ============================================
+// ADD TO CART FUNCTION - NO REDIRECT VERSION
+// ============================================
 function addToCart(){
   function t(sel){var el=document.querySelector(sel);return el?el.textContent.trim():''}
   function price(s){
@@ -335,6 +330,7 @@ function addToCart(){
     else x=x.replace(/,/g,'');
     var n=parseFloat(x); return isNaN(n)?0:n;
   }
+  
   var title=t('#productName') || document.body.dataset.productTitle || 'Item';
   var brand=t('#productBrand') || document.body.dataset.productBrand || '';
   var p=price(t('#productPrice') || document.body.dataset.productPrice || '0');
@@ -343,51 +339,115 @@ function addToCart(){
   var id=(title+'-'+brand).toLowerCase().replace(/[^a-z0-9]+/g,'-');
   var qEl=document.getElementById('quantity');
   var qty=Math.max(1,parseInt(qEl?qEl.value:1,10)||1);
-  Cart.add({id:id,title:title,price:p,image:image,brand:brand,descriptor:t('#productDescription')||'',link:location.href,availability:'in_stock',availabilityDate:new Date().toISOString()},qty);
   
-  // Show notification and redirect to cart
-  showNotification(title);
+  // Add to cart using Cart API
+  if (typeof Cart !== 'undefined' && Cart.add) {
+    Cart.add({
+      id:id,
+      title:title,
+      price:p,
+      image:image,
+      brand:brand,
+      descriptor:t('#productDescription')||'',
+      link:location.href,
+      availability:'in_stock',
+      availabilityDate:new Date().toISOString()
+    }, qty);
+    
+    // Show notification (NO REDIRECT)
+    showNotification(title, qty);
+    console.log('Added to cart:', title, 'Quantity:', qty);
+  } else {
+    console.error('Cart API not available');
+    alert('Error: Unable to add item to cart. Please refresh the page.');
+  }
 }
 
-function showNotification(productName) {
+// ============================================
+// SHOW NOTIFICATION - NO REDIRECT VERSION
+// ============================================
+function showNotification(productName, quantity) {
   const notification = document.getElementById('notification');
   const notificationText = document.getElementById('notification-text');
   
   if (notification && notificationText) {
-    // Update notification text with product name
-    notificationText.textContent = `"${productName}" has been added to your cart successfully.`;
+    // Update notification text
+    var qtyText = quantity && quantity > 1 ? ' (Qty: ' + quantity + ')' : '';
+    notificationText.textContent = '"' + productName + '"' + qtyText + ' added to your cart!';
     
     // Show notification
     notification.style.display = 'block';
     notification.classList.remove('hiding');
     
-    // Auto-hide after 2 seconds and redirect to cart
-    setTimeout(() => {
+    // Auto-hide after 3 seconds (NO REDIRECT - stay on page)
+    setTimeout(function() {
       hideNotification();
-      // Redirect to cart page after notification is hidden
-      setTimeout(() => {
-        window.location.href = 'Cart.html';
-      }, 300); // Wait for animation to complete
-    }, 2000);
+    }, 3000);
   }
 }
 
+// ============================================
+// HIDE NOTIFICATION
+// ============================================
 function hideNotification() {
   const notification = document.getElementById('notification');
   if (notification) {
     notification.classList.add('hiding');
-    // Hide after animation completes
-    setTimeout(() => {
+    
+    setTimeout(function() {
       notification.style.display = 'none';
       notification.classList.remove('hiding');
     }, 300);
   }
 }
 
-// Back to Top Button functionality
+// ============================================
+// FAVORITE NOTIFICATION FUNCTIONS
+// ============================================
+function showFavoriteNotification(message, isAdded) {
+  const notification = document.getElementById('favoriteNotification');
+  const notificationText = document.getElementById('favorite-text');
+  const icon = notification.querySelector('.fa-heart');
+  
+  if (notification && notificationText) {
+    notificationText.textContent = message;
+    
+    // Change icon based on action
+    if (isAdded) {
+      icon.classList.remove('far');
+      icon.classList.add('fas');
+    } else {
+      icon.classList.remove('fas');
+      icon.classList.add('far');
+    }
+    
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    setTimeout(function() {
+      hideFavoriteNotification();
+    }, 3000);
+  }
+}
+
+function hideFavoriteNotification() {
+  const notification = document.getElementById('favoriteNotification');
+  if (notification) {
+    notification.classList.add('hiding');
+    
+    setTimeout(function() {
+      notification.style.display = 'none';
+      notification.classList.remove('hiding');
+    }, 300);
+  }
+}
+
+// ============================================
+// BACK TO TOP BUTTON
+// ============================================
 const backToTopButton = document.getElementById('backToTop');
 
-window.addEventListener('scroll', () => {
+window.addEventListener('scroll', function() {
     if (window.pageYOffset > 300) {
         backToTopButton.classList.add('visible');
     } else {
@@ -395,11 +455,26 @@ window.addEventListener('scroll', () => {
     }
 });
 
-backToTopButton.addEventListener('click', () => {
+backToTopButton.addEventListener('click', function() {
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
     });
+});
+
+// ============================================
+// CLOSE NOTIFICATIONS ON CLICK OUTSIDE
+// ============================================
+window.addEventListener('click', function(e) {
+  const notification = document.getElementById('notification');
+  const favoriteNotification = document.getElementById('favoriteNotification');
+  
+  if (e.target === notification) {
+    hideNotification();
+  }
+  if (e.target === favoriteNotification) {
+    hideFavoriteNotification();
+  }
 });
 </script>
 

@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="../css/LandingPage.css">
     <!-- Page-specific styles -->
     <link rel="stylesheet" href="../css/ProductCatalogue.css">
+    <!-- Enhanced notification styles -->
+    <link rel="stylesheet" href="../css/notification-styles.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -39,7 +41,7 @@
                     <a href="../html/AdminPanel.html" class="account-btn">
                         <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
-                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
                         </svg>
                         Admin
                     </a>
@@ -168,89 +170,37 @@
                         <h4>Try these popular categories:</h4>
                         <div class="suggestion-tags">
                             <button class="suggestion-tag" onclick="applySuggestion('footwear')">Footwear</button>
+                            <button class="suggestion-tag" onclick="applySuggestion('gear')">Gear & Equipment</button>
                             <button class="suggestion-tag" onclick="applySuggestion('clothing')">Clothing</button>
-                            <button class="suggestion-tag" onclick="applySuggestion('gear')">Gear</button>
-                            <button class="suggestion-tag" onclick="applySuggestion('accessories')">Accessories</button>
+                            <button class="suggestion-tag" onclick="applySuggestion('safety')">Safety & Navigation</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Back to Top Button -->
+        <button id="backToTop" class="back-to-top" aria-label="Back to Top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
     </main>
 
-    <!-- Product Detail Modal -->
-    <div id="productModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div class="modal-body" id="modalBody">
-                <!-- Product details will be inserted here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification System -->
-    <div id="notification" class="notification" style="display: none;">
+    <!-- Notification Toast -->
+    <div id="notification" class="notification">
         <div class="notification-content">
-            <div class="notification-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="notification-message">
-                <h4>Item Added to Cart!</h4>
-                <p id="notification-text">Product has been added to your cart successfully.</p>
-            </div>
-            <button class="notification-close" onclick="hideNotification()">
-                <i class="fas fa-times"></i>
-            </button>
+            <i class="fas fa-check-circle"></i>
+            <span id="notification-text">Added to cart</span>
         </div>
+        <button class="notification-close" aria-label="Close notification">×</button>
     </div>
 
-    <!-- Back to Top Button -->
-    <button id="backToTop" class="back-to-top" aria-label="Back to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- Footer (EXACT copy of landingPage footer so styling matches) -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="../html/ProductCatalogue.html">Shop Gear</a></li>
-                        <li><a href="../html/TrailsPage.html">Find Trails</a></li>
-                        <li><a href="../html/GroupHikes.html">Join Community</a></li>
-                        <li><a href="../html/AboutUsPage.html">About Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Customer Service</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping Info</a></li>
-                        <li><a href="#">Returns</a></li>
-                        <li><a href="#">Size Guide</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Connect</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Newsletter</a></li>
-                        <li><a href="#">Social Media</a></li>
-                        <li><a href="#">Events</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
-                </div>
-            </div>
-            <p>&copy; 2025 TrailBlazer. All rights reserved. Adventure awaits! 🏔️</p>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="../js/ProductCatalogue.js"></script>
+    <!-- CRITICAL: Load Cart.js BEFORE ProductCatalogue.js so Cart API is available -->
     <script src="../js/Cart.js"></script>
-    <script src="../js/CatalogueCartHook.js"></script>
-    <script src="../js/GlobalNav.js"></script>
+    <script src="../js/ProductCatalogue.js"></script>
+    <!-- Optional: CatalogueCartHook for pages without ProductCatalogue.js -->
+    <!-- <script src="../js/CatalogueCartHook.js"></script> -->
 
+    <!-- Page-specific inline logic (joined hikes + back to top etc.) -->
     <script>
         // Keep joined hikes count in navbar current
         (function updateCatalogueJoined(){
