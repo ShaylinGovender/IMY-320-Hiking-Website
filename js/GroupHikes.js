@@ -13,6 +13,7 @@ class GroupHikesManager {
         this.displayYourHikes();
         this.displayYourGroups();
         this.setupEventListeners();
+        this.initCustomDropdowns();
     }
 
     loadGroupHikes() {
@@ -613,6 +614,97 @@ class GroupHikesManager {
 
         container.innerHTML = groupCards;
     }
+
+    initCustomDropdowns() {
+        // Convert all select elements to custom dropdowns
+        const selects = document.querySelectorAll('select');
+        selects.forEach(select => this.createCustomDropdown(select));
+    }
+
+    createCustomDropdown(selectElement) {
+        // Skip if already converted
+        if (selectElement.style.display === 'none') return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'custom-dropdown';
+        
+        const selected = document.createElement('div');
+        selected.className = 'custom-dropdown-selected';
+        
+        const selectedText = document.createElement('span');
+        selectedText.textContent = selectElement.options[selectElement.selectedIndex].text;
+        
+        const arrow = document.createElement('div');
+        arrow.className = 'custom-dropdown-arrow';
+        arrow.innerHTML = '▼';
+        
+        selected.appendChild(selectedText);
+        selected.appendChild(arrow);
+        
+        const options = document.createElement('div');
+        options.className = 'custom-dropdown-options';
+        
+        // Create options
+        Array.from(selectElement.options).forEach((option, index) => {
+            const optionElement = document.createElement('div');
+            optionElement.className = 'custom-dropdown-option';
+            optionElement.textContent = option.text;
+            optionElement.dataset.value = option.value;
+            
+            if (option.selected) {
+                optionElement.classList.add('selected');
+            }
+            
+            optionElement.addEventListener('click', () => {
+                // Update selected option
+                options.querySelectorAll('.custom-dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                optionElement.classList.add('selected');
+                
+                // Update original select
+                selectElement.selectedIndex = index;
+                selectedText.textContent = option.text;
+                
+                // Close dropdown
+                selected.classList.remove('open');
+                options.classList.remove('show');
+                
+                // Trigger change event
+                selectElement.dispatchEvent(new Event('change'));
+            });
+            
+            options.appendChild(optionElement);
+        });
+        
+        // Toggle dropdown on click
+        selected.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = selected.classList.contains('open');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.custom-dropdown-selected').forEach(dropdown => {
+                dropdown.classList.remove('open');
+            });
+            document.querySelectorAll('.custom-dropdown-options').forEach(dropdown => {
+                dropdown.classList.remove('show');
+            });
+            
+            if (!isOpen) {
+                selected.classList.add('open');
+                options.classList.add('show');
+            }
+        });
+        
+        wrapper.appendChild(selected);
+        wrapper.appendChild(options);
+        
+        // Replace original select
+        selectElement.parentNode.insertBefore(wrapper, selectElement);
+        selectElement.style.display = 'none';
+        
+        return wrapper;
+    }
 }
 
 // Global functions
@@ -963,6 +1055,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (event.target === detailsModal) {
             closeHikeDetailsModal();
+        }
+        
+        // Close custom dropdowns when clicking outside
+        if (!event.target.closest('.custom-dropdown')) {
+            document.querySelectorAll('.custom-dropdown-selected').forEach(dropdown => {
+                dropdown.classList.remove('open');
+            });
+            document.querySelectorAll('.custom-dropdown-options').forEach(dropdown => {
+                dropdown.classList.remove('show');
+            });
         }
     }
 });
