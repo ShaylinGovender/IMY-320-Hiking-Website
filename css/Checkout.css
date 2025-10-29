@@ -76,8 +76,28 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
 .summary .row>div:first-child{flex:1}
 #apply-discount{font-size:.9rem;padding:.6rem .9rem;margin-left:8px}
 
-.line{display:flex;justify-content:space-between;align-items:center;margin:.5rem 0}
+.line{display:flex;justify-content:space-between;align-items:center;margin:.5rem 0;padding:.4rem 0}
 .line span strong{font-weight:700 !important}
+
+.qty{display:flex;gap:4px;align-items:center}
+.qty-btn{
+  width:32px;height:32px;border:2px solid var(--sunset-orange);
+  background:var(--card);color:var(--sunset-orange);
+  border-radius:6px;font-size:1.1rem;font-weight:700;
+  cursor:pointer;transition:all .2s ease;
+  display:flex;align-items:center;justify-content:center;
+  padding:0;
+}
+.qty-btn:hover{background:var(--sunset-orange);color:#fff;transform:scale(1.1)}
+.qty-btn:active{transform:scale(0.95)}
+.qty input{width:60px;text-align:center;border:2px solid var(--line);padding:.4rem}
+
+.amount{font-weight:600;font-size:1rem}
+.discount-amount{color:#27ae60;font-weight:700}
+.shipping-amount{color:var(--sunset-orange);font-weight:700}
+.tax-amount{color:#3498db;font-weight:600}
+.total-amount{color:var(--deep-forest);font-weight:700;font-size:1.3rem}
+
 .line.total{
   font-weight:700;font-size:1.2rem;color:var(--deep-forest);
   background:linear-gradient(135deg,var(--forest-green),#1f8f4e);
@@ -85,6 +105,7 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
   box-shadow:0 3px 15px rgba(39,174,96,.3);
   margin:1rem 0
 }
+.line.total .amount{color:#fff}
 .line.shipping{
   background:linear-gradient(135deg,#f8f9fa,#e9ecef);
   padding:.6rem .8rem;border-radius:8px;
