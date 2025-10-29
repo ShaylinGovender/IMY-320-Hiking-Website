@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrailBlazer - Product Catalogue</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏔️</text></svg>">
+    
     <link rel="stylesheet" href="../css/ProductCatalogue.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -12,7 +15,7 @@
     <nav id="navbar">
   <div class="nav-container">
     <div class="nav-left">
-      <div class="logo">🏔️ TrailBlazer</div>
+      <a href="landingPage.html" class="logo" style="text-decoration: none; color: white;">🏔️ TrailBlazer</a>
       <ul class="nav-links">
         <li><a href="landingPage.html">Home</a></li>
         <li><a href="ProductCatalogue.html" class="active">Gear</a></li>
@@ -192,6 +195,11 @@
         </div>
     </div>
 
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
@@ -240,6 +248,24 @@
                     if (el) el.textContent = joined.length;
                 } catch (e) { console.error(e); }
             })();
+            
+            // Back to Top Button functionality
+            const backToTopButton = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
         </script>
 </body>
 </html>

@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrailBlazer - Product Details</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏔️</text></svg>">
+    
     <link rel="stylesheet" href="../css/ProductPage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -19,7 +22,7 @@
     <nav id="navbar">
   <div class="nav-container">
     <div class="nav-left">
-      <div class="logo">🏔️ TrailBlazer</div>
+      <a href="landingPage.html" class="logo" style="text-decoration: none; color: white;">🏔️ TrailBlazer</a>
       <ul class="nav-links">
         <li><a href="landingPage.html">Home</a></li>
         <li><a href="ProductCatalogue.html" class="active">Gear</a></li>
@@ -162,10 +165,10 @@
                             <div class="description-details">
                                 <h4>Perfect For:</h4>
                                 <ul>
-                                    <li>Day hiking and trail walking</li>
-                                    <li>Rock climbing and mountaineering</li>
-                                    <li>Cold weather outdoor activities</li>
-                                    <li>Photography and device operation</li>
+                                    <li>Day hiking and trekking</li>
+                                    <li>Trail running</li>
+                                    <li>Mountain climbing</li>
+                                    <li>Cold weather activities</li>
                                 </ul>
                             </div>
                         </div>
@@ -174,54 +177,39 @@
                     <div id="features" class="tab-panel">
                         <div class="features-content">
                             <h3>Key Features</h3>
-                            <div id="productFeatures" class="features-list">
-                                <div class="feature-item">
-                                    <span class="feature-icon">📱</span>
-                                    <span class="feature-text">Touchscreen Compatible</span>
-                                </div>
-                                <div class="feature-item">
-                                    <span class="feature-icon">💨</span>
-                                    <span class="feature-text">Breathable</span>
-                                </div>
-                                <div class="feature-item">
-                                    <span class="feature-icon">✋</span>
-                                    <span class="feature-text">Enhanced Grip</span>
-                                </div>
-                                <div class="feature-item">
-                                    <span class="feature-icon">🪶</span>
-                                    <span class="feature-text">Lightweight</span>
-                                </div>
-                            </div>
+                            <ul class="features-list">
+                                <li><strong>Enhanced Grip:</strong> Non-slip palm and finger design</li>
+                                <li><strong>Touchscreen Compatible:</strong> Use your devices without removing gloves</li>
+                                <li><strong>Breathable Material:</strong> Moisture-wicking fabric keeps hands dry</li>
+                                <li><strong>Reinforced Stitching:</strong> Extra durability for long-lasting use</li>
+                                <li><strong>Adjustable Wrist Strap:</strong> Secure fit for all hand sizes</li>
+                            </ul>
                         </div>
                     </div>
 
                     <div id="specifications" class="tab-panel">
-                        <div class="specs-content">
+                        <div class="specifications-content">
                             <h3>Technical Specifications</h3>
                             <table class="specs-table">
                                 <tr>
-                                    <td>Material</td>
-                                    <td>Synthetic leather and mesh</td>
+                                    <td class="spec-label">Material:</td>
+                                    <td class="spec-value">Synthetic leather, mesh, fleece</td>
                                 </tr>
                                 <tr>
-                                    <td>Weight</td>
-                                    <td>45g per pair</td>
+                                    <td class="spec-label">Weight:</td>
+                                    <td class="spec-value">85g (per pair)</td>
                                 </tr>
                                 <tr>
-                                    <td>Sizes Available</td>
-                                    <td>S, M, L, XL</td>
+                                    <td class="spec-label">Available Sizes:</td>
+                                    <td class="spec-value">S, M, L, XL</td>
                                 </tr>
                                 <tr>
-                                    <td>Touchscreen</td>
-                                    <td>Compatible (thumb and index finger)</td>
+                                    <td class="spec-label">Color Options:</td>
+                                    <td class="spec-value">Black, Grey, Blue</td>
                                 </tr>
                                 <tr>
-                                    <td>Water Resistance</td>
-                                    <td>DWR coating</td>
-                                </tr>
-                                <tr>
-                                    <td>Care Instructions</td>
-                                    <td>Hand wash, air dry</td>
+                                    <td class="spec-label">Care Instructions:</td>
+                                    <td class="spec-value">Hand wash cold, air dry</td>
                                 </tr>
                             </table>
                         </div>
@@ -229,7 +217,6 @@
 
                     <div id="reviews" class="tab-panel">
                         <div class="reviews-content">
-                            <h3>Customer Reviews</h3>
                             <div class="reviews-summary">
                                 <div class="rating-breakdown">
                                     <div class="overall-rating">
@@ -293,6 +280,11 @@
         </div>
     </div>
 
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
@@ -332,6 +324,7 @@
     <script src="../js/ProductPage.js"></script>
     <script src="../js/ProductPageReviews.js"></script>
     <script src="../js/Cart.js"></script>
+    <script src="../js/GlobalNav.js"></script>
     <script>
 function addToCart(){
   function t(sel){var el=document.querySelector(sel);return el?el.textContent.trim():''}
@@ -390,6 +383,24 @@ function hideNotification() {
     }, 300);
   }
 }
+
+// Back to Top Button functionality
+const backToTopButton = document.getElementById('backToTop');
+
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('visible');
+    } else {
+        backToTopButton.classList.remove('visible');
+    }
+});
+
+backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
 </script>
 
 </body>

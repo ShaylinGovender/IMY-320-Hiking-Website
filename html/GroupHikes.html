@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrailBlazer - Group Hikes & Community</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏔️</text></svg>">
+    
     <link rel="stylesheet" href="../css/GroupHikes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+<body>
     <!-- Navigation -->
     <nav id="navbar">
   <div class="nav-container">
     <div class="nav-left">
-      <div class="logo">🏔️ TrailBlazer</div>
+      <a href="landingPage.html" class="logo" style="text-decoration: none; color: white;">🏔️ TrailBlazer</a>
       <ul class="nav-links">
         <li><a href="landingPage.html">Home</a></li>
         <li><a href="ProductCatalogue.html">Gear</a></li>
@@ -168,45 +172,53 @@
 
                             <div class="form-group">
                                 <label for="hikeDescription">Description*</label>
-                                <textarea id="hikeDescription" name="hikeDescription" required placeholder="Describe the trail, what to expect, and any special requirements..." rows="4"></textarea>
+                                <textarea id="hikeDescription" name="hikeDescription" required placeholder="Describe the trail, what to expect, and any special requirements..."></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="requiredGear">Required Gear</label>
-                                <textarea id="requiredGear" name="requiredGear" placeholder="List essential gear participants should bring..." rows="3"></textarea>
+                                <textarea id="requiredGear" name="requiredGear" placeholder="List essential gear participants should bring..."></textarea>
                             </div>
 
                             <div class="form-actions">
-                                <button type="submit" class="btn-organize-primary">Create Hike Event</button>
-                                <button type="button" class="btn-organize-secondary" onclick="resetForm()">Clear Form</button>
+                                <button type="submit" class="btn-primary">Create Hike</button>
                             </div>
                         </form>
                     </div>
+                </div>
             </section>
 
-            <!-- Upcoming Group Hikes -->
-            <section class="upcoming-hikes" id="upcomingHikes">
+            <!-- Upcoming Hikes -->
+            <section class="upcoming-hikes" id="upcomingSection">
                 <div class="section-header">
                     <h2>Upcoming Group Hikes</h2>
-                    <div class="filter-controls">
+                    <p>Join fellow adventurers on their next trail</p>
+                </div>
+                
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label>Difficulty</label>
                         <select id="difficultyFilter" onchange="filterHikes()">
-                            <option value="">All Difficulty Levels</option>
+                            <option value="all">All Levels</option>
                             <option value="easy">Easy</option>
                             <option value="moderate">Moderate</option>
                             <option value="challenging">Challenging</option>
                         </select>
-                        <select id="locationFilter" onchange="filterHikes()">
-                            <option value="">All Locations</option>
-                            <option value="western-cape">Western Cape</option>
-                            <option value="gauteng">Gauteng</option>
-                            <option value="kwazulu-natal">KwaZulu-Natal</option>
-                            <option value="mpumalanga">Mpumalanga</option>
+                    </div>
+                    <div class="filter-group">
+                        <label>Date</label>
+                        <select id="dateFilter" onchange="filterHikes()">
+                            <option value="all">All Dates</option>
+                            <option value="this-week">This Week</option>
+                            <option value="this-month">This Month</option>
+                            <option value="next-month">Next Month</option>
                         </select>
                     </div>
+                    <button class="btn-clear-filters" onclick="clearFilters()">Clear Filters</button>
                 </div>
-                
+
                 <div class="hikes-grid" id="hikesGrid">
-                    <!-- Group hikes will be loaded here -->
+                    <!-- Hikes will be dynamically loaded here -->
                 </div>
             </section>
 
@@ -215,44 +227,33 @@
                 <h2>Community Stories</h2>
                 <div class="stories-grid">
                     <div class="story-card">
-                        <div class="story-header">
-                            <div class="story-avatar">SM</div>
-                            <div class="story-info">
-                                <h4>Sarah M.</h4>
-                                <span>Cape Town Mountaineers</span>
-                            </div>
+                        <p>"Met amazing friends through TrailBlazer hikes. Now we explore new trails every month!"</p>
+                        <div class="story-author">
+                            <strong>Sarah M.</strong>
+                            <span>Member since 2024</span>
                         </div>
-                        <p>"Joining TrailBlazer was the best decision I made this year! I've met amazing people and discovered trails I never knew existed. The community is so supportive and welcoming."</p>
                         <div class="story-meta">
                             <span>★★★★★</span>
-                            <span>2 days ago</span>
+                            <span>3 months ago</span>
                         </div>
                     </div>
-
                     <div class="story-card">
-                        <div class="story-header">
-                            <div class="story-avatar">MT</div>
-                            <div class="story-info">
-                                <h4>Mike T.</h4>
-                                <span>Weekend Warriors</span>
-                            </div>
+                        <p>"Started as a beginner, now I lead hikes thanks to the supportive community here."</p>
+                        <div class="story-author">
+                            <strong>James K.</strong>
+                            <span>Member since 2023</span>
                         </div>
-                        <p>"As a beginner, I was nervous about group hiking. But the Weekend Warriors made me feel so comfortable. Now I'm leading my own hikes!"</p>
                         <div class="story-meta">
                             <span>★★★★★</span>
-                            <span>1 week ago</span>
+                            <span>1 month ago</span>
                         </div>
                     </div>
-
                     <div class="story-card">
-                        <div class="story-header">
-                            <div class="story-avatar">LK</div>
-                            <div class="story-info">
-                                <h4>Lisa K.</h4>
-                                <span>Coastal Explorers</span>
-                            </div>
+                        <p>"The best way to discover hidden trails and meet like-minded adventurers!"</p>
+                        <div class="story-author">
+                            <strong>Thembi N.</strong>
+                            <span>Member since 2024</span>
                         </div>
-                        <p>"The safety protocols and group support gave me confidence to tackle more challenging trails. I've grown so much as a hiker!"</p>
                         <div class="story-meta">
                             <span>★★★★★</span>
                             <span>2 weeks ago</span>
@@ -365,6 +366,11 @@
         </div>
     </div>
 
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
@@ -403,5 +409,25 @@
 
     <script src="../js/GroupHikes.js"></script>
     <script src="../js/Cart.js"></script>
+    <script src="../js/GlobalNav.js"></script>
+    <script>
+        // Back to Top Button functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
 </html>

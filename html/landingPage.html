@@ -15,7 +15,7 @@
     <nav id="navbar">
   <div class="nav-container">
     <div class="nav-left">
-      <a href="../html/landingPage.html" class="logo" style="text-decoration: none;">🏔️ TrailBlazer</a>
+      <a href="../html/landingPage.html" class="logo" style="text-decoration: none; color: white;">🏔️ TrailBlazer</a>
       <ul class="nav-links">
         <li><a href="#home" class="active">Home</a></li>
         <li><a href="../html/ProductCatalogue.html">Gear</a></li>
@@ -195,6 +195,11 @@
         </div>
     </section>
 
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- Footer -->
     <footer id="contact">
         <div class="container">
@@ -202,9 +207,9 @@
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="#gear">Shop Gear</a></li>
-                        <li><a href="#trails">Find Trails</a></li>
-                        <li><a href="#community">Join Community</a></li>
+                        <li><a href="../html/ProductCatalogue.html">Shop Gear</a></li>
+                        <li><a href="../html/TrailsPage.html">Find Trails</a></li>
+                        <li><a href="../html/GroupHikes.html">Join Community</a></li>
                         <li><a href="../html/AboutUsPage.html">About Us</a></li>
                     </ul>
                 </div>
@@ -243,6 +248,24 @@
                     if (el) el.textContent = joined.length;
                 } catch (e) { console.error(e); }
             })();
+            
+            // Back to Top Button functionality
+            const backToTopButton = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
         </script>
 </body>
 </html>
