@@ -22,7 +22,9 @@
   }
 
   function findIndex(cart, id) {
-    return cart.findIndex(function (i) { return i.id === id; });
+    // Convert both to strings for comparison
+    var stringId = String(id);
+    return cart.findIndex(function (i) { return String(i.id) === stringId; });
   }
 
   function subtotal(cart) {
@@ -34,7 +36,6 @@
   }
 
   function getDiscount(code, subtotal) {
-    // Add discount codes here
     var discounts = {
       'SAVE10': subtotal * 0.10,
       'SAVE20': subtotal * 0.20,
@@ -75,7 +76,7 @@
       '<div style="display:flex;gap:8px;align-items:center">' +
       '<div class="qty">' +
       '<button class="qty-btn qty-decrease" data-id="' + item.id + '" aria-label="Decrease quantity">-</button>' +
-      '<input type="number" min="1" value="' + item.qty + '" data-id="' + item.id + '">' +
+      '<input type="number" min="1" value="' + item.qty + '" data-id="' + item.id + '" class="qty-input">' +
       '<button class="qty-btn qty-increase" data-id="' + item.id + '" aria-label="Increase quantity">+</button>' +
       '</div>' +
       '<button class="btn danger remove-item" data-id="' + item.id + '">Remove</button>' +
@@ -129,7 +130,6 @@
         '<div class="line total"><span><i class="fas fa-calculator"></i> <strong>Total</strong></span><span class="amount total-amount"><strong>' + money(tot) + '</strong></span></div>';
     }
 
-    // Save current selections
     Cart.saveDraft({
       discountCode: discountCode,
       shippingMethod: shippingMethod
@@ -140,67 +140,84 @@
     var wrap = document.getElementById("cart-items");
     if (!wrap) return;
 
+    // Remove any existing click listener by cloning
+    var newWrap = wrap.cloneNode(true);
+    wrap.parentNode.replaceChild(newWrap, wrap);
+    wrap = newWrap;
+
+    // Quantity buttons and remove button - using event delegation
+    wrap.addEventListener("click", function(e) {
+      var target = e.target;
+      
+      // Check if clicked on decrease button or inside one
+      if (target.classList.contains('qty-decrease') || target.closest('.qty-decrease')) {
+        var btn = target.classList.contains('qty-decrease') ? target : target.closest('.qty-decrease');
+        handleDecreaseClick(btn);
+        return;
+      }
+      
+      // Check if clicked on increase button or inside one
+      if (target.classList.contains('qty-increase') || target.closest('.qty-increase')) {
+        var btn = target.classList.contains('qty-increase') ? target : target.closest('.qty-increase');
+        handleIncreaseClick(btn);
+        return;
+      }
+      
+      // Check if clicked on remove button or inside one
+      if (target.classList.contains('remove-item') || target.closest('.remove-item')) {
+        var btn = target.classList.contains('remove-item') ? target : target.closest('.remove-item');
+        handleRemoveClick(btn);
+        return;
+      }
+    });
+
     // Quantity input changes
-    wrap.querySelectorAll(".item .qty input").forEach(function (inp) {
-      inp.removeEventListener("input", handleQuantityChange);
-      inp.addEventListener("input", handleQuantityChange);
-    });
-
-    // Quantity decrease buttons
-    wrap.querySelectorAll(".qty-decrease").forEach(function (btn) {
-      btn.removeEventListener("click", handleDecreaseClick);
-      btn.addEventListener("click", handleDecreaseClick);
-    });
-
-    // Quantity increase buttons
-    wrap.querySelectorAll(".qty-increase").forEach(function (btn) {
-      btn.removeEventListener("click", handleIncreaseClick);
-      btn.addEventListener("click", handleIncreaseClick);
-    });
-
-    // Remove buttons
-    wrap.querySelectorAll(".item .remove-item").forEach(function (btn) {
-      btn.removeEventListener("click", handleRemoveClick);
-      btn.addEventListener("click", handleRemoveClick);
+    wrap.addEventListener("input", function(e) {
+      if (e.target && e.target.classList.contains('qty-input')) {
+        handleQuantityChange(e);
+      }
     });
 
     // Checkout button
     var checkoutBtn = document.getElementById("checkout-btn");
     if (checkoutBtn) {
       checkoutBtn.disabled = false;
-      checkoutBtn.removeEventListener("click", handleCheckoutClick);
-      checkoutBtn.addEventListener("click", handleCheckoutClick);
+      checkoutBtn.onclick = handleCheckoutClick;
     }
 
     // Discount and shipping change
     var discountBtn = document.getElementById("apply-discount");
     if (discountBtn) {
-      discountBtn.removeEventListener("click", updateCartSummary);
-      discountBtn.addEventListener("click", updateCartSummary);
+      discountBtn.onclick = function() {
+        updateCartSummary();
+      };
     }
 
     var shippingSelect = document.getElementById("shipping-method");
     if (shippingSelect) {
-      shippingSelect.removeEventListener("change", updateCartSummary);
-      shippingSelect.addEventListener("change", updateCartSummary);
+      shippingSelect.onchange = function() {
+        updateCartSummary();
+      };
     }
   }
 
   function handleQuantityChange(e) {
     var id = e.target.getAttribute("data-id");
+    if (!id) return;
     var cart = load();
     var idx = findIndex(cart, id);
     if (idx >= 0) {
       var v = Math.max(1, parseInt(e.target.value || "1", 10));
       cart[idx].qty = v;
+      e.target.value = v;
       save(cart);
       updateCartSummary();
     }
   }
 
-  function handleDecreaseClick(e) {
-    e.preventDefault();
-    var id = e.target.getAttribute("data-id");
+  function handleDecreaseClick(btn) {
+    var id = btn.getAttribute("data-id");
+    if (!id) return;
     var cart = load();
     var idx = findIndex(cart, id);
     if (idx >= 0) {
@@ -210,9 +227,9 @@
     }
   }
 
-  function handleIncreaseClick(e) {
-    e.preventDefault();
-    var id = e.target.getAttribute("data-id");
+  function handleIncreaseClick(btn) {
+    var id = btn.getAttribute("data-id");
+    if (!id) return;
     var cart = load();
     var idx = findIndex(cart, id);
     if (idx >= 0) {
@@ -222,9 +239,8 @@
     }
   }
 
-  function handleRemoveClick(e) {
-    e.preventDefault();
-    var id = e.target.getAttribute("data-id");
+  function handleRemoveClick(btn) {
+    var id = btn.getAttribute("data-id");
     if (id) {
       Cart.remove(id);
     }
@@ -284,7 +300,7 @@
       '<hr>' +
       '<div class="line"><span>Subtotal</span><span class="amount">' + money(sub) + "</span></div>" +
       '<div class="line"><span>Discount</span><span class="amount discount-amount">-' + money(discount) + "</span></div>" +
-      '<div class="line"><span>Tax (15%)</span><span class="amount tax-amount">' + money(taxAmount) + "</span></div>" +
+      '<div class="line"><span>Tax</span><span class="amount tax-amount">' + money(taxAmount) + "</span></div>" +
       '<div class="line total"><span><i class="fas fa-calculator"></i> <strong>Total</strong></span><span class="amount total-amount"><strong>' + money(tot) + "</strong></span></div>";
   }
 
@@ -341,13 +357,16 @@
       }
     },
     remove: function (id) {
-      var cart = load().filter(function (i) { return i.id !== id; });
+      var cart = load();
+      // Convert to string for comparison
+      var stringId = String(id);
+      cart = cart.filter(function (i) { return String(i.id) !== stringId; });
       save(cart);
-      render(); 
+      renderCartPage();
     },
     clear: function () {
       save([]);
-      render();
+      renderCartPage();
     },
     get: load,
     items: load,
