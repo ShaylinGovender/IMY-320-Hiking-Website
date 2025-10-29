@@ -88,8 +88,28 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
 .summary .row>div:first-child{flex:1}
 #apply-discount{font-size:.9rem;padding:.6rem .9rem;margin-left:8px}
 
-.line{display:flex;justify-content:space-between;align-items:center;margin:.5rem 0}
+.line{display:flex;justify-content:space-between;align-items:center;margin:.5rem 0;padding:.4rem 0}
 .line span strong{font-weight:700 !important}
+
+.qty{display:flex;gap:4px;align-items:center}
+.qty-btn{
+  width:32px;height:32px;border:2px solid var(--sunset-orange);
+  background:var(--card);color:var(--sunset-orange);
+  border-radius:6px;font-size:1.1rem;font-weight:700;
+  cursor:pointer;transition:all .2s ease;
+  display:flex;align-items:center;justify-content:center;
+  padding:0;
+}
+.qty-btn:hover{background:var(--sunset-orange);color:#fff;transform:scale(1.1)}
+.qty-btn:active{transform:scale(0.95)}
+.qty input{width:60px;text-align:center;border:2px solid var(--line);padding:.4rem}
+
+.amount{font-weight:600;font-size:1rem}
+.discount-amount{color:#27ae60;font-weight:700}
+.shipping-amount{color:var(--sunset-orange);font-weight:700}
+.tax-amount{color:#3498db;font-weight:600}
+.total-amount{color:var(--deep-forest);font-weight:700;font-size:1.3rem}
+
 .line.total{
   font-weight:700;font-size:1.2rem;color:var(--deep-forest);
   background:linear-gradient(135deg,var(--forest-green),#1f8f4e);
@@ -97,6 +117,7 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
   box-shadow:0 3px 15px rgba(39,174,96,.3);
   margin:1rem 0
 }
+.line.total .amount{color:#fff}
 .line.shipping{
   background:linear-gradient(135deg,#f8f9fa,#e9ecef);
   padding:.6rem .8rem;border-radius:8px;
@@ -127,7 +148,6 @@ select{appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3
 .price{white-space:nowrap;font-weight:600}
 
 .qty{display:flex;gap:8px;align-items:center}
-.qty button:first-child,.qty button:last-child{display:none !important}
 .qty input{width:72px;text-align:center}
 
 .item .btn.danger{padding:.55rem .9rem;font-size:.9rem;border-radius:8px}
@@ -148,125 +168,3 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:780px){.form-grid{grid-template-columns:1fr}}
 .form-grid .col-span-2{grid-column:1/-1}
-
-#cart-items .item button.plus,
-#cart-items .item [aria-label*="increase" i],
-#cart-items .item [class*="increase" i],
-#cart-items .item [id*="increase" i]{display:none!important}
-
-#cart-items .item .qty+.remove-item{margin-left:8px}
-#cart-items .item .remove-item{margin-left:8px}
-
-.remove-notification {
-    position: fixed;
-    top: 100px;
-    left: 0;
-    right: 0;
-    background: rgba(39, 174, 96, 0.95);
-    color: white;
-    padding: 1.2rem 2rem;
-    z-index: 9999;
-    display: none;
-    backdrop-filter: blur(10px);
-    border-bottom: 3px solid #27ae60;
-    animation: slideDownBanner 0.5s ease-out;
-}
-
-.remove-notification.hiding {
-    animation: slideUpBanner 0.5s ease-in;
-}
-
-.remove-notification .notification-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.remove-notification .notification-icon {
-    color: white;
-    font-size: 1.8rem;
-    flex-shrink: 0;
-    animation: bounce 0.6s ease-in-out;
-}
-
-.remove-notification .notification-message {
-    text-align: center;
-}
-
-.remove-notification .notification-message h4 {
-    margin: 0 0 0.3rem 0;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-.remove-notification .notification-message p {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
-}
-
-@keyframes slideDownBanner {
-    from {
-        opacity: 0;
-        transform: translateY(-100%);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slideUpBanner {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-100%);
-    }
-}
-
-@keyframes bounce {
-    0%, 20%, 60%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-10px);
-    }
-    80% {
-        transform: translateY(-5px);
-    }
-}
-
-.item .btn.danger {
-    background: #e74c3c;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    min-width: 80px;
-}
-
-.item .btn.danger:hover {
-    background: #c0392b;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
-}
-
-.item .btn.danger:active {
-    transform: translateY(0);
-}
-
-.item .btn.danger {
-    z-index: 10;
-    position: relative;
-}

@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Order Success</title>
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏔️</text></svg>">
+
 <link rel="stylesheet" href="../css/LandingPage.css">
 <link rel="stylesheet" href="../css/Checkout.css?v=7">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,7 +15,7 @@
 <nav id="navbar">
   <div class="nav-container">
     <div class="nav-left">
-      <div class="logo">🏔️ TrailBlazer</div>
+      <a href="landingPage.html" class="logo" style="text-decoration: none; color: white;">🏔️ TrailBlazer</a>
       <ul class="nav-links">
         <li><a href="landingPage.html">Home</a></li>
         <li><a href="ProductCatalogue.html">Gear</a></li>
@@ -144,11 +147,12 @@ function forceRender() {
   
   if (summaryEl && order.totals) {
     summaryEl.innerHTML = `
-      <div class="line"><span>Subtotal</span><strong>R${order.totals.subtotal.toFixed(2)}</strong></div>
-      <div class="line"><span>Discount</span><strong>-R${order.totals.discount.toFixed(2)}</strong></div>
-      <div class="line"><span>Shipping</span><strong>R${order.totals.shipping.toFixed(2)}</strong></div>
-      <div class="line"><span>Tax</span><strong>R${order.totals.tax.toFixed(2)}</strong></div>
-      <div class="line total"><span>Total</span><strong>R${order.totals.total.toFixed(2)}</strong></div>
+      <div class="line"><span>Subtotal</span><span class="amount">R${order.totals.subtotal.toFixed(2)}</span></div>
+      ${order.totals.discount > 0 ? `<div class="line"><span>Discount</span><span class="discount-amount">-R${order.totals.discount.toFixed(2)}</span></div>` : ''}
+      <div class="line shipping"><span><i class="fas fa-shipping-fast"></i> Shipping</span><span class="shipping-amount">R${order.totals.shipping.toFixed(2)}</span></div>
+      <div class="line"><span>Tax (15%)</span><span class="tax-amount">R${order.totals.tax.toFixed(2)}</span></div>
+      <hr>
+      <div class="line total"><span>Total</span><span class="total-amount">R${order.totals.total.toFixed(2)}</span></div>
     `;
     console.log('Summary updated');
   }

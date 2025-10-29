@@ -1,6 +1,11 @@
 (function () {
   var KEY = "tb_cart_v1";
   var TAX_RATE = 0.15;
+  var SHIPPING_RATES = {
+    standard: 50.00,
+    express: 100.00,
+    pickup: 0.00
+  };
 
   function money(n) {
     n = Math.max(0, Number(n) || 0);
@@ -14,31 +19,61 @@
   function save(cart) {
     localStorage.setItem(KEY, JSON.stringify(cart));
     renderBadge();
+    // Dispatch custom event so other pages/tabs know cart changed
+    try {
+      window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { count: cart.reduce(function (s, i) { return s + i.qty; }, 0) } }));
+    } catch (e) {}
   }
 
   function findIndex(cart, id) {
-    return cart.findIndex(function (i) { 
-      return i.id === id || i.id.toString() === id.toString(); 
-    });
+    // Convert both to strings for comparison
+    var stringId = String(id);
+    return cart.findIndex(function (i) { return String(i.id) === stringId; });
   }
 
   function subtotal(cart) {
     return cart.reduce(function (s, i) { return s + i.price * i.qty; }, 0);
   }
 
-  function tax(cart) {
-    return subtotal(cart) * TAX_RATE;
+  function getShippingCost(method) {
+    return SHIPPING_RATES[method] || SHIPPING_RATES.standard;
   }
 
-  function total(cart) {
-    return subtotal(cart) + tax(cart);
+  function getDiscount(code, subtotal) {
+    var discounts = {
+      'SAVE10': subtotal * 0.10,
+      'SAVE20': subtotal * 0.20,
+      'WELCOME': 50.00
+    };
+    return discounts[code.toUpperCase()] || 0;
+  }
+
+  function tax(subtotalAmount, shippingCost) {
+    return (subtotalAmount + shippingCost) * TAX_RATE;
+  }
+
+  function total(cart, options) {
+    options = options || {};
+    var sub = subtotal(cart);
+    var shipping = getShippingCost(options.shippingMethod || 'standard');
+    var discount = getDiscount(options.discountCode || '', sub);
+    var taxAmount = (sub + shipping - discount) * TAX_RATE;
+    return sub + shipping + taxAmount - discount;
   }
 
   function renderBadge() {
+    // Force fresh load from localStorage to ensure sync
     var cart = load();
     var count = cart.reduce(function (s, i) { return s + i.qty; }, 0);
     var els = document.querySelectorAll("[data-cart-count], .cart-count");
-    els.forEach(function (el) { el.textContent = count; });
+    els.forEach(function (el) { 
+      el.textContent = count; 
+      // Also update aria-label for accessibility
+      var cartIcon = el.closest('.cart-icon');
+      if (cartIcon) {
+        cartIcon.setAttribute('aria-label', 'Cart (' + count + ' items)');
+      }
+    });
   }
 
   function cartItemHTML(item) {
@@ -50,8 +85,12 @@
       (item.brand ? '<div class="kicker">' + item.brand + "</div>" : "") +
       '<div class="kicker">' + money(item.price) + "</div>" +
       "</div>" +
-      '<div style="display:flex;gap:8px;align-items:center" onclick="event.stopPropagation();">' +
-      '<div class="qty"><input type="number" min="1" value="' + item.qty + '" data-id="' + item.id + '"></div>' +
+      '<div style="display:flex;gap:8px;align-items:center">' +
+      '<div class="qty">' +
+      '<button class="qty-btn qty-decrease" data-id="' + item.id + '" aria-label="Decrease quantity">-</button>' +
+      '<input type="number" min="1" value="' + item.qty + '" data-id="' + item.id + '" class="qty-input">' +
+      '<button class="qty-btn qty-increase" data-id="' + item.id + '" aria-label="Increase quantity">+</button>' +
+      '</div>' +
       '<button class="btn danger remove-item" data-id="' + item.id + '">Remove</button>' +
       "</div>" +
       "</div>"
@@ -64,105 +103,165 @@
     if (!wrap) return;
 
     var cart = load();
+    var emptyMsg = document.getElementById("cart-empty");
     
     if (!cart.length) {
+      if (emptyMsg) emptyMsg.classList.remove('hidden');
       wrap.innerHTML = '';
-      if (emptyMsg) {
-        emptyMsg.classList.remove("hidden");
-        emptyMsg.style.display = "flex"; // Ensure it's visible
-      }
       var summaryLines = document.getElementById("summary-lines");
       if (summaryLines) summaryLines.innerHTML = '';
+      var checkoutBtn = document.getElementById("checkout-btn");
+      if (checkoutBtn) checkoutBtn.disabled = true;
       return;
     }
 
-    // Hide empty message when there are items
-    if (emptyMsg) {
-      emptyMsg.classList.add("hidden");
-      emptyMsg.style.display = "none"; // Force hide
-    }
+    if (emptyMsg) emptyMsg.classList.add('hidden');
     wrap.innerHTML = cart.map(cartItemHTML).join("");
 
+    updateCartSummary();
+    attachEventListeners();
+  }
+
+  function updateCartSummary() {
+    var cart = load();
+    var discountCode = (document.getElementById('discount-code') && document.getElementById('discount-code').value) || '';
+    var shippingMethod = (document.getElementById('shipping-method') && document.getElementById('shipping-method').value) || 'standard';
+    
     var sub = subtotal(cart);
-    var tx = tax(cart);
-    var tot = total(cart);
+    var shipping = getShippingCost(shippingMethod);
+    var discount = getDiscount(discountCode, sub);
+    var taxAmount = (sub + shipping - discount) * TAX_RATE;
+    var tot = sub + shipping + taxAmount - discount;
 
     var summaryLines = document.getElementById("summary-lines");
     if (summaryLines) {
       summaryLines.innerHTML =
-        '<div class="line"><span>Subtotal</span><span>' + money(sub) + '</span></div>' +
-        '<div class="line"><span>Discount</span><span>-R0.00</span></div>' +
-        '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
-        '<div class="line"><span>Tax</span><span>' + money(tx) + '</span></div>' +
-        '<div class="line total"><span>Total</span><span>' + money(tot) + '</span></div>';
+        '<div class="line"><span>Subtotal</span><span class="amount">' + money(sub) + '</span></div>' +
+        '<div class="line"><span>Discount</span><span class="amount discount-amount">-' + money(discount) + '</span></div>' +
+        '<div class="line shipping"><span><i class="fas fa-shipping-fast"></i> Shipping (' + shippingMethod + ')</span><span class="amount shipping-amount">' + money(shipping) + '</span></div>' +
+        '<div class="line"><span>Tax (15%)</span><span class="amount tax-amount">' + money(taxAmount) + '</span></div>' +
+        '<div class="line total"><span><i class="fas fa-calculator"></i> <strong>Total</strong></span><span class="amount total-amount"><strong>' + money(tot) + '</strong></span></div>';
     }
 
-    attachEventListeners();
+    Cart.saveDraft({
+      discountCode: discountCode,
+      shippingMethod: shippingMethod
+    });
   }
 
   function attachEventListeners() {
     var wrap = document.getElementById("cart-items");
     if (!wrap) return;
 
-    wrap.querySelectorAll(".item .qty input").forEach(function (inp) {
-      inp.removeEventListener("input", handleQuantityChange);
-      inp.addEventListener("input", handleQuantityChange);
+    // Remove any existing click listener by cloning
+    var newWrap = wrap.cloneNode(true);
+    wrap.parentNode.replaceChild(newWrap, wrap);
+    wrap = newWrap;
+
+    // Quantity buttons and remove button - using event delegation
+    wrap.addEventListener("click", function(e) {
+      var target = e.target;
+      
+      // Check if clicked on decrease button or inside one
+      if (target.classList.contains('qty-decrease') || target.closest('.qty-decrease')) {
+        var btn = target.classList.contains('qty-decrease') ? target : target.closest('.qty-decrease');
+        handleDecreaseClick(btn);
+        return;
+      }
+      
+      // Check if clicked on increase button or inside one
+      if (target.classList.contains('qty-increase') || target.closest('.qty-increase')) {
+        var btn = target.classList.contains('qty-increase') ? target : target.closest('.qty-increase');
+        handleIncreaseClick(btn);
+        return;
+      }
+      
+      // Check if clicked on remove button or inside one
+      if (target.classList.contains('remove-item') || target.closest('.remove-item')) {
+        var btn = target.classList.contains('remove-item') ? target : target.closest('.remove-item');
+        handleRemoveClick(btn);
+        return;
+      }
     });
 
-    wrap.querySelectorAll(".item .remove-item").forEach(function (btn) {
-      btn.removeEventListener("click", handleRemoveClick);
-      btn.addEventListener("click", handleRemoveClick);
+    // Quantity input changes
+    wrap.addEventListener("input", function(e) {
+      if (e.target && e.target.classList.contains('qty-input')) {
+        handleQuantityChange(e);
+      }
     });
 
+    // Checkout button
     var checkoutBtn = document.getElementById("checkout-btn");
     if (checkoutBtn) {
-      checkoutBtn.removeEventListener("click", handleCheckoutClick);
-      checkoutBtn.addEventListener("click", handleCheckoutClick);
+      checkoutBtn.disabled = false;
+      checkoutBtn.onclick = handleCheckoutClick;
+    }
+
+    // Discount and shipping change
+    var discountBtn = document.getElementById("apply-discount");
+    if (discountBtn) {
+      discountBtn.onclick = function() {
+        updateCartSummary();
+      };
+    }
+
+    var shippingSelect = document.getElementById("shipping-method");
+    if (shippingSelect) {
+      shippingSelect.onchange = function() {
+        updateCartSummary();
+      };
     }
   }
 
   function handleQuantityChange(e) {
     var id = e.target.getAttribute("data-id");
+    if (!id) return;
     var cart = load();
     var idx = findIndex(cart, id);
     if (idx >= 0) {
       var v = Math.max(1, parseInt(e.target.value || "1", 10));
       cart[idx].qty = v;
       save(cart);
+      updateCartSummary();
+    }
+  }
+
+  function handleIncreaseClick(btn) {
+    var id = btn.getAttribute("data-id");
+    if (!id) return;
+    var cart = load();
+    var idx = findIndex(cart, id);
+    if (idx >= 0) {
+      cart[idx].qty += 1;
+      save(cart);
       renderCartPage();
     }
   }
 
-  function handleRemoveClick(e) {
-    e.preventDefault();
-    e.stopPropagation(); 
-    var id = e.target.getAttribute("data-id");
-    if (id) {
-      Cart.remove(id);
-      
-      showRemoveNotification();
-      
-      render();
+  function handleDecreaseClick(btn) {
+    var id = btn.getAttribute("data-id");
+    if (!id) return;
+    var cart = load();
+    var idx = findIndex(cart, id);
+    if (idx >= 0 && cart[idx].qty > 1) {
+      cart[idx].qty -= 1;
+      save(cart);
+      renderCartPage();
     }
   }
 
-  function showRemoveNotification() {
-    let notification = document.getElementById('removeNotification');
-    if (!notification) {
-      notification = document.createElement('div');
-      notification.id = 'removeNotification';
-      notification.className = 'remove-notification';
-      notification.innerHTML = 
-        '<div class="notification-content">' +
-        '<div class="notification-icon">' +
-        '<i class="fas fa-check-circle"></i>' +
-        '</div>' +
-        '<div class="notification-message">' +
-        '<h4>Item Removed</h4>' +
-        '<p>The item has been removed from your cart.</p>' +
-        '</div>' +
-        '</div>';
-      document.body.appendChild(notification);
+  function handleRemoveClick(btn) {
+    var id = btn.getAttribute("data-id");
+    if (!id) return;
+    
+    var cart = load();
+    var idx = findIndex(cart, id);
+    if (idx >= 0) {
+      var itemName = cart[idx].title;
+      if (confirm('Remove "' + itemName + '" from cart?')) {
+        Cart.remove(id);
+      }
     }
     
     notification.style.display = 'block';
@@ -174,79 +273,87 @@
     }, 2000);
   }
 
-  function hideRemoveNotification() {
-    const notification = document.getElementById('removeNotification');
-    if (notification) {
-      notification.classList.add('hiding');
-      setTimeout(() => {
-        notification.style.display = 'none';
-        notification.classList.remove('hiding');
-      }, 300);
+  function handleCheckoutClick() {
+    var cart = load();
+    if (!cart.length) {
+      alert("Your cart is empty!");
+      return;
     }
-  }
-
-  function handleCartItemClickFromHTML(productId) {
-    console.log('handleCartItemClickFromHTML called with:', productId, 'Type:', typeof productId);
-    window.navigateToProduct(productId);
-  }
-
-  window.handleCartItemClickFromHTML = handleCartItemClickFromHTML;
-
-  function handleCheckoutClick(e) {
-    e.preventDefault();
-    if (!load().length) return;
-    location.href = "./Checkout.html";
+    window.location.href = "Checkout.html";
   }
 
   function renderCheckoutSummary() {
-    var box = document.getElementById("checkout-summary");
+    var box = document.getElementById("cart-summary");
     if (!box) return;
+    
     var cart = load();
+    var draft = Cart.loadDraft();
+    var shippingMethod = draft.shippingMethod || 'standard';
+    var discountCode = draft.discountCode || '';
+    
+    var sub = subtotal(cart);
+    var shipping = getShippingCost(shippingMethod);
+    var discount = getDiscount(discountCode, sub);
+    var taxAmount = (sub + shipping - discount) * TAX_RATE;
+    var tot = sub + shipping + taxAmount - discount;
+    
     box.innerHTML =
-      '<div class="line"><span>Items</span><span>' + cart.reduce(function (s, i) { return s + i.qty; }, 0) + "</span></div>" +
-      '<div class="line"><span>Shipping</span><span>standard</span></div>' +
-      '<div class="line"><span>Subtotal</span><span>' + money(subtotal(cart)) + "</span></div>" +
-      '<div class="line"><span>Discount</span><span>-R0.00</span></div>' +
-      '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
-      '<div class="line"><span>Tax</span><span>' + money(tax(cart)) + "</span></div>" +
-      '<div class="line total"><span>Total</span><span>' + money(total(cart)) + "</span></div>";
+      (discountCode ? '<div class="badge" style="margin-bottom:6px">Code: ' + discountCode.toUpperCase() + "</div>" : "") +
+      '<div class="line"><span><strong>Items</strong></span><strong>' + cart.reduce(function (s, i) { return s + i.qty; }, 0) + "</strong></div>" +
+      '<div class="line shipping"><span><i class="fas fa-shipping-fast"></i> <strong>Shipping</strong> (' + shippingMethod + ')</span><strong class="shipping-amount">' + money(shipping) + "</strong></div>" +
+      '<hr>' +
+      '<div class="line"><span>Subtotal</span><span class="amount">' + money(sub) + "</span></div>" +
+      '<div class="line"><span>Discount</span><span class="amount discount-amount">-' + money(discount) + "</span></div>" +
+      '<div class="line"><span>Shipping</span><span class="amount shipping-amount">' + money(shipping) + "</span></div>" +
+      '<div class="line"><span>Tax (15%)</span><span class="amount tax-amount">' + money(taxAmount) + "</span></div>" +
+      '<div class="line total"><span><i class="fas fa-calculator"></i> <strong>Total</strong></span><span class="amount total-amount"><strong>' + money(tot) + "</strong></span></div>";
   }
 
   function renderPaymentSummary() {
-    var box = document.querySelector(".summary");
+    var box = document.getElementById("payment-summary");
     if (!box || document.getElementById("cart-items")) return;
+    
     var cart = load();
+    var draft = Cart.loadDraft();
+    var shippingMethod = draft.shippingMethod || 'standard';
+    var discountCode = draft.discountCode || '';
+    
+    var sub = subtotal(cart);
+    var shipping = getShippingCost(shippingMethod);
+    var discount = getDiscount(discountCode, sub);
+    var taxAmount = (sub + shipping - discount) * TAX_RATE;
+    var tot = sub + shipping + taxAmount - discount;
+    
     box.innerHTML =
-      '<div class="line"><span>Items</span><span>' + cart.reduce(function (s, i) { return s + i.qty; }, 0) + "</span></div>" +
-      '<div class="line"><span>Shipping</span><span>standard</span></div>' +
-      '<div class="line"><span>Subtotal</span><span>' + money(subtotal(cart)) + "</span></div>" +
-      '<div class="line"><span>Discount</span><span>-R0.00</span></div>' +
-      '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
-      '<div class="line"><span>Tax</span><span>' + money(tax(cart)) + "</span></div>" +
-      '<div class="line total"><span>Total</span><span>' + money(total(cart)) + "</span></div>";
+      '<div class="line"><span>Items</span><strong>' + cart.reduce(function (s, i) { return s + i.qty; }, 0) + "</strong></div>" +
+      '<div class="line shipping"><span><i class="fas fa-shipping-fast"></i> Shipping (' + shippingMethod + ')</span><strong class="shipping-amount">' + money(shipping) + "</strong></div>" +
+      '<hr>' +
+      '<div class="line"><span>Subtotal</span><span class="amount">' + money(sub) + "</span></div>" +
+      '<div class="line"><span>Discount</span><span class="amount discount-amount">-' + money(discount) + "</span></div>" +
+      '<div class="line"><span>Tax</span><span class="amount tax-amount">' + money(taxAmount) + "</span></div>" +
+      '<div class="line total"><span><i class="fas fa-calculator"></i> <strong>Total</strong></span><span class="amount total-amount"><strong>' + money(tot) + "</strong></span></div>";
   }
 
   function renderSuccess() {
     var order = null;
     try { order = JSON.parse(localStorage.getItem("tb_last_order") || "null"); } catch (e) {}
     if (!order) return;
+    
     var t = document.getElementById("success-total");
     var id = document.getElementById("order-id");
-    if (t) t.textContent = "Total " + money(order.total);
-    if (id) id.textContent = "Order ID " + order.id;
+    if (t && order.totals) t.textContent = "Total " + money(order.totals.total);
+    if (id && order.id) id.textContent = "Order ID " + order.id;
 
     var itemsBox = document.getElementById("success-items");
     var sumBox = document.getElementById("success-summary");
-    if (itemsBox) itemsBox.innerHTML = order.items.map(cartItemHTML).join("");
-    if (sumBox) {
-      var sub = order.items.reduce(function (s, i) { return s + i.price * i.qty; }, 0);
-      var tx = sub * TAX_RATE;
+    if (itemsBox && order.items) itemsBox.innerHTML = order.items.map(cartItemHTML).join("");
+    if (sumBox && order.totals) {
       sumBox.innerHTML =
-        '<div class="line"><span>Subtotal</span><span>' + money(sub) + '</span></div>' +
-        '<div class="line"><span>Discount</span><span>-R0.00</span></div>' +
-        '<div class="line"><span>Shipping</span><span>R0.00</span></div>' +
-        '<div class="line"><span>Tax</span><span>' + money(tx) + '</span></div>' +
-        '<div class="line total"><span>Total</span><span>' + money(sub + tx) + '</span></div>';
+        '<div class="line"><span>Subtotal</span><span class="amount">' + money(order.totals.subtotal) + '</span></div>' +
+        '<div class="line"><span>Discount</span><span class="amount discount-amount">-' + money(order.totals.discount) + '</span></div>' +
+        '<div class="line"><span>Shipping</span><span class="amount shipping-amount">' + money(order.totals.shipping) + '</span></div>' +
+        '<div class="line"><span>Tax</span><span class="amount tax-amount">' + money(order.totals.tax) + '</span></div>' +
+        '<div class="line total"><span><strong>Total</strong></span><span class="amount total-amount"><strong>' + money(order.totals.total) + '</strong></span></div>';
     }
   }
 
@@ -256,20 +363,24 @@
       var id = (product.id !== undefined && product.id !== null) ? product.id : (product.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
       var idx = findIndex(cart, id);
       qty = Math.max(1, parseInt(qty || 1, 10));
-      if (idx >= 0) cart[idx].qty += qty;
-      else cart.push({
-        id: id,
-        title: product.title || "Item",
-        brand: product.brand || "",
-        price: Number(product.price) || 0,
-        image: product.image || "",
-        descriptor: product.descriptor || "",
-        link: product.link || location.href,
-        availability: product.availability || "in_stock",
-        availabilityDate: product.availabilityDate || new Date().toISOString(),
-        qty: qty
-      });
+      if (idx >= 0) {
+        cart[idx].qty += qty;
+      } else {
+        cart.push({
+          id: id,
+          title: product.title || "Item",
+          brand: product.brand || "",
+          price: Number(product.price) || 0,
+          image: product.image || "",
+          descriptor: product.descriptor || "",
+          link: product.link || location.href,
+          availability: product.availability || "in_stock",
+          availabilityDate: product.availabilityDate || new Date().toISOString(),
+          qty: qty
+        });
+      }
       save(cart);
+      console.log('Cart updated - items:', cart.length, 'total qty:', cart.reduce(function (s, i) { return s + i.qty; }, 0));
     },
     update: function (id, qty) {
       var cart = load();
@@ -283,13 +394,18 @@
       this.update(id, qty);
     },
     remove: function (id) {
-      var cart = load().filter(function (i) { return i.id !== id && i.id.toString() !== id.toString(); });
+      var cart = load();
+      // Convert to string for comparison
+      var stringId = String(id);
+      cart = cart.filter(function (i) { return String(i.id) !== stringId; });
       save(cart);
-      render(); 
+      renderCartPage();
+      console.log('Item removed - remaining items:', cart.length);
     },
     clear: function () {
       save([]);
-      render();
+      renderCartPage();
+      console.log('Cart cleared');
     },
     get: load,
     items: load,
@@ -301,15 +417,17 @@
       options = options || {};
       var cart = load();
       var sub = subtotal(cart);
-      var discount = 0;
-      var shipping = 0;
-      var tx = tax(cart);
+      var shippingMethod = options.shippingMethod || 'standard';
+      var discountCode = options.discountCode || '';
+      var shipping = getShippingCost(shippingMethod);
+      var discount = getDiscount(discountCode, sub);
+      var taxAmount = (sub + shipping - discount) * TAX_RATE;
       return {
         subtotal: sub,
         discount: discount,
         shipping: shipping,
-        tax: tx,
-        total: sub + shipping + tx - discount
+        tax: taxAmount,
+        total: sub + shipping + taxAmount - discount
       };
     },
     loadDraft: function () {
@@ -421,6 +539,21 @@
       renderCartPage();
     }
   }
+
+  // Listen for cart updates from other scripts/pages
+  window.addEventListener('cartUpdated', function() {
+    renderBadge();
+  });
+
+  // Listen for storage changes from other tabs
+  window.addEventListener('storage', function(e) {
+    if (e.key === KEY) {
+      renderBadge();
+      if (document.getElementById("cart-items")) {
+        renderCartPage();
+      }
+    }
+  });
 
   document.addEventListener("DOMContentLoaded", render);
   window.addEventListener("load", forceCartRender);
