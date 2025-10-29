@@ -4,57 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrailBlazer - Product Catalogue</title>
-    
+
+    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏔️</text></svg>">
-    
+
+    <!-- Shared styles (for navbar/footer consistency with landing page) -->
+    <link rel="stylesheet" href="../css/LandingPage.css">
+    <!-- Page-specific styles -->
     <link rel="stylesheet" href="../css/ProductCatalogue.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav id="navbar">
-  <div class="nav-container">
-    <div class="nav-left">
-      <a href="landingPage.html" class="logo" style="text-decoration: none; color: white;">🏔️ TrailBlazer</a>
-      <ul class="nav-links">
-        <li><a href="landingPage.html">Home</a></li>
-        <li><a href="ProductCatalogue.html" class="active">Gear</a></li>
-        <li><a href="TrailsPage.html">Trails</a></li>
-        <li><a href="GroupHikes.html">Community</a></li>
-        <li><a href="AboutUsPage.html">About Us</a></li>
-      </ul>
-    </div>
-    <div class="nav-actions">
-      <div class="search-container">
-        <input type="text" class="search-input" placeholder="Search gear, trails...">
-        <button class="search-btn"><i class="fas fa-search"></i></button>
-      </div>
-      <div class="account-section">
-        <a href="AdminPanel.html" class="account-btn">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
-                <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
-            </svg>
-            Admin
-        </a>
-        <a href="LoginPage.html" class="account-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-        <a href="Cart.html" class="cart-icon" aria-label="Cart">
-          🛒
-          <span class="cart-count" id="cart-count" data-cart-count>0</span>
-        </a>
-        <a href="FavoritesPage.html" class="favorites-icon" aria-label="Favorites">
-          <i class="fas fa-heart"></i>
-          <span class="favorites-count" id="favorites-count">0</span>
-        </a>
-                <a href="GroupHikes.html#yourHikes" class="joined-icon" aria-label="Joined Hikes">
-                    🥾
-                    <span class="joined-count" id="joined-count">0</span>
-                </a>
-      </div>
-    </div>
-  </div>
-</nav>
 
+    <!-- Navigation (aligned with landing page structure) -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="../html/landingPage.html" class="logo" style="text-decoration: none; color: white;">🏔️ TrailBlazer</a>
+                <ul class="nav-links">
+                    <li><a href="../html/landingPage.html">Home</a></li>
+                    <li><a href="../html/ProductCatalogue.html" class="active">Gear</a></li>
+                    <li><a href="../html/TrailsPage.html">Trails</a></li>
+                    <li><a href="../html/GroupHikes.html">Community</a></li>
+                    <li><a href="../html/AboutUsPage.html">About Us</a></li>
+                </ul>
+            </div>
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search gear, trails...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="account-section">
+                    <a href="../html/AdminPanel.html" class="account-btn">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                        </svg>
+                        Admin
+                    </a>
+                    <a href="../html/LoginPage.html" class="account-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+
+                    <a href="../html/Cart.html" class="cart-icon" aria-label="Cart">
+                        🛒
+                        <span class="cart-count" id="cart-count" data-cart-count>0</span>
+                    </a>
+
+                    <a href="../html/FavoritesPage.html" class="favorites-icon" aria-label="Favorites">
+                        <i class="fas fa-heart"></i>
+                        <span class="favorites-count" id="favorites-count">0</span>
+                    </a>
+
+                    <!-- Joined hikes quick-access -->
+                    <a href="../html/GroupHikes.html#yourHikes" class="joined-icon" aria-label="Joined Hikes">
+                        🥾
+                        <span class="joined-count" id="joined-count">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -73,7 +82,7 @@
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
-                    
+
                     <div class="filter-controls">
                         <select id="categoryFilter">
                             <option value="all">All Categories</option>
@@ -143,7 +152,7 @@
                     </div>
                     <h3>No products found</h3>
                     <p>We couldn't find any products matching your criteria</p>
-                    
+
                     <div class="recovery-actions">
                         <button onclick="clearAllFilters()" class="recovery-btn primary">
                             <span class="btn-icon">🔄</span>
@@ -154,7 +163,7 @@
                             Show Suggestions
                         </button>
                     </div>
-                    
+
                     <div class="quick-suggestions" id="quickSuggestions" style="display: none;">
                         <h4>Try these popular categories:</h4>
                         <div class="suggestion-tags">
@@ -200,17 +209,17 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Footer -->
+    <!-- Footer (EXACT copy of landingPage footer so styling matches) -->
     <footer id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="ProductCatalogue.html">Shop Gear</a></li>
-                        <li><a href="TrailsPage.html">Find Trails</a></li>
-                        <li><a href="GroupHikes.html">Join Community</a></li>
-                        <li><a href="AboutUsPage.html">About Us</a></li>
+                        <li><a href="../html/ProductCatalogue.html">Shop Gear</a></li>
+                        <li><a href="../html/TrailsPage.html">Find Trails</a></li>
+                        <li><a href="../html/GroupHikes.html">Join Community</a></li>
+                        <li><a href="../html/AboutUsPage.html">About Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -236,36 +245,78 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="../js/ProductCatalogue.js"></script>
     <script src="../js/Cart.js"></script>
     <script src="../js/CatalogueCartHook.js"></script>
-        <script>
-            // Update joined count in navbar on product catalogue page
-            (function updateCatalogueJoined(){
-                try {
-                    const joined = JSON.parse(localStorage.getItem('joinedHikes') || '[]');
-                    const el = document.getElementById('joined-count');
-                    if (el) el.textContent = joined.length;
-                } catch (e) { console.error(e); }
-            })();
-            
-            // Back to Top Button functionality
+    <script src="../js/GlobalNav.js"></script>
+
+    <script>
+        // Keep joined hikes count in navbar current
+        (function updateCatalogueJoined(){
+            try {
+                const joined = JSON.parse(localStorage.getItem('joinedHikes') || '[]');
+                const el = document.getElementById('joined-count');
+                if (el) el.textContent = joined.length;
+            } catch (e) { console.error(e); }
+        })();
+
+        // Robust Back to Top logic:
+        // 1. Work out which element is actually scrolling.
+        // 2. Show/hide button based on that element.
+        // 3. Smooth scroll that same element to top.
+        (function () {
             const backToTopButton = document.getElementById('backToTop');
-            
-            window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 300) {
+
+            // detect scroll container:
+            function getScrollContainer() {
+                const mc = document.querySelector('.main-content');
+                if (mc && (mc.scrollHeight - mc.clientHeight > 5)) {
+                    return mc; // main-content is actually scrollable
+                }
+                return window; // fallback: page scrolls normally
+            }
+
+            const scroller = getScrollContainer();
+
+            function getScrollTop() {
+                if (scroller === window) {
+                    return window.pageYOffset ||
+                           document.documentElement.scrollTop ||
+                           document.body.scrollTop || 0;
+                } else {
+                    return scroller.scrollTop;
+                }
+            }
+
+            function toggleButton() {
+                if (getScrollTop() > 300) {
                     backToTopButton.classList.add('visible');
                 } else {
                     backToTopButton.classList.remove('visible');
                 }
-            });
-            
-            backToTopButton.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        </script>
+            }
+
+            function scrollToTop() {
+                if (scroller === window) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+                    document.body.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    scroller.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+
+            // attach the right scroll listener
+            if (scroller === window) {
+                window.addEventListener('scroll', toggleButton);
+            } else {
+                scroller.addEventListener('scroll', toggleButton);
+            }
+
+            // button click
+            backToTopButton.addEventListener('click', scrollToTop);
+        })();
+    </script>
 </body>
 </html>
