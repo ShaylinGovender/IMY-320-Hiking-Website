@@ -9,6 +9,8 @@
     items.forEach(p=>{
       const div=document.createElement('div');
       div.className='item';
+      div.style.cursor = 'pointer';
+      div.onclick = () => window.navigateToProduct(p.id);
       div.innerHTML=`
         <img src="${p.image||''}" alt="">
         <div>
@@ -16,7 +18,7 @@
           <div class="kicker">${p.brand||''}</div>
           <div class="kicker">${'R'+(p.price).toFixed(2)}</div>
         </div>
-        <div style="display:flex;gap:8px;align-items:center">
+        <div style="display:flex;gap:8px;align-items:center" onclick="event.stopPropagation();">
           <div class="qty">
             <input class="input" data-qty="${p.id}" value="${p.qty}" type="number" min="1">
           </div>
@@ -40,9 +42,57 @@
       <div class="line total"><span><i class="fas fa-calculator"></i> Total</span><strong>${'R'+t.total.toFixed(2)}</strong></div>`;
     Cart.saveDraft({...Cart.loadDraft(),discountCode:code,shippingMethod:method});
   }
+
+  function showRemoveNotification() {
+    let notification = document.getElementById('removeNotification');
+    if (!notification) {
+      notification = document.createElement('div');
+      notification.id = 'removeNotification';
+      notification.className = 'remove-notification';
+      notification.innerHTML = 
+        '<div class="notification-content">' +
+        '<div class="notification-icon">' +
+        '<i class="fas fa-check-circle"></i>' +
+        '</div>' +
+        '<div class="notification-message">' +
+        '<h4>Item Removed</h4>' +
+        '<p>The item has been removed from your cart.</p>' +
+        '</div>' +
+        '</div>';
+      document.body.appendChild(notification);
+    }
+    
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    setTimeout(() => {
+      hideRemoveNotification();
+    }, 2000);
+  }
+
+  function hideRemoveNotification() {
+    const notification = document.getElementById('removeNotification');
+    if (notification) {
+      notification.classList.add('hiding');
+      setTimeout(() => {
+        notification.style.display = 'none';
+        notification.classList.remove('hiding');
+      }, 300);
+    }
+  }
+
   document.addEventListener('click',e=>{
     const rem=e.target.getAttribute('data-remove');
-    if(rem){Cart.remove(rem);render()}
+    if(rem){
+      e.preventDefault();
+      e.stopPropagation();
+      
+      Cart.remove(rem);
+      
+      showRemoveNotification();
+      
+      render();
+    }
   });
   document.addEventListener('input',e=>{
     const key=e.target.getAttribute('data-qty');

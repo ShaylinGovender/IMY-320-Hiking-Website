@@ -409,8 +409,6 @@ class GroupHikesManager {
     }
 
     showMessage(message, type = 'success') {
-        // New improved toast that supports custom duration and optional action
-        // Usage: showMessage(msg, 'success', { duration: 5000, actionLabel: 'View', action: () => {...} })
         const args = Array.from(arguments);
         const opts = (args[2] && typeof args[2] === 'object') ? args[2] : {};
         const duration = opts.duration || (type === 'success' ? 6000 : 4000);

@@ -17,7 +17,9 @@
   }
 
   function findIndex(cart, id) {
-    return cart.findIndex(function (i) { return i.id === id; });
+    return cart.findIndex(function (i) { 
+      return i.id === id || i.id.toString() === id.toString(); 
+    });
   }
 
   function subtotal(cart) {
@@ -41,14 +43,14 @@
 
   function cartItemHTML(item) {
     return (
-      '<div class="item" data-id="' + item.id + '">' +
+      '<div class="item" data-id="' + item.id + '" style="cursor: pointer;" onclick="window.navigateToProduct(\'' + item.id + '\')">' +
       '<img src="' + (item.image || "") + '" alt="">' +
       '<div>' +
       '<h4>' + (item.title || "Item") + '</h4>' +
       (item.brand ? '<div class="kicker">' + item.brand + "</div>" : "") +
       '<div class="kicker">' + money(item.price) + "</div>" +
       "</div>" +
-      '<div style="display:flex;gap:8px;align-items:center">' +
+      '<div style="display:flex;gap:8px;align-items:center" onclick="event.stopPropagation();">' +
       '<div class="qty"><input type="number" min="1" value="' + item.qty + '" data-id="' + item.id + '"></div>' +
       '<button class="btn danger remove-item" data-id="' + item.id + '">Remove</button>' +
       "</div>" +
@@ -123,9 +125,53 @@
 
   function handleRemoveClick(e) {
     e.preventDefault();
+    e.stopPropagation(); 
     var id = e.target.getAttribute("data-id");
     if (id) {
-      Cart.remove(parseInt(id, 10));
+      Cart.remove(id);
+      
+      showRemoveNotification();
+      
+      render();
+    }
+  }
+
+  function showRemoveNotification() {
+    let notification = document.getElementById('removeNotification');
+    if (!notification) {
+      notification = document.createElement('div');
+      notification.id = 'removeNotification';
+      notification.className = 'remove-notification';
+      notification.innerHTML = 
+        '<div class="notification-content">' +
+        '<div class="notification-icon">' +
+        '<i class="fas fa-check-circle"></i>' +
+        '</div>' +
+        '<div class="notification-message">' +
+        '<h4>Item Removed</h4>' +
+        '<p>The item has been removed from your cart.</p>' +
+        '</div>' +
+        '</div>';
+      document.body.appendChild(notification);
+    }
+    
+    notification.style.display = 'block';
+    notification.classList.remove('hiding');
+    
+    
+    setTimeout(() => {
+      hideRemoveNotification();
+    }, 2000);
+  }
+
+  function hideRemoveNotification() {
+    const notification = document.getElementById('removeNotification');
+    if (notification) {
+      notification.classList.add('hiding');
+      setTimeout(() => {
+        notification.style.display = 'none';
+        notification.classList.remove('hiding');
+      }, 300);
     }
   }
 
@@ -190,7 +236,7 @@
   var Cart = {
     add: function (product, qty) {
       var cart = load();
-      var id = product.id || (product.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      var id = (product.id !== undefined && product.id !== null) ? product.id : (product.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
       var idx = findIndex(cart, id);
       qty = Math.max(1, parseInt(qty || 1, 10));
       if (idx >= 0) cart[idx].qty += qty;
@@ -216,8 +262,11 @@
         save(cart);
       }
     },
+    setQty: function (id, qty) {
+      this.update(id, qty);
+    },
     remove: function (id) {
-      var cart = load().filter(function (i) { return i.id !== id; });
+      var cart = load().filter(function (i) { return i.id !== id && i.id.toString() !== id.toString(); });
       save(cart);
       render(); 
     },
@@ -279,6 +328,46 @@
   };
 
   window.Cart = Cart;
+
+  window.navigateToProduct = function(productId) {
+    console.log('Navigating to product with ID:', productId, 'Type:', typeof productId);
+    
+    let targetId = productId;
+    
+    if (typeof productId === 'string' && !isNaN(productId)) {
+      targetId = parseInt(productId, 10);
+    }
+    
+    console.log('Target ID after conversion:', targetId, 'Type:', typeof targetId);
+    
+    if (window.ProductData) {
+      const products = window.ProductData.getProducts();
+      console.log('Available products:', products.map(p => ({ id: p.id, name: p.name })));
+      
+      let product = products.find(p => p.id === targetId);
+      
+      if (!product && typeof targetId === 'number') {
+        product = products.find(p => p.id.toString() === targetId.toString());
+      }
+      
+      if (!product && typeof targetId === 'string') {
+        product = products.find(p => p.id === parseInt(targetId, 10));
+      }
+      
+      if (product) {
+        console.log('Found matching product:', product);
+        window.location.href = `ProductPage.html?id=${product.id}`;
+        return;
+      } else {
+        console.log('No product found with ID:', targetId);
+      }
+    } else {
+      console.log('ProductData not available');
+    }
+    
+    console.log('Using fallback navigation with ID:', targetId);
+    window.location.href = `ProductPage.html?id=${targetId}`;
+  };
 
   function updateFavoritesCount() {
     try {
