@@ -1339,7 +1339,9 @@ nav {
     margin: 5% auto;
     /* Make room at the top so the close button doesn't overlap content */
     padding-top: 2.5rem;
-    border-radius: 20px;
+    border-radius: 0;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     width: 90%;
     max-width: 600px;
     max-height: 80vh;
@@ -1347,37 +1349,69 @@ nav {
     position: relative;
 }
 
+/* Specific styling for contact organizer modal */
+#contactOrganizerModal .modal-content {
+    width: 90%;
+    max-width: 550px;
+    max-height: 88vh;
+    margin: 5% auto;
+    padding-top: 1.8rem;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
 .close {
     position: absolute;
     right: 1rem;
     top: 1rem;
-    color: #aaa;
-    font-size: 2rem;
+    color: #6c757d;
+    font-size: 1.8rem;
     font-weight: bold;
     cursor: pointer;
     z-index: 1001;
-    background: white;
-    border-radius: 50%;
+    background: #f8f9fa;
+    border-radius: 0;
+    border: 2px solid #dee2e6;
     width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .close:hover {
-    color: #333;
+    color: #e74c3c;
+    background: #ffffff;
+    border-color: #e74c3c;
+    transform: scale(1.05);
 }
 
 .modal-body {
     padding: 2rem;
 }
 
+/* Compact padding for contact modal */
+#contactOrganizerModal .modal-body {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
 .modal-body h2 {
     color: #2c3e50;
     margin-bottom: 2rem;
     text-align: center;
+}
+
+/* Compact title for contact modal */
+#contactOrganizerModal .modal-body h2 {
+    margin-bottom: 0.8rem;
+    font-size: 1.3rem;
 }
 
 /* Form Styles */
@@ -1697,6 +1731,126 @@ footer .container {
 
 .footer-links a:hover {
     color: #e67e22;
+}
+
+/* Contact Organizer Modal Styles */
+.organizer-info {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #e67e22;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.organizer-info h3 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e67e22;
+    padding-bottom: 0.2rem;
+}
+
+.organizer-info p {
+    color: #495057;
+    margin-bottom: 0.3rem;
+    font-size: 0.85rem;
+    line-height: 1.3;
+}
+
+.organizer-info .hike-title {
+    color: #e67e22;
+    font-weight: 700;
+    font-size: 0.95rem;
+    background: #fff3e0;
+    padding: 0.4rem;
+    border: 1px solid #e67e22;
+    border-radius: 0;
+    margin: 0.5rem 0;
+    display: block;
+}
+
+/* Contact form specific styling */
+#contactOrganizerForm .form-group {
+    margin-bottom: 0.8rem;
+}
+
+#contactOrganizerForm .form-group label {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+#contactOrganizerForm .form-group input,
+#contactOrganizerForm .form-group textarea {
+    border: 2px solid #dee2e6;
+    border-radius: 0;
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    background: #ffffff;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#contactOrganizerForm .form-group input:focus,
+#contactOrganizerForm .form-group textarea:focus {
+    outline: none;
+    border-color: #e67e22;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 3px rgba(230, 126, 34, 0.1);
+    background: #fff;
+}
+
+#contactOrganizerForm .form-group textarea {
+    resize: vertical;
+    min-height: 70px;
+    max-height: 100px;
+    line-height: 1.3;
+}
+
+/* Contact modal buttons */
+#contactOrganizerForm .form-actions .btn-primary,
+#contactOrganizerForm .form-actions .btn-secondary {
+    border-radius: 0;
+    padding: 12px 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 2px solid;
+    transition: all 0.3s ease;
+}
+
+#contactOrganizerForm .form-actions .btn-primary {
+    background: #e67e22;
+    border-color: #e67e22;
+    color: white;
+}
+
+#contactOrganizerForm .form-actions .btn-primary:hover {
+    background: #d35400;
+    border-color: #d35400;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+#contactOrganizerForm .form-actions .btn-secondary {
+    background: transparent;
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+#contactOrganizerForm .form-actions .btn-secondary:hover {
+    background: #6c757d;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Footer responsive styles */

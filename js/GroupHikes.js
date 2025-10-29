@@ -174,6 +174,15 @@ class GroupHikesManager {
                 this.handleCreateHike();
             });
         }
+
+        // Contact organizer form submission
+        const contactForm = document.getElementById('contactOrganizerForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                handleContactForm();
+            });
+        }
     }
 
     displayGroupHikes() {
@@ -419,14 +428,15 @@ class GroupHikesManager {
         messageEl.style.cssText = `
             position: fixed;
             top: 100px;
-            right: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             padding: 14px 18px;
             border-radius: 10px;
             color: white;
             font-weight: 700;
             z-index: 1100;
             max-width: 360px;
-            background: ${type === 'success' ? '#16a34a' : type === 'info' ? '#0ea5e9' : '#e11d48'};
+            background: ${type === 'success' ? '#1651a3ff' : type === 'info' ? '#0ea5e9' : '#e11d48'};
             box-shadow: 0 6px 20px rgba(0,0,0,0.12);
             display: flex;
             gap: 12px;
@@ -947,8 +957,66 @@ function closeHikeDetailsModal() {
 }
 
 function contactOrganizer(organizerId) {
-    // In a real app, this would open a messaging interface
+    // Find the hike based on organizer ID to get context
+    const hike = groupHikesManager.groupHikes.find(h => h.organizerId === organizerId);
+    
+    if (!hike) {
+        groupHikesManager.showMessage('Unable to find organizer information', 'error');
+        return;
+    }
+    
+    // Populate organizer info in modal
+    const organizerInfo = document.getElementById('organizerInfo');
+    organizerInfo.innerHTML = `
+        <h3>Contacting: ${hike.organizer}</h3>
+        <p class="hike-title">Regarding: ${hike.name}</p>
+        <p><strong>Date:</strong> ${groupHikesManager.formatDate(hike.date)} at ${hike.time}</p>
+        <p><strong>Location:</strong> ${hike.location}</p>
+    `;
+    
+    // Clear form fields
+    document.getElementById('messageSubject').value = `Query about ${hike.name}`;
+    document.getElementById('messageContent').value = '';
+    
+    // Show modal
+    document.getElementById('contactOrganizerModal').style.display = 'block';
+}
+
+function closeContactModal() {
+    document.getElementById('contactOrganizerModal').style.display = 'none';
+}
+
+function handleContactForm() {
+    const form = document.getElementById('contactOrganizerForm');
+    const formData = new FormData(form);
+    
+    const subject = formData.get('messageSubject');
+    const message = formData.get('messageContent');
+    
+    // Validate form
+    if (!subject.trim()) {
+        groupHikesManager.showMessage('Please enter a subject line', 'error');
+        return;
+    }
+    
+    if (!message.trim()) {
+        groupHikesManager.showMessage('Please enter your message', 'error');
+        return;
+    }
+    
+    if (message.trim().length < 10) {
+        groupHikesManager.showMessage('Please write a more detailed message (at least 10 characters)', 'error');
+        return;
+    }
+    
+    // Close modal first
+    closeContactModal();
+    
+    // Show success message
     groupHikesManager.showMessage('Message sent to organizer! They will contact you soon.', 'success');
+    
+    // Clear form for next use
+    form.reset();
 }
 
 function viewHikingTips() {
@@ -1049,12 +1117,16 @@ document.addEventListener('DOMContentLoaded', () => {
     window.onclick = function(event) {
         const createModal = document.getElementById('createHikeModal');
         const detailsModal = document.getElementById('hikeDetailsModal');
+        const contactModal = document.getElementById('contactOrganizerModal');
         
         if (event.target === createModal) {
             closeCreateHikeModal();
         }
         if (event.target === detailsModal) {
             closeHikeDetailsModal();
+        }
+        if (event.target === contactModal) {
+            closeContactModal();
         }
         
         // Close custom dropdowns when clicking outside
