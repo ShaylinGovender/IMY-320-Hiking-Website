@@ -1057,18 +1057,21 @@ document.addEventListener('click',e=>{
   if(!btn)return;
   const qtyEl=document.querySelector('[data-qty]');
   const qty=Math.max(1,parseInt(qtyEl?qtyEl.value:1,10));
+  // Use currentProduct data instead of body attributes
+  if (!currentProduct) return;
   const product={
-    id:document.body.dataset.productId,
-    title:document.body.dataset.productTitle,
-    price:parseFloat(document.body.dataset.productPrice),
-    image:document.body.dataset.productImage,
-    brand:document.body.dataset.productBrand,
-    descriptor:document.body.dataset.productDescriptor||'',
+    id: currentProduct.id,
+    title: currentProduct.name,
+    price: currentProduct.price,
+    image: currentProduct.image,
+    brand: currentProduct.brand,
+    descriptor: currentProduct.description || '',
     link:location.href,
     availability:'in_stock',
     availabilityDate:new Date().toISOString()
   };
   Cart.add(product,qty);
+  showAddToCartFeedback();
 });
 
 /* ---------- Breadcrumb Navigation Functions ---------- */

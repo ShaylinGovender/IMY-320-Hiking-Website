@@ -43,7 +43,7 @@
 
   function cartItemHTML(item) {
     return (
-      '<div class="item" data-id="' + item.id + '" style="cursor: pointer;" onclick="window.navigateToProduct(\'' + item.id + '\')">' +
+      '<div class="item cart-item-clickable" data-id="' + item.id + '" data-product-id="' + item.id + '" style="cursor: pointer;" onclick="handleCartItemClickFromHTML(' + item.id + ')">' +
       '<img src="' + (item.image || "") + '" alt="">' +
       '<div>' +
       '<h4>' + (item.title || "Item") + '</h4>' +
@@ -184,6 +184,13 @@
       }, 300);
     }
   }
+
+  function handleCartItemClickFromHTML(productId) {
+    console.log('handleCartItemClickFromHTML called with:', productId, 'Type:', typeof productId);
+    window.navigateToProduct(productId);
+  }
+
+  window.handleCartItemClickFromHTML = handleCartItemClickFromHTML;
 
   function handleCheckoutClick(e) {
     e.preventDefault();
@@ -340,42 +347,48 @@
   window.Cart = Cart;
 
   window.navigateToProduct = function(productId) {
-    console.log('Navigating to product with ID:', productId, 'Type:', typeof productId);
+    console.log('navigateToProduct called with:', productId, 'Type:', typeof productId);
     
     let targetId = productId;
     
+    // Convert string to number if it's a numeric string
     if (typeof productId === 'string' && !isNaN(productId)) {
       targetId = parseInt(productId, 10);
     }
     
-    console.log('Target ID after conversion:', targetId, 'Type:', typeof targetId);
+    console.log('navigateToProduct - Target ID after conversion:', targetId, 'Type:', typeof targetId);
     
     if (window.ProductData) {
       const products = window.ProductData.getProducts();
-      console.log('Available products:', products.map(p => ({ id: p.id, name: p.name })));
+      console.log('navigateToProduct - Available products:', products.map(p => ({ id: p.id, name: p.name })));
       
       let product = products.find(p => p.id === targetId);
+      console.log('navigateToProduct - Direct match result:', product);
       
+      // Try alternate matching strategies if first attempt fails
       if (!product && typeof targetId === 'number') {
         product = products.find(p => p.id.toString() === targetId.toString());
+        console.log('navigateToProduct - String match result:', product);
       }
       
       if (!product && typeof targetId === 'string') {
         product = products.find(p => p.id === parseInt(targetId, 10));
+        console.log('navigateToProduct - ParseInt match result:', product);
       }
       
       if (product) {
-        console.log('Found matching product:', product);
+        console.log('navigateToProduct - Found matching product:', product);
         window.location.href = `ProductPage.html?id=${product.id}`;
         return;
       } else {
-        console.log('No product found with ID:', targetId);
+        console.log('navigateToProduct - No product found with ID:', targetId);
+        console.log('navigateToProduct - All available product IDs:', products.map(p => p.id));
       }
     } else {
-      console.log('ProductData not available');
+      console.log('navigateToProduct - ProductData not available');
     }
     
-    console.log('Using fallback navigation with ID:', targetId);
+    console.log('navigateToProduct - Using fallback navigation with ID:', targetId);
     window.location.href = `ProductPage.html?id=${targetId}`;
   };
 
