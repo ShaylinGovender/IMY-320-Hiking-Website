@@ -658,22 +658,71 @@ nav {
 .feature-item {
     text-align: center;
     padding: 2rem;
+    overflow: visible;
 }
 
 .feature-icon {
-    width: 60px;
-    height: 60px;
-    background: #e67e22;
-    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    background: transparent;
+    border-radius: 0;
     margin: 0 auto 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #e67e22;
     font-size: 1.5rem;
+    transition: all 0.3s ease;
+    overflow: visible;
 }
 
-/* Footer */
+.guarantee-svg {
+    width: 80px;
+    height: 80px;
+    color: #0d8585;
+    transition: transform 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.local-expertise-svg {
+    width: 80px;
+    height: 80px;
+    color: #2270e6;
+    transition: transform 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.community-svg {
+    width: 80px;
+    height: 80px;
+    color: #e47e00;
+    transition: transform 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.feature-item:hover .guarantee-svg {
+    transform: scale(1.1);
+    color: #0a636a;
+}
+
+.feature-item:hover .local-expertise-svg {
+    transform: scale(1.1);
+    color: #1b4c96;
+}
+
+.feature-item:hover .community-svg {
+    transform: scale(1.1);
+    color: #d66400;
+}
+
+.feature-item:hover .feature-icon {
+    transform: translateY(-5px);
+}
+
+
 footer {
     background: #2c3e50;
     color: #ecf0f1;
